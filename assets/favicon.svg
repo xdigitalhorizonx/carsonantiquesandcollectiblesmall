@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="X marks the spot">
+  <!-- Carson Antiques & Collectibles Mall — the "X marks the spot" glyph from their printed Treasure Map. Hand-drawn; barn red #7A2E1F on ground #14201B. -->
+  <rect width="64" height="64" fill="#14201B"/>
+  <path d="M15 15 L49 49 M49 15 L15 49" stroke="#7A2E1F" stroke-width="9" stroke-linecap="square" fill="none"/>
+  <path d="M15 15 L49 49 M49 15 L15 49" stroke="#D9A400" stroke-width="2" stroke-linecap="square" fill="none" opacity="0.9"/>
+</svg>

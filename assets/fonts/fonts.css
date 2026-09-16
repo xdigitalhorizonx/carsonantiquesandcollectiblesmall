@@ -1,0 +1,33 @@
+/* Self-hosted via the /fonts skill (Fontshare, ITF Free Font Licence) — woff2 only, zero third-party requests.
+   Source CSS: https://api.fontshare.com/v2/css?f[]=tanker%40400&display=swap
+               https://api.fontshare.com/v2/css?f[]=satoshi%40400%2C500%2C700&display=swap
+   Tanker = display only (never under ~28px). Satoshi = body; static 400/500/700 (Fontshare serves no variable file).
+   Licence text: ./LICENSE-ITF-Free-Font.txt */
+@font-face {
+  font-family: 'Tanker';
+  src: url('./tanker-400.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('./satoshi-400.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('./satoshi-500.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Satoshi';
+  src: url('./satoshi-700.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+  font-style: normal;
+}
