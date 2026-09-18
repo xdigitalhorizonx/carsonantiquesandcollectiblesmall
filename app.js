@@ -320,7 +320,8 @@
       A.animate(drawable, { draw: ['0 0', '0 1'], duration: Math.min(2600, Math.max(900, r.len * 1.2)), ease: 'inOutQuad', delay: 350,
         onComplete: () => {
           finish();
-          A.animate($('rect', pick), { fill: ['#EDEBE3', '#F5D31C'], duration: 360, loop: 3, alternate: true, ease: 'inOutQuad',
+          const tok = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+          A.animate($('rect', pick), { fill: [tok('--chalk'), tok('--yellow-bright')], duration: 360, loop: 3, alternate: true, ease: 'inOutQuad',
             onComplete: () => { $('rect', pick).style.fill = ''; } });
           A.animate([xOuter, xCore], { scale: [0, 1], duration: 420, ease: 'outBack', transformOrigin: `${r.cx}px ${r.cy}px` });
         } });

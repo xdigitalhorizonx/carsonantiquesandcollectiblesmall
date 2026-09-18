@@ -88,7 +88,6 @@
         }
       ],
       "amenityFeature": [
-        { "@type": "LocationFeatureSpecification", "name": "Shopping carts", "value": true },
         { "@type": "LocationFeatureSpecification", "name": "Restrooms", "value": true },
         { "@type": "LocationFeatureSpecification", "name": "On-site parking lot", "value": true }
       ],
@@ -166,14 +165,6 @@
         },
         {
           "@type": "Question",
-          "name": "Are there shopping carts?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Yes. Grab one — you'll want somewhere to put what you find."
-          }
-        },
-        {
-          "@type": "Question",
           "name": "Is there an upstairs?",
           "acceptedAnswer": {
             "@type": "Answer",
@@ -231,6 +222,7 @@
 <!-- Deploy note: on the https host add <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/tanker-400.woff2"> — omitted here because a crossorigin preload from file:// logs a CORS error and the face loads via fonts.css regardless (proven). -->
 <link rel="stylesheet" href="assets/fonts/fonts.css">
 <link rel="stylesheet" href="styles.css">
+<script>try{var ok=/^(dock|oxblood|enamel|walnut|pewter)$/,q=new URLSearchParams(location.search).get("palette"),p=ok.test(q)?q:localStorage.getItem("cacm-palette");if(ok.test(p)&&p!=="dock")document.documentElement.dataset.palette=p}catch(e){}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -267,7 +259,7 @@
     <div class="wrap hero__body">
       <p class="eyebrow">Psst, hey you — over here.</p>
       <h1 id="hero-h1">Northern Nevada's largest antique mall is <span class="hl">right here</span> in Carson City.</h1>
-      <p class="hero__noun" aria-live="off">Grab a cart. Go find <span class="nouns"><span class="noun is-on">oil lamps.</span><span class="noun" aria-hidden="true">chandeliers.</span><span class="noun" aria-hidden="true">teacups.</span><span class="noun" aria-hidden="true">coins.</span><span class="noun" aria-hidden="true">a hutch.</span><span class="noun" aria-hidden="true">vintage signs.</span><span class="noun" aria-hidden="true">glassware.</span></span></p>
+      <p class="hero__noun" aria-live="off">Walk right in. Go find <span class="nouns"><span class="noun is-on">oil lamps.</span><span class="noun" aria-hidden="true">chandeliers.</span><span class="noun" aria-hidden="true">teacups.</span><span class="noun" aria-hidden="true">coins.</span><span class="noun" aria-hidden="true">a hutch.</span><span class="noun" aria-hidden="true">vintage signs.</span><span class="noun" aria-hidden="true">glassware.</span></span></p>
       <p class="hero__sub">Over 21,000 square feet of vendor booths, filled to the brim with antiques, vintage finds, collectibles and Americana. Browse at your own pace.</p>
       <div class="hero__ctas">
         <a class="btn btn--yellow" href="#visit">Plan your visit</a>
@@ -356,7 +348,7 @@
       <header class="sec-head" data-reveal="0">
         <hr class="rule">
         <h2 id="map-h2">The <span class="hl">Treasure Map</span> — the main floor, booth by booth</h2>
-        <p class="intro">Our printed booth map is called the Treasure Map, and it earns the name. Here's the main floor, redrawn: numbered vendor booths, the display cases, the cashier at the entrance, the restrooms. Grab a cart, pick a corner and take your time. There's an upstairs too — and nobody's timing you.</p>
+        <p class="intro">Our printed booth map is called the Treasure Map, and it earns the name. Here's the main floor, redrawn: numbered vendor booths, the display cases, the cashier at the entrance, the restrooms. Pick a corner and take your time. There's an upstairs too — and nobody's timing you.</p>
       </header>
       <div class="map-tools">
         <p class="helper">Hover, tap or tab across the booths to see their numbers.</p>
@@ -374,7 +366,7 @@
         <div class="map-scroller" id="map-scroller">
 <!--TREASURE-MAP-SVG:BEGIN-->
 <svg class="map" viewBox="300 236 1470 664" role="graphics-document document" aria-label="Floor plan of the main floor: numbered vendor booths around the perimeter and along the centre aisles, display cases, the cashier and the entrance at the bottom centre, restrooms." aria-describedby="map-caption map-keys" data-entrance-x0="918" data-entrance-x1="988" data-entrance-y="845" focusable="false">
-<defs><pattern id="map-hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#EDEBE3" stroke-opacity=".22" stroke-width="1.5"/></pattern></defs>
+<defs><pattern id="map-hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#EDEBE3" style="stroke:var(--chalk)" stroke-opacity=".22" stroke-width="1.5"/></pattern></defs>
 <rect class="map-floor" x="310" y="248" width="1446" height="597"/>
 <path class="map-wall" d="M310,845 V248 H1756 V845 H988 M918,845 H310" fill="none"/>
 <g class="map-shaded" aria-hidden="true">
@@ -623,7 +615,6 @@
         <div class="faq__row"><dt>Is everything actually antique?</dt><dd>Not everything — and the sign out front says as much: Gifts · Home Decor · Art · Toys &amp; More. This is a multi-vendor mall, so the booths carry antiques, vintage items, collectibles and newer home decor side by side. That mix is the hunt.</dd></div>
         <!-- TODO (pre-publish): client sign-off on this answer — honest and on-brand, but it is their voice to own. -->
         <div class="faq__row"><dt>How big is the mall?</dt><dd>Over 21,000 square feet on two floors — Northern Nevada's largest antique mall, as the sign out front says.</dd></div>
-        <div class="faq__row"><dt>Are there shopping carts?</dt><dd>Yes. Grab one — you'll want somewhere to put what you find.</dd></div>
         <div class="faq__row"><dt>Is there an upstairs?</dt><dd>Yes. The Treasure Map on this page shows the main floor; there are more booths upstairs.</dd></div>
         <!-- TODO (pre-publish): confirm the second floor is vendor booths with the client. -->
         <div class="faq__row"><dt>Are there restrooms?</dt><dd>Yes — they're marked on the Treasure Map.</dd></div>
@@ -670,7 +661,30 @@
   </div>
 </footer>
 
+
+<!-- Palette preview tool (Digital Horizon) — lets the client compare colour schemes. Remove this block + palette.js to retire it. -->
+<div class="palette-tool" id="palette-tool">
+  <button class="palette-tool__toggle" type="button" aria-expanded="false" aria-controls="palette-panel">
+    <span class="palette-tool__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="palette-tool__kicker">Palette</span>
+    <span class="palette-tool__label">Loading Dock</span>
+  </button>
+  <div class="palette-tool__panel" id="palette-panel" role="dialog" aria-labelledby="palette-title" hidden>
+    <div class="palette-tool__head">
+      <h2 id="palette-title">Try a color scheme</h2>
+      <button class="palette-tool__close" type="button" aria-label="Close the palette picker">&times;</button>
+    </div>
+    <fieldset class="palette-tool__list"><legend class="sr-only">Color scheme</legend></fieldset>
+    <div class="palette-tool__foot">
+      <button class="palette-tool__copy" type="button">Copy a link to this scheme</button>
+      <p class="palette-tool__note">A preview tool for choosing a direction — it won’t be on the finished site.</p>
+      <p class="palette-tool__status" role="status" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
+
 <script src="assets/anime.umd.min.js" defer></script>
 <script src="app.js" defer></script>
+<script src="palette.js" defer></script>
 </body>
 </html>
