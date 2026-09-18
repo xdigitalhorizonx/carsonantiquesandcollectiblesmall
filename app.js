@@ -210,7 +210,10 @@
       scroller.scrollLeft = Math.max(0, px - scroller.clientWidth / 2); edges();
     };
     centreEntrance();
-    addEventListener('resize', centreEntrance);
+    /* phones fire resize each time the address bar collapses while scrolling; only a WIDTH change (rotation, a
+       resized window) re-centres, so a visitor's own pan across the map survives vertical scrolling */
+    let lastW = innerWidth;
+    addEventListener('resize', () => { if (innerWidth !== lastW) { lastW = innerWidth; centreEntrance(); } });
     let sr = 0;
     scroller.addEventListener('scroll', () => { edges(); if (!chip.hidden) { cancelAnimationFrame(sr); sr = requestAnimationFrame(() => placeChip(pinned || active)); } }, { passive: true });
   }
@@ -344,4 +347,20 @@
       wink.addEventListener('click', () => { const now = Date.now(); taps = taps.filter(t => now - t < 1500); taps.push(now); if (taps.length >= 3) { taps = []; xMarksTheSpot(); } });
     }
   }
+})();
+
+/* Phones: the embedded Google map (about 1.5 MB of Google scripts) waits until it is asked for. The iframe is hidden by CSS
+   on phones only, and a hidden lazy iframe never loads; "Get directions" right beside it already opens the phone's Maps app.
+   On desktop the button is display:none and the map loads exactly as before. */
+(() => {
+  const btn = document.getElementById('map-reveal');
+  const media = btn && btn.closest('.visit__media');
+  if (!btn || !media) return;
+  btn.addEventListener('click', () => {
+    media.classList.add('map-open');
+    btn.setAttribute('aria-expanded', 'true');
+    btn.hidden = true;
+    const map = document.getElementById('visit-map');
+    if (map) map.focus();
+  });
 })();

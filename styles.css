@@ -578,3 +578,105 @@ svg.map.zone-service .booth:not([data-zone="service"]) { opacity: .28; }
   .palette-tool__kicker { display: none; }
 }
 @media print { .palette-tool { display: none !important; } }
+
+/* =====================================================================================================
+   PHONES ONLY (2026-09-18). Everything below applies to
+     upright phones   : (max-width: 767px)
+     sideways phones  : (max-height: 500px) and (pointer: coarse) and (orientation: landscape)
+   A desktop or laptop (768 px or wider, mouse or trackpad) matches neither, so it renders exactly as before —
+   checked pixel-for-pixel before and after at 1024, 1280, 1440 and 1920.
+   ===================================================================================================== */
+.pic { display: contents; }          /* <picture> wrappers that only add phone-sized <source>s — no box of their own */
+.pic > source { display: none; }     /* <source> computes to inline in Chromium; without this it becomes a grid item in .visit__media and adds a gap */
+.helper__touch { display: none; }
+.map-reveal { display: none; }
+
+/* ---------- shared: upright + sideways phones ---------- */
+@media (max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape) {
+  /* map: say "swipe", not "hover"; zone buttons get a full 44 px target and 14 px type */
+  .helper__desk { display: none; }
+  .helper__touch { display: inline; }
+  .legend__btn { min-height: 44px; font-size: .875rem; }
+
+  /* tap targets: grow the hit area of inline links without moving a pixel of text */
+  .link-out, .rent__cta-line a { position: relative; }
+  .link-out::before { content: ""; position: absolute; inset: -9px -6px; }
+  .rent__cta-line a::before { content: ""; position: absolute; inset: -12px -6px; }
+  .nap a, .footer__nap a { padding-block: 9px; }
+  .footer__nav ul, .footer__links { gap: 0; }
+  .footer__nav a, .footer__links a { display: block; padding-block: 12px; }
+  .site-head__cta { min-height: 44px; }
+  .kicker { font-size: .875rem; }
+
+  /* Google map: hidden (so it never loads) until "Show the map here" is tapped */
+  .visit__media iframe { display: none; }
+  .visit__media.map-open iframe { display: block; }
+  .map-reveal { display: inline-flex; justify-content: center; width: 100%; max-width: 720px; }
+  .map-reveal[hidden] { display: none; }
+
+  /* palette picker: a 48 px disc instead of a pill that covers the page; its name stays for screen readers */
+  .palette-tool__toggle { width: 48px; height: 48px; min-height: 48px; padding: 0; gap: 0; justify-content: center; }
+  .palette-tool__kicker, .palette-tool__label {
+    display: block; position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+}
+
+/* ---------- upright phones ---------- */
+@media (max-width: 767px) {
+  /* header: every link a 44 px target, and a slightly slimmer bar */
+  .site-head__row { padding-top: 6px; row-gap: 0; }
+  .lockup { padding-block: 4px; }
+  .site-nav ul { gap: 0; padding: 0 calc(var(--gutter) - 8px); }
+  .site-nav a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; padding: 0 8px; border-bottom: 0; }
+
+  /* hero chip 13 -> 14 px */
+  .chip { font-size: .875rem; }
+
+  /* quotes band: the portrait crop is already centred on the lamps */
+  .band__photo { object-position: 50% 50%; }
+}
+@media (max-width: 400px) {
+  .site-nav a { padding: 0 6px; }
+  .site-nav ul { padding: 0 calc(var(--gutter) - 6px); }
+}
+@media (max-width: 374px) {        /* 360-wide phones: 4 px tighter link padding keeps all five nav links on screen */
+  .site-nav a { padding: 0 4px; }
+  .site-nav ul { padding: 0 calc(var(--gutter) - 4px); }
+}
+@media (max-width: 379px) {        /* the 14 px chip needs two lines below 380 (was 340 at 13 px) */
+  .chip { display: inline-grid; grid-template-columns: auto auto; column-gap: 10px; row-gap: 2px; align-items: center; white-space: normal; }
+  .chip::before { grid-row: 1 / span 2; }
+  .chip__sep { display: none; }
+  .chip__addr { grid-column: 2; }
+}
+
+/* booths: under 680 the six tiles become catalogue rows — photo left, words right — ~1.3 screens instead of 3.3 */
+@media (max-width: 679px) {
+  .tiles { max-width: none; }
+  .tile article { flex-direction: row; align-items: stretch; }
+  .tile figure { flex: 0 0 40%; }
+  .tile img { height: 100%; aspect-ratio: 3 / 4; }
+  .tile__text { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center;
+    border-top: 0; border-left: 1px solid var(--rule-light); padding: 18px 12px 18px 14px; }
+  .tile__text::before { left: 14px; top: 0; }
+  .tile p { font-size: .9375rem; line-height: 1.45; }
+}
+
+/* ---------- sideways phones ---------- */
+@media (max-height: 500px) and (pointer: coarse) and (orientation: landscape) {
+  /* header: the one-row desktop arrangement, 99 -> ~56 px, so the screen is mostly page */
+  .site-head__row { grid-template-columns: auto 1fr auto; grid-template-areas: "brand nav cta"; padding: 6px 0; row-gap: 0; column-gap: 16px; }
+  .site-nav { margin: 0; justify-self: center; }
+  .site-nav ul { gap: 0; padding: 0; overflow: visible; }
+  .site-nav::before, .site-nav::after { display: none; }
+  .site-nav a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; padding: 0 9px; border-bottom: 0; }
+  [id] { scroll-margin-top: 72px; }
+
+  /* hero: tighter, so the headline and buttons share the short screen */
+  .hero__top { padding-top: 14px; }
+  .hero__body { padding-block: 20px 26px; }
+  .hero h1 { font-size: 2.5rem; }
+  .hero__noun { margin-top: 10px; font-size: 1.75rem; }
+  .hero__sub { margin-top: 10px; font-size: 1rem; }
+  .hero__ctas { margin-top: 16px; }
+}
