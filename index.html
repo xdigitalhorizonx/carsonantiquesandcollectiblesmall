@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-US">
 <head>
-<!-- ===== SEO HEAD KIT · Carson Antiques & Collectibles Mall · home-v1 · paste VERBATIM inside <head>. Source of truth: runs/carson-antiques-home-v1/seo.md ===== -->
+<!-- ===== SEO HEAD KIT · Carson Antiques & Collectibles Mall · home-v2 (spec runs/carson-antiques-home-v2/SPEC.md §6.1, §6.3 + SPEC-AMENDMENTS AM-1). Title, og/twitter titles, og:image and canonical are UNCHANGED from v1 by rule. ===== -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Antique Mall, Carson City NV | Carson Antiques & Collectibles Mall</title>
-<meta name="description" content="Northern Nevada's largest antique mall: antiques, collectibles, furniture, china & coins in vendor booths. Open daily 10–6, 1831 N Carson St, Carson City, NV.">
-<!-- TODO (pre-publish): domain currently 301-chains to a spam destination that rotates (penandpaperman.com as of 2026-09-15) — recover before launch. Canonical assumes the apex https://carsoncityantiquemall.com/ is the live host; 301 www → apex at launch (visitcarsoncity.com links the www form; GBP still lists redeemedhomefurnishings.com, which is NXDOMAIN). -->
+<meta name="description" content="Antique mall in Carson City, NV, open every day 10–6, Sundays too. Over 21,000 sq ft of vendor booths: antiques, collectibles, furniture & coins.">
+<!-- TODO (pre-publish): domain currently 301-chains to a spam destination that rotates (penandpaperman.com as of 2026-09-15) and carsoncityantiquemall.com expires 2026-10-11 — recover/renew before launch. Canonical assumes the apex https://carsoncityantiquemall.com/ is the live host; 301 www → apex at launch (visitcarsoncity.com links the www form; GBP still lists redeemedhomefurnishings.com, which is NXDOMAIN). -->
 <link rel="canonical" href="https://carsoncityantiquemall.com/">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#14201B">
@@ -15,7 +15,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:url" content="https://carsoncityantiquemall.com/">
 <meta property="og:title" content="Carson Antiques & Collectibles Mall — Northern Nevada's Largest Antique Mall, Carson City NV">
-<meta property="og:description" content="Northern Nevada's largest antique mall: antiques, collectibles, furniture, china & coins in vendor booths. Open daily 10–6, 1831 N Carson St, Carson City, NV.">
+<meta property="og:description" content="Antique mall in Carson City, NV, open every day 10–6, Sundays too. Over 21,000 sq ft of vendor booths: antiques, collectibles, furniture & coins.">
 <meta property="og:image" content="https://carsoncityantiquemall.com/assets/og-carson-antiques-mall-1200x630.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
@@ -23,18 +23,26 @@
 <meta property="og:image:alt" content="Carson Antiques & Collectibles Mall, Carson City — a long aisle of vendor booths stacked with glassware, ceramics, hutches and framed prints">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Carson Antiques & Collectibles Mall — Northern Nevada's Largest Antique Mall, Carson City NV">
-<meta name="twitter:description" content="Northern Nevada's largest antique mall: antiques, collectibles, furniture, china & coins in vendor booths. Open daily 10–6, 1831 N Carson St, Carson City, NV.">
+<meta name="twitter:description" content="Antique mall in Carson City, NV, open every day 10–6, Sundays too. Over 21,000 sq ft of vendor booths: antiques, collectibles, furniture & coins.">
 <meta name="twitter:image" content="https://carsoncityantiquemall.com/assets/og-carson-antiques-mall-1200x630.jpg">
 <meta name="twitter:image:alt" content="Carson Antiques & Collectibles Mall, Carson City — a long aisle of vendor booths stacked with glassware, ceramics, hutches and framed prints">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon-180.png">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/tanker-400.woff2">
+<link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/satoshi-700.woff2">
+<link rel="stylesheet" href="styles.css">
+<!-- The ONE inline script (spec §7.2.1): palette bootstrap + motion gate + 2.5 s boot watchdog. Its sha256 is pinned in vercel.json's CSP by tools/csp-hash.mjs — edit it, then re-run that tool. Keep it on ONE line (CRLF/LF checkouts must hash the same). -->
+<script>(function(h){var ok=/^(dock|oxblood|enamel|walnut|pewter)$/,c=false,r;try{var q=new URLSearchParams(location.search).get("palette"),p=ok.test(q)?q:localStorage.getItem("cacm-palette");if(ok.test(p)&&p!=="dock")h.dataset.palette=p}catch(e){}try{c=localStorage.getItem("cacm-motion")==="calm"}catch(e){}r=matchMedia("(prefers-reduced-motion: reduce)").matches;h.dataset.openStatus="off";if(c)h.classList.add("calm");if(!r&&!c){h.classList.add("motion");setTimeout(function(){if(!h.classList.contains("motion-ok"))h.classList.remove("motion")},2500)}})(document.documentElement)</script>
 <!-- SCHEMA NOTES (keep OUTSIDE the script — JSON must parse):
      · schema.org has NO AntiqueStore type. Store + additionalType (Wikipedia + Wikidata "antique shop") + disambiguatingDescription is deliberate — DO NOT REVERT to an invented @type.
      · BreadcrumbList intentionally omitted: SCHEMA-STANDARD §1 exempts the homepage.
      · No AggregateRating / Review by rule (SCHEMA-STANDARD §2, self-serving). Testimonials are visible text only.
-     · FAQPage is NOT hand-typed. At build: `node runs/carson-antiques-home-v1/seo-gate.mjs --emit-faq index.html` generates it from the visible <dl data-faq>; the gate then diffs it byte-for-byte.
+     · FAQPage is NOT hand-typed. At build: `node runs/carson-antiques-home-v2/seo-gate-v2.mjs --emit-faq index.html` generates it from BOTH visible <dl data-faq> lists in DOM order; the gate then diffs it byte-for-byte (FAQ-1).
      · geo = Google Business Profile pin (Places Details, place_id ChIJV4dzZtkKmYARQRRib-5tQW8), approved by the director 2026-09-15; supersedes the Nominatim value in D15.
+     · v2 (2026-10-05): telephone in the +1 form (D-30, Google LocalBusiness guideline; the visible NAP stays "(775) 461-3142"); opens/closes in hh:mm:ss; Apple Maps place added to sameAs (200 on 2026-10-05).
+     · v2 restrooms (SPEC-AMENDMENTS AM-1, reverses D-17): the "Restrooms" amenity stays — it is printed on the client's own Treasure Map and visible on this page (map region + FAQ), so it is client-sourced, not invented.
+     · v2 mentions (D-19): the five day-trip landmarks are WebPage.mentions only — never referenced from #business, never a LocalBusiness subtype. Carson Hot Springs (a private business) is visible in the day trip but deliberately NOT in schema. The Children's Museum has no url (cmnn.org fails TLS); Stewart has no sameAs (its Wikipedia page is about the school, not the cultural center).
      · TODO (pre-publish): every URL below assumes https://carsoncityantiquemall.com/ is recovered and serving 200. -->
 <script type="application/ld+json">
 {
@@ -53,7 +61,7 @@
       "description": "Northern Nevada's largest antique mall. Over 21,000 square feet of vendor booths with antiques, collectibles, home goods, china, furniture, artwork and currency. Open every day 10 AM to 6 PM at 1831 N Carson St, Carson City, NV 89701.",
       "slogan": "We make antiquing accessible",
       "url": "https://carsoncityantiquemall.com/",
-      "telephone": "(775) 461-3142",
+      "telephone": "+1-775-461-3142",
       "image": [
         "https://carsoncityantiquemall.com/assets/og-carson-antiques-mall-1200x630.jpg",
         "https://carsoncityantiquemall.com/assets/hero-aisle-band-3840x2400.jpg"
@@ -82,24 +90,72 @@
       "openingHoursSpecification": [
         {
           "@type": "OpeningHoursSpecification",
-          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-          "opens": "10:00",
-          "closes": "18:00"
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
+          "opens": "10:00:00",
+          "closes": "18:00:00"
         }
       ],
       "amenityFeature": [
-        { "@type": "LocationFeatureSpecification", "name": "Restrooms", "value": true },
-        { "@type": "LocationFeatureSpecification", "name": "On-site parking lot", "value": true }
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "Restrooms",
+          "value": true
+        },
+        {
+          "@type": "LocationFeatureSpecification",
+          "name": "On-site parking lot",
+          "value": true
+        }
       ],
       "areaServed": [
-        { "@type": "City", "name": "Carson City", "sameAs": "https://en.wikipedia.org/wiki/Carson_City,_Nevada" },
-        { "@type": "City", "name": "Reno", "sameAs": "https://en.wikipedia.org/wiki/Reno,_Nevada" },
-        { "@type": "City", "name": "Sparks", "sameAs": "https://en.wikipedia.org/wiki/Sparks,_Nevada" },
-        { "@type": "City", "name": "Minden", "sameAs": "https://en.wikipedia.org/wiki/Minden,_Nevada" },
-        { "@type": "City", "name": "Gardnerville", "sameAs": "https://en.wikipedia.org/wiki/Gardnerville,_Nevada" },
-        { "@type": "City", "name": "South Lake Tahoe", "sameAs": "https://en.wikipedia.org/wiki/South_Lake_Tahoe,_California" },
-        { "@type": "City", "name": "Stateline", "sameAs": "https://en.wikipedia.org/wiki/Stateline,_Nevada" },
-        { "@type": "City", "name": "Incline Village", "sameAs": "https://en.wikipedia.org/wiki/Incline_Village,_Nevada" }
+        {
+          "@type": "City",
+          "name": "Carson City",
+          "sameAs": "https://en.wikipedia.org/wiki/Carson_City,_Nevada"
+        },
+        {
+          "@type": "City",
+          "name": "Reno",
+          "sameAs": "https://en.wikipedia.org/wiki/Reno,_Nevada"
+        },
+        {
+          "@type": "City",
+          "name": "Sparks",
+          "sameAs": "https://en.wikipedia.org/wiki/Sparks,_Nevada"
+        },
+        {
+          "@type": "City",
+          "name": "Minden",
+          "sameAs": "https://en.wikipedia.org/wiki/Minden,_Nevada"
+        },
+        {
+          "@type": "City",
+          "name": "Gardnerville",
+          "sameAs": "https://en.wikipedia.org/wiki/Gardnerville,_Nevada"
+        },
+        {
+          "@type": "City",
+          "name": "South Lake Tahoe",
+          "sameAs": "https://en.wikipedia.org/wiki/South_Lake_Tahoe,_California"
+        },
+        {
+          "@type": "City",
+          "name": "Stateline",
+          "sameAs": "https://en.wikipedia.org/wiki/Stateline,_Nevada"
+        },
+        {
+          "@type": "City",
+          "name": "Incline Village",
+          "sameAs": "https://en.wikipedia.org/wiki/Incline_Village,_Nevada"
+        }
       ],
       "makesOffer": {
         "@type": "Offer",
@@ -108,15 +164,21 @@
         "itemOffered": {
           "@type": "Service",
           "name": "Antique mall vendor booth rental",
-          "provider": { "@id": "https://carsoncityantiquemall.com/#business" },
-          "areaServed": { "@type": "AdministrativeArea", "name": "Northern Nevada" }
+          "provider": {
+            "@id": "https://carsoncityantiquemall.com/#business"
+          },
+          "areaServed": {
+            "@type": "AdministrativeArea",
+            "name": "Northern Nevada"
+          }
         }
       },
       "sameAs": [
         "https://www.facebook.com/CARSONANTIQUESANDCOLLECTIBLESMALL/",
         "https://www.instagram.com/carsonantiquesandcollectibles",
         "https://www.yelp.com/biz/carson-antiques-and-collectibles-mall-carson-city",
-        "https://www.google.com/maps?cid=8016809682534536257"
+        "https://www.google.com/maps?cid=8016809682534536257",
+        "https://maps.apple.com/place?place-id=IB4FE0EBA4349E9AC"
       ]
     },
     {
@@ -129,6 +191,14 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "Every day, 10 AM to 6 PM — Monday through Sunday."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Are you open on Sundays?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes — every day of the week, Saturday and Sunday included, 10 AM to 6 PM."
           }
         },
         {
@@ -149,10 +219,34 @@
         },
         {
           "@type": "Question",
-          "name": "Is everything actually antique?",
+          "name": "Are there restrooms?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Not everything — and the sign out front says as much: Gifts · Home Decor · Art · Toys & More. This is a multi-vendor mall, so the booths carry antiques, vintage items, collectibles and newer home decor side by side. That mix is the hunt."
+            "text": "Yes — they're marked on the Treasure Map."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How far is the mall from Reno?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "About 31 miles — roughly 40 minutes south on I-580. We're at 1831 N Carson St, about a mile north of the State Capitol."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How far is the mall from Lake Tahoe?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "From Stateline it's about 26 miles, around 45 minutes via US-50. From Incline Village it's about 26 miles, around 50 minutes via NV-28 and US-50. From South Lake Tahoe it's about 30 miles, around 55 minutes via US-50."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What's near the mall?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The Nevada State Museum — the old Carson City Mint — is 0.7 miles south on North Carson Street, about a 15-minute walk. The Children's Museum of Northern Nevada and the State Capitol are on the same stretch. More ideas under Make a day of it in Carson City."
           }
         },
         {
@@ -173,10 +267,18 @@
         },
         {
           "@type": "Question",
-          "name": "Are there restrooms?",
+          "name": "Is everything actually antique?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Yes — they're marked on the Treasure Map."
+            "text": "Not everything — and the sign out front says as much: Gifts · Home Decor · Art · Toys & More. This is a multi-vendor mall, so the booths carry antiques, vintage items, collectibles and newer home decor side by side. That mix is the hunt."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does an antique mall work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Different vendors rent the numbered booths and stock them with their own finds, so every aisle is a different hunt. Browse at your own pace — the cashier is at the entrance."
           }
         },
         {
@@ -185,6 +287,14 @@
           "acceptedAnswer": {
             "@type": "Answer",
             "text": "That's how we work — vendors rent the numbered booths. Call (775) 461-3142 and ask about current availability."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does it cost to rent a booth?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Booth rates aren't posted online. Call (775) 461-3142 for current rates and availability."
           }
         }
       ]
@@ -196,149 +306,277 @@
       "name": "Carson Antiques & Collectibles Mall",
       "alternateName": "Carson Antique Mall",
       "inLanguage": "en-US",
-      "publisher": { "@id": "https://carsoncityantiquemall.com/#business" }
+      "publisher": {
+        "@id": "https://carsoncityantiquemall.com/#business"
+      }
     },
     {
       "@type": "WebPage",
       "@id": "https://carsoncityantiquemall.com/#webpage",
       "url": "https://carsoncityantiquemall.com/",
       "name": "Antique Mall, Carson City NV | Carson Antiques & Collectibles Mall",
-      "description": "Northern Nevada's largest antique mall: antiques, collectibles, furniture, china & coins in vendor booths. Open daily 10–6, 1831 N Carson St, Carson City, NV.",
+      "description": "Antique mall in Carson City, NV, open every day 10–6, Sundays too. Over 21,000 sq ft of vendor booths: antiques, collectibles, furniture & coins.",
       "inLanguage": "en-US",
-      "isPartOf": { "@id": "https://carsoncityantiquemall.com/#website" },
-      "about": { "@id": "https://carsoncityantiquemall.com/#business" },
+      "isPartOf": {
+        "@id": "https://carsoncityantiquemall.com/#website"
+      },
+      "about": {
+        "@id": "https://carsoncityantiquemall.com/#business"
+      },
       "primaryImageOfPage": {
         "@type": "ImageObject",
         "@id": "https://carsoncityantiquemall.com/#primaryimage",
         "url": "https://carsoncityantiquemall.com/assets/og-carson-antiques-mall-1200x630.jpg",
         "width": 1200,
         "height": 630
-      }
+      },
+      "mentions": [
+        {
+          "@type": "Museum",
+          "name": "Nevada State Museum",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "600 N Carson St",
+            "addressLocality": "Carson City",
+            "addressRegion": "NV",
+            "postalCode": "89701",
+            "addressCountry": "US"
+          },
+          "url": "https://www.carsonnvmuseum.org/",
+          "sameAs": "https://en.wikipedia.org/wiki/Nevada_State_Museum,_Carson_City"
+        },
+        {
+          "@type": "Museum",
+          "name": "Children's Museum of Northern Nevada",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "813 N Carson St",
+            "addressLocality": "Carson City",
+            "addressRegion": "NV",
+            "postalCode": "89701",
+            "addressCountry": "US"
+          }
+        },
+        {
+          "@type": "LandmarksOrHistoricalBuildings",
+          "name": "Nevada State Capitol",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "101 N Carson St",
+            "addressLocality": "Carson City",
+            "addressRegion": "NV",
+            "postalCode": "89701",
+            "addressCountry": "US"
+          },
+          "sameAs": "https://en.wikipedia.org/wiki/Nevada_State_Capitol"
+        },
+        {
+          "@type": "Museum",
+          "name": "Nevada State Railroad Museum",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "2180 S Carson St",
+            "addressLocality": "Carson City",
+            "addressRegion": "NV",
+            "postalCode": "89701",
+            "addressCountry": "US"
+          },
+          "url": "https://www.carsonrailroadmuseum.org/",
+          "sameAs": "https://en.wikipedia.org/wiki/Nevada_State_Railroad_Museum"
+        },
+        {
+          "@type": "Museum",
+          "name": "Stewart Indian School Cultural Center & Museum",
+          "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "1 Jacobsen Way",
+            "addressLocality": "Carson City",
+            "addressRegion": "NV",
+            "postalCode": "89701",
+            "addressCountry": "US"
+          },
+          "url": "https://stewartindianschool.com/"
+        }
+      ]
     }
   ]
 }
 </script>
 <!-- ===== end SEO HEAD KIT ===== -->
-<!-- Deploy note: on the https host add <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/tanker-400.woff2"> — omitted here because a crossorigin preload from file:// logs a CORS error and the face loads via fonts.css regardless (proven). -->
-<link rel="stylesheet" href="assets/fonts/fonts.css">
-<link rel="stylesheet" href="styles.css">
-<script>try{var ok=/^(dock|oxblood|enamel|walnut|pewter)$/,q=new URLSearchParams(location.search).get("palette"),p=ok.test(q)?q:localStorage.getItem("cacm-palette");if(ok.test(p)&&p!=="dock")document.documentElement.dataset.palette=p}catch(e){}</script>
 </head>
-<body>
+<body id="top">
 <a class="skip" href="#main">Skip to content</a>
+
+<!-- Inline icon sprite (spec §4.0): the inked X (same family as the egg X) + 9 Lucide 1.34 icons (ISC, copied verbatim from the icons skill, lucide-static v1.34.0). Hidden by CSS (.sprite), never an inline style attribute (CSP). -->
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="ink-x" viewBox="0 0 48 48"><path class="ink-x__under" d="M10 10 L38 38 M38 10 L10 38" fill="none" stroke-width="11" stroke-linecap="square"/><path class="ink-x__core" d="M10 10 L38 38 M38 10 L10 38" fill="none" stroke-width="6" stroke-linecap="square"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" /></symbol>
+  <symbol id="i-navigation" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11" /></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="3" width="5" height="18" rx="1" /><rect x="5" y="3" width="5" height="18" rx="1" /></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2" /><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" /></symbol>
+  <symbol id="i-arrow-up-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10" /><path d="M7 17 17 7" /></symbol>
+  <symbol id="i-map-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" /><circle cx="12" cy="10" r="3" /></symbol>
+  <symbol id="i-route" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3" /><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15" /><circle cx="18" cy="5" r="3" /></symbol>
+</svg>
 
 <header class="site-head">
   <div class="wrap site-head__row">
-    <a class="lockup" href="#main">Carson Antiques &amp; Collectibles Mall</a>
-    <nav class="site-nav" aria-label="Main">
-      <ul>
-        <li><a href="#booths">The booths</a></li>
-        <li><a href="#map">Treasure Map</a></li>
-        <li><a href="#rent">Rent a booth</a></li>
-        <li><a href="#visit">Visit</a></li>
-        <li><a href="#faq">FAQ</a></li>
-      </ul>
-    </nav>
+    <a class="lockup" href="#top"><span>Carson Antiques &amp;</span> <span>Collectibles Mall</span></a>
+    <nav class="site-nav" aria-label="Main"><ul>
+      <li><a href="#booths">Booths</a></li><li><a href="#map">Treasure Map</a></li><li><a href="#rent">Rent a booth</a></li>
+      <li><a href="#visit">Visit</a></li><li><a href="#day-trip">Day trip</a></li><li><a href="#faq">FAQ</a></li>
+    </ul></nav>
+    <p class="site-head__open"><span aria-hidden="true">■</span> Open every day 10–6</p>
     <a class="btn btn--yellow btn--sm site-head__cta" href="tel:+17754613142">Call (775) 461-3142</a>
   </div>
+  <span class="site-head__road" aria-hidden="true"></span>
 </header>
 
 <main id="main">
 
-  <!-- ===== Block 1 · Hero — the aisle master, chip pinned top-left, headline hanging bottom-left ===== -->
-  <section class="hero" aria-labelledby="hero-h1">
+  <!-- ===== 1 · Hero (photo) — chip with the inked X, window-vinyl H1 lockup, dashed trail underline, noun roll, Get directions + Call, static drive line, Calm toggle; the fascia ribbon docks on its bottom edge ===== -->
+  <section class="hero" id="hero">
     <picture>
-      <source media="(max-width: 767px)" type="image/avif" srcset="assets/m/hero-aisle-mobile-780.avif 780w, assets/m/hero-aisle-mobile-1170.avif 1170w, assets/m/hero-aisle-mobile-1560.avif 1560w" sizes="100vw">
-      <source media="(max-width: 767px)" type="image/webp" srcset="assets/m/hero-aisle-mobile-780.webp 780w, assets/m/hero-aisle-mobile-1170.webp 1170w, assets/m/hero-aisle-mobile-1560.webp 1560w" sizes="100vw">
-      <source media="(max-width: 767px)" srcset="assets/hero-aisle-mobile-1560x3376.jpg">
+      <source media="(max-width: 767px)" type="image/avif" srcset="assets/m/hero-aisle-mobile-780.avif 780w, assets/m/hero-aisle-mobile-1170.avif 1170w, assets/m/hero-aisle-mobile-1560.avif 1560w" sizes="(min-resolution: 2.5dppx) 66vw, 100vw" width="1560" height="3376">
+      <source media="(max-width: 767px)" type="image/webp" srcset="assets/m/hero-aisle-mobile-780.webp 780w, assets/m/hero-aisle-mobile-1170.webp 1170w, assets/m/hero-aisle-mobile-1560.webp 1560w" sizes="(min-resolution: 2.5dppx) 66vw, 100vw" width="1560" height="3376">
+      <source media="(max-width: 767px)" srcset="assets/hero-aisle-mobile-1560x3376.jpg" width="1560" height="3376">
       <source media="(max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/hero-aisle-land-1280.avif 1280w, assets/m/hero-aisle-land-1920.avif 1920w" sizes="100vw">
       <source media="(max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/hero-aisle-land-1280.webp 1280w, assets/m/hero-aisle-land-1920.webp 1920w" sizes="100vw">
-      <img class="hero__photo" src="assets/hero-aisle-band-3840x2400.jpg" width="3840" height="2400" fetchpriority="high" decoding="async"
+      <source type="image/avif" srcset="assets/d/hero-aisle-1440.avif 1440w, assets/d/hero-aisle-1920.avif 1920w, assets/d/hero-aisle-2560.avif 2560w, assets/d/hero-aisle-2880.avif 2880w, assets/d/hero-aisle-3840.avif 3840w" sizes="100vw">
+      <source type="image/webp" srcset="assets/d/hero-aisle-1440.webp 1440w, assets/d/hero-aisle-1920.webp 1920w, assets/d/hero-aisle-2560.webp 2560w, assets/d/hero-aisle-2880.webp 2880w, assets/d/hero-aisle-3840.webp 3840w" sizes="100vw">
+      <img class="hero__photo" src="assets/hero-aisle-band-3840x2400.jpg" width="3840" height="2400" fetchpriority="high"
            alt="Inside Carson Antiques &amp; Collectibles Mall — a long aisle of vendor booths stacked with glassware, ceramics, hutches and framed prints under the shop's high ceiling">
     </picture>
+    <span class="hero__lights" aria-hidden="true"></span>
     <div class="wrap hero__top">
       <!-- TODO (pre-publish): confirm holiday hours with the client (Thanksgiving / Christmas). -->
-      <p class="chip" id="open-chip"><span class="chip__hours">Open every day 10–6</span> <span class="chip__sep">·</span> <span class="chip__addr">1831 N Carson St</span></p>
+      <p class="chip" id="open-chip"><svg class="chip__x" viewBox="0 0 48 48" aria-hidden="true" focusable="false" data-anim="stamp"><use href="#ink-x"/></svg><span class="chip__hours">Open every day 10–6</span> <span class="chip__sep" aria-hidden="true">·</span> <span class="chip__addr">1831 N Carson St</span></p>
+      <button type="button" class="calm-toggle calm-toggle--hero" aria-pressed="false"><span class="calm-toggle__box" aria-hidden="true"></span>Calm motion</button>
     </div>
     <div class="wrap hero__body">
       <p class="eyebrow">Psst, hey you — over here.</p>
-      <h1 id="hero-h1">Northern Nevada's largest antique mall is <span class="hl">right here</span> in Carson City.</h1>
+      <h1 id="hero-h1"><span class="sl-plate">Northern Nevada's</span> <span class="sl-big">largest antique mall</span> <span class="sl-tail">is <span class="hl">right here</span> <span class="sl-in">in</span> Carson City.</span></h1>
+      <svg class="hero__trail" aria-hidden="true" focusable="false"></svg>
       <p class="hero__noun" aria-live="off">Walk right in. Go find <span class="nouns"><span class="noun is-on">oil lamps.</span><span class="noun" aria-hidden="true">chandeliers.</span><span class="noun" aria-hidden="true">teacups.</span><span class="noun" aria-hidden="true">coins.</span><span class="noun" aria-hidden="true">a hutch.</span><span class="noun" aria-hidden="true">vintage signs.</span><span class="noun" aria-hidden="true">glassware.</span></span></p>
       <p class="hero__sub">Over 21,000 square feet of vendor booths, filled to the brim with antiques, vintage finds, collectibles and Americana. Browse at your own pace.</p>
-      <div class="hero__ctas">
-        <a class="btn btn--yellow" href="#visit">Plan your visit</a>
-        <a class="btn btn--ghost" href="tel:+17754613142">Call (775) 461-3142</a>
+      <!-- TODO (pre-publish): open the Directions link on a real iPhone and Android and confirm it lands on the store pin. -->
+      <div class="hero__ctas" id="hero-ctas">
+        <a class="btn btn--yellow" href="https://www.google.com/maps/dir/?api=1&amp;destination=Carson%20Antiques%20%26%20Collectibles%20Mall%2C%201831%20N%20Carson%20St%2C%20Carson%20City%2C%20NV%2089701&amp;destination_place_id=ChIJV4dzZtkKmYARQRRib-5tQW8" rel="noopener"><svg aria-hidden="true" focusable="false"><use href="#i-navigation"/></svg>Get directions</a>
+        <a class="btn btn--ghost" href="tel:+17754613142"><svg aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>Call (775) 461-3142</a>
       </div>
+      <p class="hero__trip"><a href="#getting-here">Drive times: about 40 min from Reno · 45–55 min from Lake Tahoe</a></p>
+      <button type="button" class="calm-toggle calm-toggle--phone" aria-pressed="false"><span class="calm-toggle__box" aria-hidden="true"></span>Calm motion</button>
+    </div>
+    <!-- Fascia ribbon (D-04): the storefront fascia words only, verified on visit-storefront-exterior-1536x1044.jpg — no facts ever ride it. aria-hidden: decorative, scroll-scrubbed. -->
+    <div class="ribbon" aria-hidden="true"><div class="ribbon__track">
+      <p class="ribbon__copy">Carson Antiques &amp; Collectibles Mall <i>●</i> Gifts <i>●</i> Home Decor <i>●</i> Art <i>●</i> Toys <i>●</i> &amp; More! <i>●</i></p>
+      <p class="ribbon__copy ribbon__copy--b">Carson Antiques &amp; Collectibles Mall <i>●</i> Gifts <i>●</i> Home Decor <i>●</i> Art <i>●</i> Toys <i>●</i> &amp; More! <i>●</i></p>
+    </div></div>
+  </section>
+
+  <!-- ===== 2 · Is it worth the stop? (chalk) — Brady T.'s line at sign scale, the lamp panel, three fact lines, Suzy + Barbara. Quotes verbatim (brand.md), first name + initial, no stars, no rating schema. ===== -->
+  <section id="worth" class="band band--chalk worth-band" aria-labelledby="worth-h2">
+    <div class="wrap worth">
+      <header class="worth__head"><hr class="rule"><h2 id="worth-h2">Is it worth the stop?</h2></header>
+      <figure class="worth__quote" data-anim="rise">
+        <blockquote><p>just be prepared <span class="vinyl">the sign out front</span> about having the largest floor space is no joke!</p></blockquote>
+        <figcaption class="attr">Brady T. · Google review</figcaption>
+      </figure>
+      <figure class="worth__photo">
+        <!-- Lamp panel = master crop x 600–1620, y 0–1267 (spec D-24 / §5.5): both handwritten price stickers ("#67 44-" at x ≈ 30–200 and the metal-base sticker at x ≈ 1690–1840) stay outside; checked at 100 % on 2026-10-05 (runs/carson-antiques-home-v2/build-structure/crops/). Phone portrait = v1 m/band-quotes-portrait (checked by eye 2026-10-05: no sticker). -->
+        <picture>
+          <source media="(max-width: 767px)" type="image/avif" srcset="assets/m/band-quotes-portrait.avif" width="697" height="1267">
+          <source media="(max-width: 767px)" type="image/webp" srcset="assets/m/band-quotes-portrait.webp" width="697" height="1267">
+          <source type="image/avif" srcset="assets/d/lamp-panel-640.avif 640w, assets/d/lamp-panel-1020.avif 1020w" sizes="510px">
+          <source type="image/webp" srcset="assets/d/lamp-panel-640.webp 640w, assets/d/lamp-panel-1020.webp 1020w" sizes="510px">
+          <img src="assets/d/lamp-panel-1020.jpg" srcset="assets/d/lamp-panel-640.jpg 640w, assets/d/lamp-panel-1020.jpg 1020w" sizes="510px" width="1020" height="1267" loading="lazy" decoding="async" alt="Glass oil lamps inside the mall — tall clear glass chimneys and a white base painted with red flowers.">
+        </picture>
+      </figure>
+      <!-- Worth facts sources (spec §5.1): "over 21,000 square feet" + two floors = the client's own sign, window vinyl and Wix copy (brand.md); the six categories = brand.md + the tiles below; "open every day, 10 to 6" = GBP weekday_text (Places Details 2026-10-05), Apple Maps, Yahoo Local. -->
+      <ul class="worth__facts">
+        <li data-anim="settle">Over 21,000 square feet of vendor booths, on two floors.</li>
+        <!-- TODO (pre-publish): confirm the second floor is vendor booths with the client. -->
+        <li data-anim="settle">Collectibles, Home Goods, China, Furniture, Artwork and Currency — six places to start. <a href="#booths">See what's in the booths</a></li>
+        <li data-anim="settle">Open every day, 10 to 6 — Saturday and Sunday included.</li>
+      </ul>
+      <ul class="worth__more">
+        <li data-anim="rise"><blockquote><p>We spent a couple of hours just exploring and buying a few treasures we found here! Love the wide variety of items, the way the store is laid out, and the very helpful and friendly staff!</p></blockquote><p class="attr">Suzy C. · Google review</p></li>
+        <li data-anim="rise"><blockquote><p>Very nice selection of antique finds. The staff working there are very friendly.</p></blockquote><p class="attr">Barbara C. · Google review</p></li>
+      </ul>
     </div>
   </section>
 
-  <!-- ===== Block 2 · Look-inside marquee — real photos, honest label, ONE real Instagram link (D6). CSS keyframes on transform (l.163). ===== -->
+  <!-- ===== 3 · A peek at what's inside (ground) — real photos, honest label, ONE real Instagram link (D6). CSS keyframes on transform; pause/play button (2.2.2). ===== -->
   <section class="band band--ground marquee-band" aria-label="Photos from inside Carson Antiques &amp; Collectibles Mall">
-    <div class="wrap marquee-head" data-reveal="0">
+    <div class="wrap marquee-head">
       <h2 id="marquee-h2">A peek at what's inside</h2>
+      <button type="button" class="marquee-pause" id="marquee-pause" aria-controls="marquee"><svg aria-hidden="true" focusable="false"><use href="#i-pause"/></svg><span>Pause the photo strip</span></button>
       <a class="link-out" href="https://www.instagram.com/carsonantiquesandcollectibles" rel="noopener">See more on Instagram</a>
     </div>
     <!-- Yelp customer photos (marquee-01…08) are MOCKUP-ONLY, rights-pending — every filename is listed in SUMMARY.md. -->
+    <!-- TODO (pre-publish): photo rights — written OK for the 8 Yelp customer photos (marquee-01…08), or replace them with the 20-minute in-store phone shoot. -->
     <div class="marquee" id="marquee">
       <ul class="marquee__copy">
-        <li class="tag"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-01-street-signs-yelp24-480.avif 480w, assets/m/marquee-01-street-signs-yelp24-720.avif 720w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-01-street-signs-yelp24-480.webp 480w, assets/m/marquee-01-street-signs-yelp24-720.webp 720w" sizes="(max-width: 767px) 232px, 300px"><img src="assets/marquee-01-street-signs-yelp24-750x1000.jpg" width="750" height="1000" alt="Vintage street signs — Ashwood Ct. and Sixth St." fetchpriority="low" decoding="async"></picture></li>
-        <li class="tag"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-02-wooden-boots-yelp17-480.avif 480w, assets/m/marquee-02-wooden-boots-yelp17-720.avif 720w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-02-wooden-boots-yelp17-480.webp 480w, assets/m/marquee-02-wooden-boots-yelp17-720.webp 720w" sizes="(max-width: 767px) 232px, 300px"><img src="assets/marquee-02-wooden-boots-yelp17-750x1000.jpg" width="750" height="1000" alt="Carved wooden boots" fetchpriority="low" decoding="async"></picture></li>
-        <li class="tag"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-03-hats-dress-form-yelp23-480.avif 480w, assets/m/marquee-03-hats-dress-form-yelp23-720.avif 720w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-03-hats-dress-form-yelp23-480.webp 480w, assets/m/marquee-03-hats-dress-form-yelp23-720.webp 720w" sizes="(max-width: 767px) 232px, 300px"><img src="assets/marquee-03-hats-dress-form-yelp23-750x1000.jpg" width="750" height="1000" alt="Hats on a dress form" fetchpriority="low" decoding="async"></picture></li>
-        <li class="tag"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-04-white-house-cook-book-yelp29-480.avif 480w, assets/m/marquee-04-white-house-cook-book-yelp29-720.avif 720w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-04-white-house-cook-book-yelp29-480.webp 480w, assets/m/marquee-04-white-house-cook-book-yelp29-720.webp 720w" sizes="(max-width: 767px) 232px, 300px"><img src="assets/marquee-04-white-house-cook-book-yelp29-750x1000.jpg" width="750" height="1000" alt="The White House Cook Book" fetchpriority="low" decoding="async"></picture></li>
-        <li class="tag"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-05-mm-dispenser-yelp30-480.avif 480w, assets/m/marquee-05-mm-dispenser-yelp30-720.avif 720w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-05-mm-dispenser-yelp30-480.webp 480w, assets/m/marquee-05-mm-dispenser-yelp30-720.webp 720w" sizes="(max-width: 767px) 232px, 300px"><img src="assets/marquee-05-mm-dispenser-yelp30-750x1000.jpg" width="750" height="1000" alt="An M&amp;M's candy dispenser" fetchpriority="low" decoding="async"></picture></li>
-        <li class="tag"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-06-oak-wall-telephone-yelp14-480.avif 480w, assets/m/marquee-06-oak-wall-telephone-yelp14-720.avif 720w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-06-oak-wall-telephone-yelp14-480.webp 480w, assets/m/marquee-06-oak-wall-telephone-yelp14-720.webp 720w" sizes="(max-width: 767px) 232px, 300px"><img src="assets/marquee-06-oak-wall-telephone-yelp14-750x1000.jpg" width="750" height="1000" alt="An oak wall telephone" fetchpriority="low" decoding="async"></picture></li>
-        <li class="tag"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-07-world-series-pennant-yelp10-480.avif 480w, assets/m/marquee-07-world-series-pennant-yelp10-720.avif 720w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-07-world-series-pennant-yelp10-480.webp 480w, assets/m/marquee-07-world-series-pennant-yelp10-720.webp 720w" sizes="(max-width: 767px) 232px, 300px"><img src="assets/marquee-07-world-series-pennant-yelp10-750x1000.jpg" width="750" height="1000" alt="A 1989 World Series pennant" fetchpriority="low" decoding="async"></picture></li>
-        <li class="tag"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-08-worlds-fair-vase-yelp03-480.avif 480w, assets/m/marquee-08-worlds-fair-vase-yelp03-720.avif 720w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-08-worlds-fair-vase-yelp03-480.webp 480w, assets/m/marquee-08-worlds-fair-vase-yelp03-720.webp 720w" sizes="(max-width: 767px) 232px, 300px"><img src="assets/marquee-08-worlds-fair-vase-yelp03-750x1000.jpg" width="750" height="1000" alt="A Seattle World's Fair vase" fetchpriority="low" decoding="async"></picture></li>
-        <li class="tag"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-09-window-sign-480.avif 480w, assets/m/marquee-09-window-sign-720.avif 720w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-09-window-sign-480.webp 480w, assets/m/marquee-09-window-sign-720.webp 720w" sizes="(max-width: 767px) 232px, 300px"><img src="assets/marquee-09-window-sign-860x1147.jpg" width="860" height="1147" alt="The window vinyl: The Largest Antique Mall in Northern Nevada" fetchpriority="low" decoding="async"></picture></li>
+        <li class="tag"><div class="tag__card"><div class="tag__face"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-01-street-signs-yelp24-480.avif 480w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-01-street-signs-yelp24-480.webp 480w" sizes="(max-width: 767px) 232px, 300px"><source type="image/avif" srcset="assets/m/marquee-01-street-signs-yelp24-480.avif 480w, assets/m/marquee-01-street-signs-yelp24-720.avif 720w" sizes="(min-width: 1600px) 340px, 300px"><source type="image/webp" srcset="assets/m/marquee-01-street-signs-yelp24-480.webp 480w, assets/m/marquee-01-street-signs-yelp24-720.webp 720w" sizes="(min-width: 1600px) 340px, 300px"><img src="assets/marquee-01-street-signs-yelp24-750x1000.jpg" width="750" height="1000" alt="Vintage street signs — Ashwood Ct. and Sixth St." loading="lazy" fetchpriority="low" decoding="async"></picture></div><span class="tag__back" aria-hidden="true"><svg focusable="false"><use href="#ink-x"/></svg></span></div></li>
+        <li class="tag"><div class="tag__card"><div class="tag__face"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-02-wooden-boots-yelp17-480.avif 480w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-02-wooden-boots-yelp17-480.webp 480w" sizes="(max-width: 767px) 232px, 300px"><source type="image/avif" srcset="assets/m/marquee-02-wooden-boots-yelp17-480.avif 480w, assets/m/marquee-02-wooden-boots-yelp17-720.avif 720w" sizes="(min-width: 1600px) 340px, 300px"><source type="image/webp" srcset="assets/m/marquee-02-wooden-boots-yelp17-480.webp 480w, assets/m/marquee-02-wooden-boots-yelp17-720.webp 720w" sizes="(min-width: 1600px) 340px, 300px"><img src="assets/marquee-02-wooden-boots-yelp17-750x1000.jpg" width="750" height="1000" alt="Carved wooden boots" loading="lazy" fetchpriority="low" decoding="async"></picture></div><span class="tag__back" aria-hidden="true"><svg focusable="false"><use href="#ink-x"/></svg></span></div></li>
+        <li class="tag"><div class="tag__card"><div class="tag__face"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-03-hats-dress-form-yelp23-480.avif 480w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-03-hats-dress-form-yelp23-480.webp 480w" sizes="(max-width: 767px) 232px, 300px"><source type="image/avif" srcset="assets/m/marquee-03-hats-dress-form-yelp23-480.avif 480w, assets/m/marquee-03-hats-dress-form-yelp23-720.avif 720w" sizes="(min-width: 1600px) 340px, 300px"><source type="image/webp" srcset="assets/m/marquee-03-hats-dress-form-yelp23-480.webp 480w, assets/m/marquee-03-hats-dress-form-yelp23-720.webp 720w" sizes="(min-width: 1600px) 340px, 300px"><img src="assets/marquee-03-hats-dress-form-yelp23-750x1000.jpg" width="750" height="1000" alt="Hats on a dress form" loading="lazy" fetchpriority="low" decoding="async"></picture></div><span class="tag__back" aria-hidden="true"><svg focusable="false"><use href="#ink-x"/></svg></span></div></li>
+        <li class="tag"><div class="tag__card"><div class="tag__face"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-04-white-house-cook-book-yelp29-480.avif 480w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-04-white-house-cook-book-yelp29-480.webp 480w" sizes="(max-width: 767px) 232px, 300px"><source type="image/avif" srcset="assets/m/marquee-04-white-house-cook-book-yelp29-480.avif 480w, assets/m/marquee-04-white-house-cook-book-yelp29-720.avif 720w" sizes="(min-width: 1600px) 340px, 300px"><source type="image/webp" srcset="assets/m/marquee-04-white-house-cook-book-yelp29-480.webp 480w, assets/m/marquee-04-white-house-cook-book-yelp29-720.webp 720w" sizes="(min-width: 1600px) 340px, 300px"><img src="assets/marquee-04-white-house-cook-book-yelp29-750x1000.jpg" width="750" height="1000" alt="The White House Cook Book" loading="lazy" fetchpriority="low" decoding="async"></picture></div><span class="tag__back" aria-hidden="true"><svg focusable="false"><use href="#ink-x"/></svg></span></div></li>
+        <li class="tag"><div class="tag__card"><div class="tag__face"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-05-mm-dispenser-yelp30-480.avif 480w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-05-mm-dispenser-yelp30-480.webp 480w" sizes="(max-width: 767px) 232px, 300px"><source type="image/avif" srcset="assets/m/marquee-05-mm-dispenser-yelp30-480.avif 480w, assets/m/marquee-05-mm-dispenser-yelp30-720.avif 720w" sizes="(min-width: 1600px) 340px, 300px"><source type="image/webp" srcset="assets/m/marquee-05-mm-dispenser-yelp30-480.webp 480w, assets/m/marquee-05-mm-dispenser-yelp30-720.webp 720w" sizes="(min-width: 1600px) 340px, 300px"><img src="assets/marquee-05-mm-dispenser-yelp30-750x1000.jpg" width="750" height="1000" alt="An M&amp;M's candy dispenser" loading="lazy" fetchpriority="low" decoding="async"></picture></div><span class="tag__back" aria-hidden="true"><svg focusable="false"><use href="#ink-x"/></svg></span></div></li>
+        <li class="tag"><div class="tag__card"><div class="tag__face"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-06-oak-wall-telephone-yelp14-480.avif 480w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-06-oak-wall-telephone-yelp14-480.webp 480w" sizes="(max-width: 767px) 232px, 300px"><source type="image/avif" srcset="assets/m/marquee-06-oak-wall-telephone-yelp14-480.avif 480w, assets/m/marquee-06-oak-wall-telephone-yelp14-720.avif 720w" sizes="(min-width: 1600px) 340px, 300px"><source type="image/webp" srcset="assets/m/marquee-06-oak-wall-telephone-yelp14-480.webp 480w, assets/m/marquee-06-oak-wall-telephone-yelp14-720.webp 720w" sizes="(min-width: 1600px) 340px, 300px"><img src="assets/marquee-06-oak-wall-telephone-yelp14-750x1000.jpg" width="750" height="1000" alt="An oak wall telephone" loading="lazy" fetchpriority="low" decoding="async"></picture></div><span class="tag__back" aria-hidden="true"><svg focusable="false"><use href="#ink-x"/></svg></span></div></li>
+        <li class="tag"><div class="tag__card"><div class="tag__face"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-07-world-series-pennant-yelp10-480.avif 480w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-07-world-series-pennant-yelp10-480.webp 480w" sizes="(max-width: 767px) 232px, 300px"><source type="image/avif" srcset="assets/m/marquee-07-world-series-pennant-yelp10-480.avif 480w, assets/m/marquee-07-world-series-pennant-yelp10-720.avif 720w" sizes="(min-width: 1600px) 340px, 300px"><source type="image/webp" srcset="assets/m/marquee-07-world-series-pennant-yelp10-480.webp 480w, assets/m/marquee-07-world-series-pennant-yelp10-720.webp 720w" sizes="(min-width: 1600px) 340px, 300px"><img src="assets/marquee-07-world-series-pennant-yelp10-750x1000.jpg" width="750" height="1000" alt="A 1989 World Series pennant" loading="lazy" fetchpriority="low" decoding="async"></picture></div><span class="tag__back" aria-hidden="true"><svg focusable="false"><use href="#ink-x"/></svg></span></div></li>
+        <li class="tag"><div class="tag__card"><div class="tag__face"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-08-worlds-fair-vase-yelp03-480.avif 480w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-08-worlds-fair-vase-yelp03-480.webp 480w" sizes="(max-width: 767px) 232px, 300px"><source type="image/avif" srcset="assets/m/marquee-08-worlds-fair-vase-yelp03-480.avif 480w, assets/m/marquee-08-worlds-fair-vase-yelp03-720.avif 720w" sizes="(min-width: 1600px) 340px, 300px"><source type="image/webp" srcset="assets/m/marquee-08-worlds-fair-vase-yelp03-480.webp 480w, assets/m/marquee-08-worlds-fair-vase-yelp03-720.webp 720w" sizes="(min-width: 1600px) 340px, 300px"><img src="assets/marquee-08-worlds-fair-vase-yelp03-750x1000.jpg" width="750" height="1000" alt="A Seattle World's Fair vase" loading="lazy" fetchpriority="low" decoding="async"></picture></div><span class="tag__back" aria-hidden="true"><svg focusable="false"><use href="#ink-x"/></svg></span></div></li>
+        <li class="tag"><div class="tag__card"><div class="tag__face"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-09-window-sign-480.avif 480w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-09-window-sign-480.webp 480w" sizes="(max-width: 767px) 232px, 300px"><source type="image/avif" srcset="assets/m/marquee-09-window-sign-480.avif 480w, assets/m/marquee-09-window-sign-720.avif 720w" sizes="(min-width: 1600px) 340px, 300px"><source type="image/webp" srcset="assets/m/marquee-09-window-sign-480.webp 480w, assets/m/marquee-09-window-sign-720.webp 720w" sizes="(min-width: 1600px) 340px, 300px"><img src="assets/marquee-09-window-sign-860x1147.jpg" width="860" height="1147" alt="The window vinyl: The Largest Antique Mall in Northern Nevada" loading="lazy" fetchpriority="low" decoding="async"></picture></div><span class="tag__back" aria-hidden="true"><svg focusable="false"><use href="#ink-x"/></svg></span></div></li>
       </ul>
       <ul class="marquee__copy" aria-hidden="true">
-        <li class="tag"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-01-street-signs-yelp24-480.avif 480w, assets/m/marquee-01-street-signs-yelp24-720.avif 720w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-01-street-signs-yelp24-480.webp 480w, assets/m/marquee-01-street-signs-yelp24-720.webp 720w" sizes="(max-width: 767px) 232px, 300px"><img src="assets/marquee-01-street-signs-yelp24-750x1000.jpg" width="750" height="1000" alt="" loading="lazy" fetchpriority="low" decoding="async"></picture></li>
-        <li class="tag"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-02-wooden-boots-yelp17-480.avif 480w, assets/m/marquee-02-wooden-boots-yelp17-720.avif 720w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-02-wooden-boots-yelp17-480.webp 480w, assets/m/marquee-02-wooden-boots-yelp17-720.webp 720w" sizes="(max-width: 767px) 232px, 300px"><img src="assets/marquee-02-wooden-boots-yelp17-750x1000.jpg" width="750" height="1000" alt="" loading="lazy" fetchpriority="low" decoding="async"></picture></li>
-        <li class="tag"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-03-hats-dress-form-yelp23-480.avif 480w, assets/m/marquee-03-hats-dress-form-yelp23-720.avif 720w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-03-hats-dress-form-yelp23-480.webp 480w, assets/m/marquee-03-hats-dress-form-yelp23-720.webp 720w" sizes="(max-width: 767px) 232px, 300px"><img src="assets/marquee-03-hats-dress-form-yelp23-750x1000.jpg" width="750" height="1000" alt="" loading="lazy" fetchpriority="low" decoding="async"></picture></li>
-        <li class="tag"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-04-white-house-cook-book-yelp29-480.avif 480w, assets/m/marquee-04-white-house-cook-book-yelp29-720.avif 720w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-04-white-house-cook-book-yelp29-480.webp 480w, assets/m/marquee-04-white-house-cook-book-yelp29-720.webp 720w" sizes="(max-width: 767px) 232px, 300px"><img src="assets/marquee-04-white-house-cook-book-yelp29-750x1000.jpg" width="750" height="1000" alt="" loading="lazy" fetchpriority="low" decoding="async"></picture></li>
-        <li class="tag"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-05-mm-dispenser-yelp30-480.avif 480w, assets/m/marquee-05-mm-dispenser-yelp30-720.avif 720w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-05-mm-dispenser-yelp30-480.webp 480w, assets/m/marquee-05-mm-dispenser-yelp30-720.webp 720w" sizes="(max-width: 767px) 232px, 300px"><img src="assets/marquee-05-mm-dispenser-yelp30-750x1000.jpg" width="750" height="1000" alt="" loading="lazy" fetchpriority="low" decoding="async"></picture></li>
-        <li class="tag"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-06-oak-wall-telephone-yelp14-480.avif 480w, assets/m/marquee-06-oak-wall-telephone-yelp14-720.avif 720w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-06-oak-wall-telephone-yelp14-480.webp 480w, assets/m/marquee-06-oak-wall-telephone-yelp14-720.webp 720w" sizes="(max-width: 767px) 232px, 300px"><img src="assets/marquee-06-oak-wall-telephone-yelp14-750x1000.jpg" width="750" height="1000" alt="" loading="lazy" fetchpriority="low" decoding="async"></picture></li>
-        <li class="tag"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-07-world-series-pennant-yelp10-480.avif 480w, assets/m/marquee-07-world-series-pennant-yelp10-720.avif 720w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-07-world-series-pennant-yelp10-480.webp 480w, assets/m/marquee-07-world-series-pennant-yelp10-720.webp 720w" sizes="(max-width: 767px) 232px, 300px"><img src="assets/marquee-07-world-series-pennant-yelp10-750x1000.jpg" width="750" height="1000" alt="" loading="lazy" fetchpriority="low" decoding="async"></picture></li>
-        <li class="tag"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-08-worlds-fair-vase-yelp03-480.avif 480w, assets/m/marquee-08-worlds-fair-vase-yelp03-720.avif 720w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-08-worlds-fair-vase-yelp03-480.webp 480w, assets/m/marquee-08-worlds-fair-vase-yelp03-720.webp 720w" sizes="(max-width: 767px) 232px, 300px"><img src="assets/marquee-08-worlds-fair-vase-yelp03-750x1000.jpg" width="750" height="1000" alt="" loading="lazy" fetchpriority="low" decoding="async"></picture></li>
-        <li class="tag"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-09-window-sign-480.avif 480w, assets/m/marquee-09-window-sign-720.avif 720w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-09-window-sign-480.webp 480w, assets/m/marquee-09-window-sign-720.webp 720w" sizes="(max-width: 767px) 232px, 300px"><img src="assets/marquee-09-window-sign-860x1147.jpg" width="860" height="1147" alt="" loading="lazy" fetchpriority="low" decoding="async"></picture></li>
+        <li class="tag"><div class="tag__card"><div class="tag__face"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-01-street-signs-yelp24-480.avif 480w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-01-street-signs-yelp24-480.webp 480w" sizes="(max-width: 767px) 232px, 300px"><source type="image/avif" srcset="assets/m/marquee-01-street-signs-yelp24-480.avif 480w, assets/m/marquee-01-street-signs-yelp24-720.avif 720w" sizes="(min-width: 1600px) 340px, 300px"><source type="image/webp" srcset="assets/m/marquee-01-street-signs-yelp24-480.webp 480w, assets/m/marquee-01-street-signs-yelp24-720.webp 720w" sizes="(min-width: 1600px) 340px, 300px"><img src="assets/marquee-01-street-signs-yelp24-750x1000.jpg" width="750" height="1000" alt="" loading="lazy" fetchpriority="low" decoding="async"></picture></div><span class="tag__back" aria-hidden="true"><svg focusable="false"><use href="#ink-x"/></svg></span></div></li>
+        <li class="tag"><div class="tag__card"><div class="tag__face"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-02-wooden-boots-yelp17-480.avif 480w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-02-wooden-boots-yelp17-480.webp 480w" sizes="(max-width: 767px) 232px, 300px"><source type="image/avif" srcset="assets/m/marquee-02-wooden-boots-yelp17-480.avif 480w, assets/m/marquee-02-wooden-boots-yelp17-720.avif 720w" sizes="(min-width: 1600px) 340px, 300px"><source type="image/webp" srcset="assets/m/marquee-02-wooden-boots-yelp17-480.webp 480w, assets/m/marquee-02-wooden-boots-yelp17-720.webp 720w" sizes="(min-width: 1600px) 340px, 300px"><img src="assets/marquee-02-wooden-boots-yelp17-750x1000.jpg" width="750" height="1000" alt="" loading="lazy" fetchpriority="low" decoding="async"></picture></div><span class="tag__back" aria-hidden="true"><svg focusable="false"><use href="#ink-x"/></svg></span></div></li>
+        <li class="tag"><div class="tag__card"><div class="tag__face"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-03-hats-dress-form-yelp23-480.avif 480w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-03-hats-dress-form-yelp23-480.webp 480w" sizes="(max-width: 767px) 232px, 300px"><source type="image/avif" srcset="assets/m/marquee-03-hats-dress-form-yelp23-480.avif 480w, assets/m/marquee-03-hats-dress-form-yelp23-720.avif 720w" sizes="(min-width: 1600px) 340px, 300px"><source type="image/webp" srcset="assets/m/marquee-03-hats-dress-form-yelp23-480.webp 480w, assets/m/marquee-03-hats-dress-form-yelp23-720.webp 720w" sizes="(min-width: 1600px) 340px, 300px"><img src="assets/marquee-03-hats-dress-form-yelp23-750x1000.jpg" width="750" height="1000" alt="" loading="lazy" fetchpriority="low" decoding="async"></picture></div><span class="tag__back" aria-hidden="true"><svg focusable="false"><use href="#ink-x"/></svg></span></div></li>
+        <li class="tag"><div class="tag__card"><div class="tag__face"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-04-white-house-cook-book-yelp29-480.avif 480w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-04-white-house-cook-book-yelp29-480.webp 480w" sizes="(max-width: 767px) 232px, 300px"><source type="image/avif" srcset="assets/m/marquee-04-white-house-cook-book-yelp29-480.avif 480w, assets/m/marquee-04-white-house-cook-book-yelp29-720.avif 720w" sizes="(min-width: 1600px) 340px, 300px"><source type="image/webp" srcset="assets/m/marquee-04-white-house-cook-book-yelp29-480.webp 480w, assets/m/marquee-04-white-house-cook-book-yelp29-720.webp 720w" sizes="(min-width: 1600px) 340px, 300px"><img src="assets/marquee-04-white-house-cook-book-yelp29-750x1000.jpg" width="750" height="1000" alt="" loading="lazy" fetchpriority="low" decoding="async"></picture></div><span class="tag__back" aria-hidden="true"><svg focusable="false"><use href="#ink-x"/></svg></span></div></li>
+        <li class="tag"><div class="tag__card"><div class="tag__face"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-05-mm-dispenser-yelp30-480.avif 480w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-05-mm-dispenser-yelp30-480.webp 480w" sizes="(max-width: 767px) 232px, 300px"><source type="image/avif" srcset="assets/m/marquee-05-mm-dispenser-yelp30-480.avif 480w, assets/m/marquee-05-mm-dispenser-yelp30-720.avif 720w" sizes="(min-width: 1600px) 340px, 300px"><source type="image/webp" srcset="assets/m/marquee-05-mm-dispenser-yelp30-480.webp 480w, assets/m/marquee-05-mm-dispenser-yelp30-720.webp 720w" sizes="(min-width: 1600px) 340px, 300px"><img src="assets/marquee-05-mm-dispenser-yelp30-750x1000.jpg" width="750" height="1000" alt="" loading="lazy" fetchpriority="low" decoding="async"></picture></div><span class="tag__back" aria-hidden="true"><svg focusable="false"><use href="#ink-x"/></svg></span></div></li>
+        <li class="tag"><div class="tag__card"><div class="tag__face"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-06-oak-wall-telephone-yelp14-480.avif 480w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-06-oak-wall-telephone-yelp14-480.webp 480w" sizes="(max-width: 767px) 232px, 300px"><source type="image/avif" srcset="assets/m/marquee-06-oak-wall-telephone-yelp14-480.avif 480w, assets/m/marquee-06-oak-wall-telephone-yelp14-720.avif 720w" sizes="(min-width: 1600px) 340px, 300px"><source type="image/webp" srcset="assets/m/marquee-06-oak-wall-telephone-yelp14-480.webp 480w, assets/m/marquee-06-oak-wall-telephone-yelp14-720.webp 720w" sizes="(min-width: 1600px) 340px, 300px"><img src="assets/marquee-06-oak-wall-telephone-yelp14-750x1000.jpg" width="750" height="1000" alt="" loading="lazy" fetchpriority="low" decoding="async"></picture></div><span class="tag__back" aria-hidden="true"><svg focusable="false"><use href="#ink-x"/></svg></span></div></li>
+        <li class="tag"><div class="tag__card"><div class="tag__face"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-07-world-series-pennant-yelp10-480.avif 480w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-07-world-series-pennant-yelp10-480.webp 480w" sizes="(max-width: 767px) 232px, 300px"><source type="image/avif" srcset="assets/m/marquee-07-world-series-pennant-yelp10-480.avif 480w, assets/m/marquee-07-world-series-pennant-yelp10-720.avif 720w" sizes="(min-width: 1600px) 340px, 300px"><source type="image/webp" srcset="assets/m/marquee-07-world-series-pennant-yelp10-480.webp 480w, assets/m/marquee-07-world-series-pennant-yelp10-720.webp 720w" sizes="(min-width: 1600px) 340px, 300px"><img src="assets/marquee-07-world-series-pennant-yelp10-750x1000.jpg" width="750" height="1000" alt="" loading="lazy" fetchpriority="low" decoding="async"></picture></div><span class="tag__back" aria-hidden="true"><svg focusable="false"><use href="#ink-x"/></svg></span></div></li>
+        <li class="tag"><div class="tag__card"><div class="tag__face"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-08-worlds-fair-vase-yelp03-480.avif 480w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-08-worlds-fair-vase-yelp03-480.webp 480w" sizes="(max-width: 767px) 232px, 300px"><source type="image/avif" srcset="assets/m/marquee-08-worlds-fair-vase-yelp03-480.avif 480w, assets/m/marquee-08-worlds-fair-vase-yelp03-720.avif 720w" sizes="(min-width: 1600px) 340px, 300px"><source type="image/webp" srcset="assets/m/marquee-08-worlds-fair-vase-yelp03-480.webp 480w, assets/m/marquee-08-worlds-fair-vase-yelp03-720.webp 720w" sizes="(min-width: 1600px) 340px, 300px"><img src="assets/marquee-08-worlds-fair-vase-yelp03-750x1000.jpg" width="750" height="1000" alt="" loading="lazy" fetchpriority="low" decoding="async"></picture></div><span class="tag__back" aria-hidden="true"><svg focusable="false"><use href="#ink-x"/></svg></span></div></li>
+        <li class="tag"><div class="tag__card"><div class="tag__face"><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/marquee-09-window-sign-480.avif 480w" sizes="(max-width: 767px) 232px, 300px"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/marquee-09-window-sign-480.webp 480w" sizes="(max-width: 767px) 232px, 300px"><source type="image/avif" srcset="assets/m/marquee-09-window-sign-480.avif 480w, assets/m/marquee-09-window-sign-720.avif 720w" sizes="(min-width: 1600px) 340px, 300px"><source type="image/webp" srcset="assets/m/marquee-09-window-sign-480.webp 480w, assets/m/marquee-09-window-sign-720.webp 720w" sizes="(min-width: 1600px) 340px, 300px"><img src="assets/marquee-09-window-sign-860x1147.jpg" width="860" height="1147" alt="" loading="lazy" fetchpriority="low" decoding="async"></picture></div><span class="tag__back" aria-hidden="true"><svg focusable="false"><use href="#ink-x"/></svg></span></div></li>
       </ul>
     </div>
   </section>
 
-  <!-- ===== Block 3 · Six category tiles — strict 3×2 photo grid, square corners, hairline rules ===== -->
+  <!-- ===== 4 · What's in the booths (chalk) — the H2 is a hung enamel plate; six tiles, v1 text unchanged ===== -->
   <section id="booths" class="band band--chalk tiles-band" aria-labelledby="booths-h2">
     <div class="wrap">
-      <header class="sec-head" data-reveal="0">
-        <hr class="rule">
-        <h2 id="booths-h2">What's in the booths</h2>
+      <header class="sec-head booths-head">
+        <h2 id="booths-h2" class="plate plate--enamel" data-anim="swing">What's in the booths</h2>
         <p class="lede">We make antiquing accessible. This is a multi-vendor mall — numbered booths stocked by different vendors — so every aisle is a different hunt. Six places to start:</p>
       </header>
+      <!-- TODO (pre-publish): written OK from the client for its Wix photos used in these tiles (china, artwork, coins are upscales of Wix uploads). -->
       <ul class="tiles" id="tile-grid">
-        <li class="tile" data-reveal="0"><article>
-          <figure><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/tile-collectibles-americana-480.avif 480w, assets/m/tile-collectibles-americana-720.avif 720w, assets/m/tile-collectibles-americana-full.avif 1116w" sizes="(max-width: 679px) 40vw, 50vw"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/tile-collectibles-americana-480.webp 480w, assets/m/tile-collectibles-americana-720.webp 720w, assets/m/tile-collectibles-americana-full.webp 1116w" sizes="(max-width: 679px) 40vw, 50vw"><img src="assets/tile-collectibles-americana-1116x1488.jpg" width="1116" height="1488" loading="lazy" decoding="async" alt="Wall of vintage signs in a vendor booth — Phillips 66, California 32, Gall St., Wells Fargo &amp; Co. Express, AAA Approved Auto Repair, a railroad lantern, a circular saw blade, hubcaps and old hand planes"></picture></figure>
+        <li class="tile"><article data-anim="shelf">
+          <figure><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/tile-collectibles-americana-480.avif 480w, assets/m/tile-collectibles-americana-720.avif 720w, assets/m/tile-collectibles-americana-full.avif 1116w" sizes="(max-width: 679px) 40vw, 50vw"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/tile-collectibles-americana-480.webp 480w, assets/m/tile-collectibles-americana-720.webp 720w, assets/m/tile-collectibles-americana-full.webp 1116w" sizes="(max-width: 679px) 40vw, 50vw"><source type="image/avif" srcset="assets/m/tile-collectibles-americana-480.avif 480w, assets/m/tile-collectibles-americana-720.avif 720w, assets/m/tile-collectibles-americana-full.avif 1116w" sizes="(min-width: 1600px) 420px, (min-width: 1024px) 30vw, (min-width: 680px) 46vw, 100vw"><source type="image/webp" srcset="assets/m/tile-collectibles-americana-480.webp 480w, assets/m/tile-collectibles-americana-720.webp 720w, assets/m/tile-collectibles-americana-full.webp 1116w" sizes="(min-width: 1600px) 420px, (min-width: 1024px) 30vw, (min-width: 680px) 46vw, 100vw"><img src="assets/tile-collectibles-americana-1116x1488.jpg" width="1116" height="1488" loading="lazy" decoding="async" alt="Wall of vintage signs in a vendor booth — Phillips 66, California 32, Gall St., Wells Fargo &amp; Co. Express, AAA Approved Auto Repair, a railroad lantern, a circular saw blade, hubcaps and old hand planes"></picture></figure>
           <div class="tile__text"><h3>Collectibles</h3><p>A Phillips 66 sign, a California 32 marker, hubcaps and old hand planes. Americana, wall to floor.</p></div>
         </article></li>
-        <li class="tile" data-reveal="80"><article>
-          <figure><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/tile-home-goods-chandeliers-480.avif 480w, assets/m/tile-home-goods-chandeliers-720.avif 720w, assets/m/tile-home-goods-chandeliers-full.avif 1116w" sizes="(max-width: 679px) 40vw, 50vw"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/tile-home-goods-chandeliers-480.webp 480w, assets/m/tile-home-goods-chandeliers-720.webp 720w, assets/m/tile-home-goods-chandeliers-full.webp 1116w" sizes="(max-width: 679px) 40vw, 50vw"><img src="assets/tile-home-goods-chandeliers-1116x1488.jpg" width="1116" height="1488" loading="lazy" decoding="async" alt="A beaded lace lampshade between two crystal chandelier lamps, with pink fringed Victorian shades glowing behind"></picture></figure>
+        <li class="tile"><article data-anim="shelf">
+          <figure><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/tile-home-goods-chandeliers-480.avif 480w, assets/m/tile-home-goods-chandeliers-720.avif 720w, assets/m/tile-home-goods-chandeliers-full.avif 1116w" sizes="(max-width: 679px) 40vw, 50vw"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/tile-home-goods-chandeliers-480.webp 480w, assets/m/tile-home-goods-chandeliers-720.webp 720w, assets/m/tile-home-goods-chandeliers-full.webp 1116w" sizes="(max-width: 679px) 40vw, 50vw"><source type="image/avif" srcset="assets/m/tile-home-goods-chandeliers-480.avif 480w, assets/m/tile-home-goods-chandeliers-720.avif 720w, assets/m/tile-home-goods-chandeliers-full.avif 1116w" sizes="(min-width: 1600px) 420px, (min-width: 1024px) 30vw, (min-width: 680px) 46vw, 100vw"><source type="image/webp" srcset="assets/m/tile-home-goods-chandeliers-480.webp 480w, assets/m/tile-home-goods-chandeliers-720.webp 720w, assets/m/tile-home-goods-chandeliers-full.webp 1116w" sizes="(min-width: 1600px) 420px, (min-width: 1024px) 30vw, (min-width: 680px) 46vw, 100vw"><img src="assets/tile-home-goods-chandeliers-1116x1488.jpg" width="1116" height="1488" loading="lazy" decoding="async" alt="A beaded lace lampshade between two crystal chandelier lamps, with pink fringed Victorian shades glowing behind"></picture></figure>
           <div class="tile__text"><h3>Home Goods</h3><p>Crystal chandeliers, a beaded lace lampshade, pink fringed shades. Home decor, old and newer.</p></div>
         </article></li>
-        <li class="tile" data-reveal="160"><article>
+        <li class="tile"><article data-anim="shelf">
           <!-- TODO (pre-publish): re-shoot the china shelf in-store (this tile is a Topaz 2× upscale of the client's own 480×640 Wix upload). -->
-          <figure><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/tile-china-teapots-480.avif 480w, assets/m/tile-china-teapots-720.avif 720w, assets/m/tile-china-teapots-full.avif 960w" sizes="(max-width: 679px) 40vw, 50vw"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/tile-china-teapots-480.webp 480w, assets/m/tile-china-teapots-720.webp 720w, assets/m/tile-china-teapots-full.webp 960w" sizes="(max-width: 679px) 40vw, 50vw"><img src="assets/tile-china-teapots-960x1280.jpg" width="960" height="1280" loading="lazy" decoding="async" alt="Teapots, a blue tea set, cups and saucers and floral china on oak shelves"></picture></figure>
+          <figure><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/tile-china-teapots-480.avif 480w, assets/m/tile-china-teapots-720.avif 720w, assets/m/tile-china-teapots-full.avif 960w" sizes="(max-width: 679px) 40vw, 50vw"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/tile-china-teapots-480.webp 480w, assets/m/tile-china-teapots-720.webp 720w, assets/m/tile-china-teapots-full.webp 960w" sizes="(max-width: 679px) 40vw, 50vw"><source type="image/avif" srcset="assets/m/tile-china-teapots-480.avif 480w, assets/m/tile-china-teapots-720.avif 720w, assets/m/tile-china-teapots-full.avif 960w" sizes="(min-width: 1600px) 420px, (min-width: 1024px) 30vw, (min-width: 680px) 46vw, 100vw"><source type="image/webp" srcset="assets/m/tile-china-teapots-480.webp 480w, assets/m/tile-china-teapots-720.webp 720w, assets/m/tile-china-teapots-full.webp 960w" sizes="(min-width: 1600px) 420px, (min-width: 1024px) 30vw, (min-width: 680px) 46vw, 100vw"><img src="assets/tile-china-teapots-960x1280.jpg" width="960" height="1280" loading="lazy" decoding="async" alt="Teapots, a blue tea set, cups and saucers and floral china on oak shelves"></picture></figure>
           <div class="tile__text"><h3>China</h3><p>Teapots, a blue tea set, cups and saucers on oak shelves. Pattern-matchers, this is your stop.</p></div>
         </article></li>
-        <li class="tile" data-reveal="0"><article>
-          <figure><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/tile-furniture-hutch-480.avif 480w, assets/m/tile-furniture-hutch-720.avif 720w, assets/m/tile-furniture-hutch-full.avif 1116w" sizes="(max-width: 679px) 40vw, 50vw"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/tile-furniture-hutch-480.webp 480w, assets/m/tile-furniture-hutch-720.webp 720w, assets/m/tile-furniture-hutch-full.webp 1116w" sizes="(max-width: 679px) 40vw, 50vw"><img src="assets/tile-furniture-hutch-1116x1488.jpg" width="1116" height="1488" loading="lazy" decoding="async" alt="A tall wooden hutch filled with dolls, plush bunnies, a porcelain ring-holder hand, baskets and linens"></picture></figure>
+        <li class="tile"><article data-anim="shelf">
+          <figure><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/tile-furniture-hutch-480.avif 480w, assets/m/tile-furniture-hutch-720.avif 720w, assets/m/tile-furniture-hutch-full.avif 1116w" sizes="(max-width: 679px) 40vw, 50vw"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/tile-furniture-hutch-480.webp 480w, assets/m/tile-furniture-hutch-720.webp 720w, assets/m/tile-furniture-hutch-full.webp 1116w" sizes="(max-width: 679px) 40vw, 50vw"><source type="image/avif" srcset="assets/m/tile-furniture-hutch-480.avif 480w, assets/m/tile-furniture-hutch-720.avif 720w, assets/m/tile-furniture-hutch-full.avif 1116w" sizes="(min-width: 1600px) 420px, (min-width: 1024px) 30vw, (min-width: 680px) 46vw, 100vw"><source type="image/webp" srcset="assets/m/tile-furniture-hutch-480.webp 480w, assets/m/tile-furniture-hutch-720.webp 720w, assets/m/tile-furniture-hutch-full.webp 1116w" sizes="(min-width: 1600px) 420px, (min-width: 1024px) 30vw, (min-width: 680px) 46vw, 100vw"><img src="assets/tile-furniture-hutch-1116x1488.jpg" width="1116" height="1488" loading="lazy" decoding="async" alt="A tall wooden hutch filled with dolls, plush bunnies, a porcelain ring-holder hand, baskets and linens"></picture></figure>
           <div class="tile__text"><h3>Furniture</h3><p>A tall wooden hutch full of dolls, baskets and linens — a single booth. The hutches keep coming.</p></div>
         </article></li>
-        <li class="tile" data-reveal="80"><article>
+        <li class="tile"><article data-anim="shelf">
           <!-- TODO (pre-publish): re-shoot the artwork wall in-store (this tile is a Topaz 4× upscale of the client's own 240×320 Wix upload). -->
-          <figure><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/tile-artwork-frames-480.avif 480w, assets/m/tile-artwork-frames-720.avif 720w, assets/m/tile-artwork-frames-full.avif 960w" sizes="(max-width: 679px) 40vw, 50vw"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/tile-artwork-frames-480.webp 480w, assets/m/tile-artwork-frames-720.webp 720w, assets/m/tile-artwork-frames-full.webp 960w" sizes="(max-width: 679px) 40vw, 50vw"><img src="assets/tile-artwork-frames-960x1280.jpg" width="960" height="1280" loading="lazy" decoding="async" alt="Framed pencil drawings and old photographs on a booth wall beside a vest on a hanger"></picture></figure>
+          <figure><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/tile-artwork-frames-480.avif 480w, assets/m/tile-artwork-frames-720.avif 720w, assets/m/tile-artwork-frames-full.avif 960w" sizes="(max-width: 679px) 40vw, 50vw"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/tile-artwork-frames-480.webp 480w, assets/m/tile-artwork-frames-720.webp 720w, assets/m/tile-artwork-frames-full.webp 960w" sizes="(max-width: 679px) 40vw, 50vw"><source type="image/avif" srcset="assets/m/tile-artwork-frames-480.avif 480w, assets/m/tile-artwork-frames-720.avif 720w, assets/m/tile-artwork-frames-full.avif 960w" sizes="(min-width: 1600px) 420px, (min-width: 1024px) 30vw, (min-width: 680px) 46vw, 100vw"><source type="image/webp" srcset="assets/m/tile-artwork-frames-480.webp 480w, assets/m/tile-artwork-frames-720.webp 720w, assets/m/tile-artwork-frames-full.webp 960w" sizes="(min-width: 1600px) 420px, (min-width: 1024px) 30vw, (min-width: 680px) 46vw, 100vw"><img src="assets/tile-artwork-frames-960x1280.jpg" width="960" height="1280" loading="lazy" decoding="async" alt="Framed pencil drawings and old photographs on a booth wall beside a vest on a hanger"></picture></figure>
           <div class="tile__text"><h3>Artwork</h3><p>Pencil drawings and old photographs on a booth wall, a vest hung beside them. Art and frames.</p></div>
         </article></li>
-        <li class="tile" data-reveal="160"><article>
+        <li class="tile"><article data-anim="shelf">
           <!-- TODO (pre-publish): re-shoot the coin case in-store (this tile is a Topaz 4× upscale of the client's own 240×320 Wix upload). -->
-          <figure><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/tile-currency-coins-480.avif 480w, assets/m/tile-currency-coins-720.avif 720w, assets/m/tile-currency-coins-full.avif 960w" sizes="(max-width: 679px) 40vw, 50vw"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/tile-currency-coins-480.webp 480w, assets/m/tile-currency-coins-720.webp 720w, assets/m/tile-currency-coins-full.webp 960w" sizes="(max-width: 679px) 40vw, 50vw"><img src="assets/tile-currency-coins-960x1280.jpg" width="960" height="1280" loading="lazy" decoding="async" alt="Rows of coins in flip holders in a lit display case under a Coins sign"></picture></figure>
+          <figure><picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/tile-currency-coins-480.avif 480w, assets/m/tile-currency-coins-720.avif 720w, assets/m/tile-currency-coins-full.avif 960w" sizes="(max-width: 679px) 40vw, 50vw"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/tile-currency-coins-480.webp 480w, assets/m/tile-currency-coins-720.webp 720w, assets/m/tile-currency-coins-full.webp 960w" sizes="(max-width: 679px) 40vw, 50vw"><source type="image/avif" srcset="assets/m/tile-currency-coins-480.avif 480w, assets/m/tile-currency-coins-720.avif 720w, assets/m/tile-currency-coins-full.avif 960w" sizes="(min-width: 1600px) 420px, (min-width: 1024px) 30vw, (min-width: 680px) 46vw, 100vw"><source type="image/webp" srcset="assets/m/tile-currency-coins-480.webp 480w, assets/m/tile-currency-coins-720.webp 720w, assets/m/tile-currency-coins-full.webp 960w" sizes="(min-width: 1600px) 420px, (min-width: 1024px) 30vw, (min-width: 680px) 46vw, 100vw"><img src="assets/tile-currency-coins-960x1280.jpg" width="960" height="1280" loading="lazy" decoding="async" alt="Rows of coins in flip holders in a lit display case under a Coins sign"></picture></figure>
           <div class="tile__text"><h3>Currency</h3><p>Rows of coins in flip holders in a lit case, under a Coins sign. Collectors, bring your loupe.</p></div>
         </article></li>
       </ul>
@@ -346,16 +584,19 @@
     </div>
   </section>
 
-  <!-- ===== Block 4 · The Treasure Map — hand-redrawn interactive SVG from assets/treasure-map-redraw.json (D8). Chip = number + zone only. ===== -->
+  <!-- ===== 5 · The Treasure Map (ground; stencil-wall head on ground-2) — hand-redrawn interactive SVG from assets/treasure-map-redraw.json (D8). Geometry and the 92-region ring order are untouched. ===== -->
   <section id="map" class="band band--ground map-band" aria-labelledby="map-h2">
-    <div class="wrap">
-      <header class="sec-head" data-reveal="0">
-        <hr class="rule">
+    <div class="stencil-head">
+      <div class="wrap">
         <h2 id="map-h2">The <span class="hl">Treasure Map</span> — the main floor, booth by booth</h2>
-        <p class="intro">Our printed booth map is called the Treasure Map, and it earns the name. Here's the main floor, redrawn: numbered vendor booths, the display cases, the cashier at the entrance, the restrooms. Pick a corner and take your time. There's an upstairs too — and nobody's timing you.</p>
+      </div>
+    </div>
+    <div class="wrap">
+      <header class="sec-head map-head">
+        <p class="intro">Our printed booth map is called the Treasure Map, and it earns the name. Here's the main floor, redrawn: numbered vendor booths, the display cases, the cashier at the entrance, the restrooms. Tap a booth and we'll show you the way from the front door. There's an upstairs too — and nobody's timing you.</p>
       </header>
       <div class="map-tools">
-        <p class="helper"><span class="helper__desk">Hover, tap or tab across the booths to see their numbers.</span><span class="helper__touch">Swipe sideways to see the whole floor. Tap a booth for its number.</span></p>
+        <p class="helper"><span class="helper__desk">Tab into the map, then use the arrow keys — or type a booth number to jump. Enter shows the way from the front door; Escape closes it.</span><span class="helper__touch">Swipe sideways to see the whole floor. Tap a booth for its number and the way from the front door.</span></p>
         <div class="legend-wrap" id="legend-wrap">
           <div class="legend" id="legend">
             <button type="button" class="legend__btn" data-zone="front" aria-pressed="false"><span class="sw" aria-hidden="true"></span>Front</button>
@@ -365,14 +606,20 @@
             <button type="button" class="legend__btn" data-zone="service" aria-pressed="false"><span class="sw sw--service" aria-hidden="true"></span>Service</button>
           </div>
         </div>
+        <div class="map-actions">
+          <button type="button" class="btn btn--ghost" id="pick-booth">Pick a booth for me</button>
+          <button type="button" class="btn btn--ghost" id="copy-booth" hidden>Copy a link to booth <span class="copy-booth__n"></span></button>
+          <p class="map-status" id="map-status" role="status"></p>
+        </div>
       </div>
+      <a class="skip-map" href="#rent">Skip past the floor plan</a>
       <figure class="map-figure" id="map-figure">
         <div class="map-scroller" id="map-scroller">
 <!--TREASURE-MAP-SVG:BEGIN-->
 <svg class="map" viewBox="300 236 1470 664" role="graphics-document document" aria-label="Floor plan of the main floor: numbered vendor booths around the perimeter and along the centre aisles, display cases, the cashier and the entrance at the bottom centre, restrooms." aria-describedby="map-caption map-keys" data-entrance-x0="918" data-entrance-x1="988" data-entrance-y="845" focusable="false">
-<defs><pattern id="map-hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="10" stroke="#EDEBE3" style="stroke:var(--chalk)" stroke-opacity=".22" stroke-width="1.5"/></pattern></defs>
+<defs><pattern id="map-hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line class="map-hatch-line" x1="0" y1="0" x2="0" y2="10" stroke="#EDEBE3" stroke-opacity=".22" stroke-width="1.5"/></pattern></defs>
 <rect class="map-floor" x="310" y="248" width="1446" height="597"/>
-<path class="map-wall" d="M310,845 V248 H1756 V845 H988 M918,845 H310" fill="none"/>
+<path class="map-wall" d="M310,845 V248 H1756 V845 H988 M918,845 H310" fill="none" data-anim="draw"/>
 <g class="map-shaded" aria-hidden="true">
 <rect class="wall" x="1435" y="250" width="115" height="81" fill="url(#map-hatch)"/>
 <rect class="wall" x="520" y="334" width="107" height="40" fill="url(#map-hatch)"/>
@@ -496,6 +743,7 @@
 <path class="xmark" d="M1692,826 L1706,840 M1706,826 L1692,840"/>
 <path class="xmark" d="M1648,826 L1662,840 M1662,826 L1648,840"/>
 </g>
+<g class="map-route" aria-hidden="true"></g>
 <g class="map-trail" aria-hidden="true"></g>
 </svg>
 <!--TREASURE-MAP-SVG:END-->
@@ -504,142 +752,183 @@
         <figcaption id="map-caption">Redrawn from the mall's printed Treasure Map — main floor. Booth numbering as printed; there's an upstairs too.</figcaption>
         <!-- TODO (pre-publish): confirm current booth layout with the client. -->
         <!-- TODO (pre-publish): ask the client what the G markers mean -->
-        <p id="map-keys" class="sr-only">Use the arrow keys to move between booths, type a booth number to jump to it, press Enter to pin the label and Escape to close it.</p>
+        <p id="map-keys" class="sr-only">Use the arrow keys to move between booths, type a booth number to jump to it, press Enter to pin the label and show the way from the entrance, and Escape to close it.</p>
         <p id="egg-live" class="sr-only" aria-live="polite"></p>
       </figure>
     </div>
   </section>
 
-  <!-- ===== Block 5 · Rent a booth — chalk band, benefit-first, tel: only (no form anywhere on this build) ===== -->
-  <section id="rent" class="band band--chalk rent-band" aria-labelledby="rent-h2">
+  <!-- ===== 6 · Rent a booth (barn board-and-batten) — display line first, the "Rent a booth" hanging plate IS the tel: link, ledger 2×2. No form, no rates. ===== -->
+  <section id="rent" class="band band--barn rent-band" aria-labelledby="rent-h2">
     <div class="wrap rent">
-      <div class="rent__pitch" data-reveal="0">
-        <hr class="rule">
+      <div class="rent__pitch">
         <p class="kicker">For vendors</p>
+        <p class="rent__display"><span>You bring the finds.</span> <span>We run the store.</span></p>
         <h2 id="rent-h2">Rent a booth at Northern Nevada's largest antique mall in Carson City</h2>
-        <p class="rent__lead"><span>You bring the finds.</span> <span class="hl-barn">We run the store.</span></p>
-        <p class="rent__body">Your finds get a numbered vendor booth inside a mall that's open every day, 10 to 6, on North Carson Street. There's a cashier at the entrance and over 21,000 square feet of aisles to wander. And the people who shop here come to browse for hours — Suzy's review below says a couple of them.</p>
+        <p class="rent__body">Your finds get a numbered vendor booth inside a mall that's open every day, 10 to 6, on North Carson Street. There's a cashier at the entrance and over 21,000 square feet of aisles to wander. And the people who shop here come to browse for hours — Suzy's review above says a couple of them.</p>
+        <ul class="ledger rent__ledger"><li data-anim="settle"><span class="num">Open every day, 10–6</span></li><li data-anim="settle">A cashier at the entrance</li><li data-anim="settle">Over 21,000 square feet of aisles</li><li data-anim="settle">A numbered booth of your own</li></ul>
         <p class="rent__cta-line">Want in? Call <a href="tel:+17754613142">(775) 461-3142</a> and ask about current availability.</p>
-        <a class="btn btn--barn" href="tel:+17754613142">Call about a booth</a>
         <!-- TODO (pre-publish): vendor rates / terms are a GAP — none on this page by rule (D4). -->
+        <!-- TODO (pre-publish, owner OK required): "Every booth on our Treasure Map has its own link — send your customers straight to you." -->
       </div>
-      <ul class="ledger rent__ledger" data-reveal="120">
-        <li><span class="num">Open every day, 10–6</span></li>
-        <li>A cashier at the entrance</li>
-        <li>Over 21,000 square feet of aisles</li>
-        <li>A numbered booth of your own</li>
-      </ul>
+      <div class="rent__sign"><a class="forrent" href="tel:+17754613142" data-anim="swing"><span class="forrent__big">Rent a booth</span> <span class="forrent__call">Call (775) 461-3142</span></a></div>
     </div>
   </section>
 
-  <!-- ===== Block 6 · Visit ledger — hours ×7, NAP, landmark, parking, keyless embed (D13), drive times (D14) ===== -->
-  <section id="visit" class="band band--ground visit-band" aria-labelledby="visit-h2">
+  <!-- ===== 7 · Hours, address & directions (chalk) — letter board with TODAY, storefront plate, NAP + Copy address + one-tap directions, the map behind a button on every width, the highway guide sign ===== -->
+  <section id="visit" class="band band--chalk visit-band" aria-labelledby="visit-h2">
     <div class="wrap">
-      <header class="sec-head" data-reveal="0">
+      <header class="sec-head">
         <hr class="rule">
-        <h2 id="visit-h2">Hours, address &amp; directions</h2>
+        <h2 id="visit-h2">Hours, address &amp; directions on North Carson Street</h2>
       </header>
       <div class="visit">
-        <div class="visit__ledger" data-reveal="0">
-          <p class="visit__lede">Open every day, 10 AM – 6 PM.</p>
+        <div class="visit__hours">
+          <!-- Hours source (spec §5.1): GBP weekday_text (Places Details 2026-10-05) + Apple Maps + Yahoo Local — every day 10 AM – 6 PM. -->
+          <div class="board" id="hours" data-anim="settle">
+            <p class="board__title"><span>Open every day</span> <span>10 AM – 6 PM</span></p>
+            <ul class="board__days" aria-label="Hours by day">
+              <li data-day="1"><span class="board__abbr" aria-hidden="true">Mon</span><span class="sr-only">Monday, 10 AM to 6 PM</span><span class="board__today" hidden>Today</span></li>
+              <li data-day="2"><span class="board__abbr" aria-hidden="true">Tue</span><span class="sr-only">Tuesday, 10 AM to 6 PM</span><span class="board__today" hidden>Today</span></li>
+              <li data-day="3"><span class="board__abbr" aria-hidden="true">Wed</span><span class="sr-only">Wednesday, 10 AM to 6 PM</span><span class="board__today" hidden>Today</span></li>
+              <li data-day="4"><span class="board__abbr" aria-hidden="true">Thu</span><span class="sr-only">Thursday, 10 AM to 6 PM</span><span class="board__today" hidden>Today</span></li>
+              <li data-day="5"><span class="board__abbr" aria-hidden="true">Fri</span><span class="sr-only">Friday, 10 AM to 6 PM</span><span class="board__today" hidden>Today</span></li>
+              <li data-day="6"><span class="board__abbr" aria-hidden="true">Sat</span><span class="sr-only">Saturday, 10 AM to 6 PM</span><span class="board__today" hidden>Today</span></li>
+              <li data-day="0"><span class="board__abbr" aria-hidden="true">Sun</span><span class="sr-only">Sunday, 10 AM to 6 PM</span><span class="board__today" hidden>Today</span></li>
+            </ul>
+            <p class="board__note">Regular hours — Saturday and Sunday included.</p>
+          </div>
           <!-- TODO (pre-publish): confirm holiday hours with the client (Thanksgiving / Christmas). -->
-          <ul class="hours" id="hours">
-            <li><span>Monday</span> <span class="num">10 AM – 6 PM</span></li>
-            <li><span>Tuesday</span> <span class="num">10 AM – 6 PM</span></li>
-            <li><span>Wednesday</span> <span class="num">10 AM – 6 PM</span></li>
-            <li><span>Thursday</span> <span class="num">10 AM – 6 PM</span></li>
-            <li><span>Friday</span> <span class="num">10 AM – 6 PM</span></li>
-            <li><span>Saturday</span> <span class="num">10 AM – 6 PM</span></li>
-            <li><span>Sunday</span> <span class="num">10 AM – 6 PM</span></li>
-          </ul>
+          <p class="visit__holiday">Holiday hours aren't posted here — call <a href="tel:+17754613142">(775) 461-3142</a> before a holiday trip.</p>
+        </div>
+        <figure class="visit__photo">
+          <!-- TODO (pre-publish): the storefront photo is the Visit Carson City (tourism board) shot — confirm rights, or replace with the phone-shoot exterior. -->
+          <picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/visit-storefront-720.avif 720w, assets/m/visit-storefront-1080.avif 1080w" sizes="min(720px, calc(100vw - 32px))"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/visit-storefront-720.webp 720w, assets/m/visit-storefront-1080.webp 1080w" sizes="min(720px, calc(100vw - 32px))"><source type="image/avif" srcset="assets/m/visit-storefront-1080.avif 1080w, assets/d/visit-storefront-1536.avif 1536w" sizes="760px"><source type="image/webp" srcset="assets/m/visit-storefront-1080.webp 1080w, assets/d/visit-storefront-1536.webp 1536w" sizes="760px"><img src="assets/visit-storefront-exterior-1536x1044.jpg" width="1536" height="1044" loading="lazy" decoding="async" alt="Carson Antiques &amp; Collectibles Mall storefront on North Carson Street — yellow sign, front parking lot"></picture>
+          <span class="visit__cover" aria-hidden="true" data-anim="wipe"></span>
+          <figcaption>Look for the yellow sign on North Carson Street.</figcaption>
+        </figure>
+        <div class="visit__find">
           <address class="nap">
             <strong>Carson Antiques &amp; Collectibles Mall</strong>
             <span>1831 N Carson St, Carson City, NV 89701</span>
             <a href="tel:+17754613142">(775) 461-3142</a>
           </address>
-          <p class="visit__note">Look for the yellow sign on North Carson Street.</p>
+          <div class="visit__actions">
+            <a class="btn btn--ink" href="https://www.google.com/maps/dir/?api=1&amp;destination=Carson%20Antiques%20%26%20Collectibles%20Mall%2C%201831%20N%20Carson%20St%2C%20Carson%20City%2C%20NV%2089701&amp;destination_place_id=ChIJV4dzZtkKmYARQRRib-5tQW8" rel="noopener">Get directions</a>
+            <a class="visit__gmaps" href="https://www.google.com/maps?cid=8016809682534536257" rel="noopener">See us on Google Maps</a>
+            <button type="button" class="btn btn--ink" id="copy-addr" hidden data-copy="Carson Antiques &amp; Collectibles Mall, 1831 N Carson St, Carson City, NV 89701">Copy address</button>
+            <p id="copy-status" class="copy-status" role="status"></p>
+          </div>
           <p class="visit__note">Parking: there's a lot right in front.</p>
-          <a class="btn btn--yellow" href="https://www.google.com/maps?cid=8016809682534536257" rel="noopener">Get directions</a>
         </div>
-        <div class="visit__media" data-reveal="120">
-          <!-- TODO (pre-publish): the storefront photo is the Visit Carson City (tourism board) shot — confirm rights, or replace with the phone-shoot exterior. -->
-          <picture class="pic"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/visit-storefront-720.avif 720w, assets/m/visit-storefront-1080.avif 1080w" sizes="min(720px, calc(100vw - 32px))"><source media="(max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/visit-storefront-720.webp 720w, assets/m/visit-storefront-1080.webp 1080w" sizes="min(720px, calc(100vw - 32px))"><img src="assets/visit-storefront-exterior-1536x1044.jpg" width="1536" height="1044" loading="lazy" decoding="async" alt="Carson Antiques &amp; Collectibles Mall storefront on North Carson Street — yellow sign, front parking lot"></picture>
+        <div class="visit__map">
           <iframe id="visit-map" src="https://www.google.com/maps?q=1831+N+Carson+St,+Carson+City,+NV+89701&amp;output=embed" title="Map: Carson Antiques &amp; Collectibles Mall, 1831 N Carson St, Carson City, NV 89701" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
           <button class="btn btn--ghost map-reveal" id="map-reveal" type="button" aria-controls="visit-map" aria-expanded="false">Show the map here</button>
         </div>
       </div>
-      <div class="drive" data-reveal="0">
-        <h3>Coming from out of town?</h3>
-        <!-- Drive times: Google Maps directions read 2026-09-15 ~14:30 PDT (live traffic) + OSRM re-route to the GBP pin 2026-09-15 ~15:00 PDT; miles to the whole mile, minutes to the nearest 5, never shorter than the slower source (seo.md §6). -->
-        <ul class="drive__list">
-          <li><span class="num">Reno — 31 mi, about 40 min via <span class="nowrap">I-580</span></span></li>
-          <li><span class="num">Minden–Gardnerville — 16–17 mi, about 30 min via <span class="nowrap">US-395</span></span></li>
-          <li><span class="num">South Lake Tahoe — 29 mi, about 50 min via <span class="nowrap">US-50</span></span></li>
+      <div class="guide" id="getting-here" data-anim="settle">
+        <h3 id="getting-here-h3">Coming from Reno, Carson Valley or Lake Tahoe?</h3>
+        <!-- DIST source table: spec §5.2 (Google Maps live 2026-09-15 + OSRM 2026-09-15 + OSRM/Valhalla 2026-10-05, GBP pin 39.176725,-119.766003; slowest source, ceil to 5 min; miles from the longest source).
+             Town              | Google live 09-15 | OSRM 09-15                            | OSRM 10-05   | Valhalla 10-05 | ships
+             Reno              | 30.7 mi / 32 min  | 30.7 / 38                             | 30.71 / 37.9 | 30.87 / 33.1   | 31 mi, about 40 min via I-580
+             Sparks            | 31.2 / 32         | 31.2 / 38                             | 31.16 / 37.6 | 31.21 / 32.8   | 31 mi, about 40 min via I-580
+             Minden            | 16.1 / 27         | 16.1 / 25                             | 16.11 / 25.1 | 15.94 / 20.3   | ) Carson Valley (Minden–Gardnerville):
+             Gardnerville      | 17.3 / 31         | 17.6 / 29                             | 17.59 / 28.5 | 17.18 / 21.5   | ) 16–18 mi, about 30–35 min via US-395
+             South Lake Tahoe  | 28.8 / 49         | 28.9 / 50 (row-2 pin) · 29.7 / 52 (lead pin) | 29.66 / 52.4 | 29.47 / 34.0 | 30 mi, about 55 min via US-50
+             Stateline         | 26.0 / 40         | 26.3 / 45                             | 26.31 / 45.3 | 26.13 / 29.9   | 26 mi, about 45 min via US-50
+             Incline Village   | 26.1 / 45         | 26.4 / 46 (row-2) · 26.3 / 45 (lead)  | 26.30 / 44.8 | 26.12 / 33.5   | 26 mi, about 50 min via NV-28 and US-50
+             Route names: today's OSRM steps (runs/carson-antiques-home-v2/spec-evidence/towns-out.txt). -->
+        <ul class="guide__list">
+          <li><a class="guide__line" href="https://www.google.com/maps/dir/?api=1&amp;destination=Carson%20Antiques%20%26%20Collectibles%20Mall%2C%201831%20N%20Carson%20St%2C%20Carson%20City%2C%20NV%2089701&amp;destination_place_id=ChIJV4dzZtkKmYARQRRib-5tQW8&amp;origin=Reno%2C%20NV" rel="noopener"><span class="g-town">Reno</span><span class="g-sep"> — </span><span class="g-mi">31 mi</span>, <span class="g-min">about 40 min</span> via <span class="g-route">I-580</span><span class="g-cta"> · See the route from Reno</span></a></li>
+          <li><a class="guide__line" href="https://www.google.com/maps/dir/?api=1&amp;destination=Carson%20Antiques%20%26%20Collectibles%20Mall%2C%201831%20N%20Carson%20St%2C%20Carson%20City%2C%20NV%2089701&amp;destination_place_id=ChIJV4dzZtkKmYARQRRib-5tQW8&amp;origin=Sparks%2C%20NV" rel="noopener"><span class="g-town">Sparks</span><span class="g-sep"> — </span><span class="g-mi">31 mi</span>, <span class="g-min">about 40 min</span> via <span class="g-route">I-580</span><span class="g-cta"> · See the route from Sparks</span></a></li>
+          <li><a class="guide__line" href="https://www.google.com/maps/dir/?api=1&amp;destination=Carson%20Antiques%20%26%20Collectibles%20Mall%2C%201831%20N%20Carson%20St%2C%20Carson%20City%2C%20NV%2089701&amp;destination_place_id=ChIJV4dzZtkKmYARQRRib-5tQW8&amp;origin=Gardnerville%2C%20NV" rel="noopener"><span class="g-town">Carson Valley (Minden–Gardnerville)</span><span class="g-sep"> — </span><span class="g-mi">16–18 mi</span>, <span class="g-min">about 30–35 min</span> via <span class="g-route">US-395</span><span class="g-cta"> · See the route from Gardnerville</span></a></li>
+          <li><a class="guide__line" href="https://www.google.com/maps/dir/?api=1&amp;destination=Carson%20Antiques%20%26%20Collectibles%20Mall%2C%201831%20N%20Carson%20St%2C%20Carson%20City%2C%20NV%2089701&amp;destination_place_id=ChIJV4dzZtkKmYARQRRib-5tQW8&amp;origin=South%20Lake%20Tahoe%2C%20CA" rel="noopener"><span class="g-town">South Lake Tahoe</span><span class="g-sep"> — </span><span class="g-mi">30 mi</span>, <span class="g-min">about 55 min</span> via <span class="g-route">US-50</span><span class="g-cta"> · See the route from South Lake Tahoe</span></a></li>
+          <li><a class="guide__line" href="https://www.google.com/maps/dir/?api=1&amp;destination=Carson%20Antiques%20%26%20Collectibles%20Mall%2C%201831%20N%20Carson%20St%2C%20Carson%20City%2C%20NV%2089701&amp;destination_place_id=ChIJV4dzZtkKmYARQRRib-5tQW8&amp;origin=Stateline%2C%20NV" rel="noopener"><span class="g-town">Stateline</span><span class="g-sep"> — </span><span class="g-mi">26 mi</span>, <span class="g-min">about 45 min</span> via <span class="g-route">US-50</span><span class="g-cta"> · See the route from Stateline</span></a></li>
+          <li><a class="guide__line" href="https://www.google.com/maps/dir/?api=1&amp;destination=Carson%20Antiques%20%26%20Collectibles%20Mall%2C%201831%20N%20Carson%20St%2C%20Carson%20City%2C%20NV%2089701&amp;destination_place_id=ChIJV4dzZtkKmYARQRRib-5tQW8&amp;origin=Incline%20Village%2C%20NV" rel="noopener"><span class="g-town">Incline Village</span><span class="g-sep"> — </span><span class="g-mi">26 mi</span>, <span class="g-min">about 50 min</span> via <span class="g-route">NV-28</span> and <span class="g-route">US-50</span><span class="g-cta"> · See the route from Incline Village</span></a></li>
         </ul>
       </div>
     </div>
   </section>
 
-  <!-- ===== Block 7 · Three real Google quotes, verbatim, on the oil-lamps band — no stars, no rating markup (D7) ===== -->
-  <section class="band band--photo quotes-band" aria-labelledby="quotes-h2">
-    <picture class="pic"><source media="(max-width: 767px)" type="image/avif" srcset="assets/m/band-quotes-portrait.avif"><source media="(max-width: 767px)" type="image/webp" srcset="assets/m/band-quotes-portrait.webp"><source media="(max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/band-quotes-land-1600.avif"><source media="(max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/webp" srcset="assets/m/band-quotes-land-1600.webp"><img class="band__photo" src="assets/band-quotes-oil-lamps-3840x1267.jpg" width="3840" height="1267" alt="" role="presentation" loading="lazy" decoding="async"></picture>
-    <div class="wrap quotes">
-      <div class="quotes__inner" data-reveal="0">
-        <hr class="rule">
-        <h2 id="quotes-h2">Straight from the reviews</h2>
-        <ul class="quotes__list">
-          <li>
-            <blockquote><p>We spent a couple of hours just exploring and buying a few treasures we found here! Love the wide variety of items, the way the store is laid out, and the very helpful and friendly staff!</p></blockquote>
-            <p class="attr">Suzy C. · Google review</p>
-          </li>
-          <li>
-            <blockquote><p>Very nice selection of antique finds. The staff working there are very friendly.</p></blockquote>
-            <p class="attr">Barbara C. · Google review</p>
-          </li>
-          <li>
-            <blockquote><p>just be prepared the sign out front about having the largest floor space is no joke!</p></blockquote>
-            <p class="attr">Brady T. · Google review</p>
-          </li>
-        </ul>
-      </div>
+  <!-- ===== 8 · Make a day of it in Carson City (ground) — the North Carson Street strip (3 walks, placed by routed distance) + 3 short drives. No hours or prices of other places, no partnership. ===== -->
+  <section id="day-trip" class="band band--ground trip-band" aria-labelledby="trip-h2">
+   <div class="wrap">
+    <header class="sec-head"><hr class="rule"><h2 id="trip-h2">Make a day of it in Carson City</h2>
+     <p class="lede">We're on North Carson Street, about a mile north of the Capitol — close enough to walk to the old Mint, the Children's Museum and the Capitol itself. Distances are from our front door.</p></header>
+    <!-- Day-trip sources: spec §5.3 (addresses re-read 2026-10-05; routes audit-seo 2026-10-05, OSRM + Valhalla from the GBP pin). -->
+    <!-- §5.3 source table (ships as this comment; spec task S-10):
+         Stop                                     | Address (read 2026-10-05)                                   | Routed (drive mi · walk min, OSRM / Valhalla) | Ships
+         Children's Museum of Northern Nevada     | 813 N Carson St (visitcarsoncity.com listing)               | 0.58 mi · 12.4 / 10.8 min walk                | 0.6 mi south, about a 15-min walk · "hands-on exhibits" (same listing, re-read). cmnn.org fails TLS → link the listing.
+         Nevada State Museum (old Carson City Mint)| 600 N Carson St (carsonnvmuseum.org/location-hours-admission)| 0.67 mi · 14.4 / 12.5                        | 0.7 mi south, about a 15-min walk · "CC" coins 1870–1893; Coin Press No. 1 still strikes "CC" medallions (Wikipedia "Carson City Mint"); "operating Saturdays" on the official page → printed as "on set days".
+         Nevada State Capitol                     | 101 N Carson St (travelnevada.com)                          | 0.91 / 0.90 mi · 19.3 / 17.0                  | 0.9 mi south, about a 20-min walk · built 1869–1871, sandstone from the Nevada State Prison (Wikipedia "Nevada State Capitol"). Kit Carson Trail "2.5 mile path" (visitcarsoncity.com, re-read; safe line, no "from here").
+         Carson Hot Springs Resort                | 1500 Old Hot Springs Rd (carsonhotsprings.com/map-directions)| 1.88 / 2.01 mi · 5.8 / 5.9 min drive          | 2 mi, about a 10-min drive · nothing beyond "a soak". Not in schema (D-19).
+         Nevada State Railroad Museum             | 2180 S Carson St (official hours-and-location page)         | 2.22 / 2.03 mi · 5.8 / 4.8 min drive          | 2.2 mi south, about a 10-min drive · Virginia & Truckee locomotives and cars (Wikipedia).
+         Stewart Indian School Cultural Center & Museum | 1 Jacobsen Way (stewartindianschool.com/contact-us)   | 5.13 / 4.94 mi · 12.0 / 11.6 min drive        | 5 mi south, about a 15-min drive · nothing beyond the name.
+         "About a mile north of the Capitol" = 0.9 mi routed. -->
+    <div class="street">
+     <svg class="street__road" viewBox="0 0 1000 120" aria-hidden="true" focusable="false"><line class="street__edge" x1="40" y1="48" x2="980" y2="48"/><line class="street__edge" x1="40" y1="72" x2="980" y2="72"/><path class="street__centre" d="M40 60 H980" data-anim="draw"/><circle class="street__start" cx="40" cy="60" r="14"/><circle class="street__pin street__pin--kids" cx="585" cy="60" r="7"/><circle class="street__pin street__pin--mint" cx="670" cy="60" r="7"/><circle class="street__pin street__pin--capitol" cx="895" cy="60" r="7"/></svg>
+     <p class="street__note">North Carson Street from our door south to the State Capitol, about 0.9 mi. Drawn as a straight line — not to scale beyond the street.</p>
+     <h3>Walk it — down North Carson Street</h3>
+     <ol class="street__stops">
+      <li class="stop stop--kids" data-anim="settle"><h4><a href="https://visitcarsoncity.com/attractions/test-childrens-museum-of-northern-nevada/" rel="noopener">Children's Museum of Northern Nevada</a></h4><p class="stop__meta">813 N Carson St · 0.6 mi south, about a 15-min walk</p><p>Hands-on exhibits for the kids — trade an hour of booth-browsing for an hour of theirs.</p></li>
+      <li class="stop stop--mint" data-anim="settle"><h4><a href="https://www.carsonnvmuseum.org/" rel="noopener">Nevada State Museum — the old Carson City Mint</a></h4><p class="stop__meta">600 N Carson St · 0.7 mi south, about a 15-min walk</p><p>Coins stamped "CC" were struck here from 1870 to 1893, and the mint's original Coin Press No. 1 still runs on set days. If our Currency booths got you going, this is the next stop.</p></li>
+      <li class="stop stop--capitol" data-anim="settle"><h4><a href="https://travelnevada.com/museums/nevada-state-capitol/" rel="noopener">Nevada State Capitol</a></h4><p class="stop__meta">101 N Carson St · 0.9 mi south, about a 20-min walk</p><p>Built 1869–71 from sandstone quarried at the old Nevada State Prison. Pick up the <a href="https://visitcarsoncity.com/attractions/kit-carson-trail/" rel="noopener">Kit Carson Trail map</a> from Visit Carson City — 2.5 miles of historic homes and landmarks.</p></li>
+     </ol>
     </div>
+    <div class="drives"><h3>Short drives</h3>
+     <ul class="drives__list">
+      <li data-anim="settle"><h4><a href="https://carsonhotsprings.com/" rel="noopener">Carson Hot Springs Resort</a></h4><p class="stop__meta">1500 Old Hot Springs Rd · 2 mi, about a 10-min drive</p><p>Hours on your feet in the aisles, then a soak.</p></li>
+      <li data-anim="settle"><h4><a href="https://www.carsonrailroadmuseum.org/" rel="noopener">Nevada State Railroad Museum</a></h4><p class="stop__meta">2180 S Carson St · 2.2 mi south, about a 10-min drive</p><p>Virginia &amp; Truckee locomotives and cars.</p></li>
+      <li data-anim="settle"><h4><a href="https://stewartindianschool.com/" rel="noopener">Stewart Indian School Cultural Center &amp; Museum</a></h4><p class="stop__meta">1 Jacobsen Way · 5 mi south, about a 15-min drive</p><p>The history of the Stewart Indian School, told on its own campus.</p></li>
+     </ul>
+    </div>
+    <p class="trip__close">Check each place's hours before you go — we only know ours: every day, 10–6.</p>
+   </div>
   </section>
 
-  <!-- ===== Block 8 · FAQ ledger — a definition list, confirmed facts only; FAQPage is generated from it by seo-gate.mjs --emit-faq ===== -->
+  <!-- ===== 9 · FAQ (chalk) — two groups, 14 rows (SPEC-AMENDMENTS AM-1 restores "Are there restrooms?"), ids on every row; FAQPage is generated from BOTH lists by seo-gate-v2.mjs --emit-faq ===== -->
   <section id="faq" class="band band--chalk faq-band" aria-labelledby="faq-h2">
     <div class="wrap">
-      <header class="sec-head" data-reveal="0">
+      <header class="sec-head">
         <hr class="rule">
         <h2 id="faq-h2">Questions before you visit</h2>
       </header>
+      <h3 id="faq-visiting">Visiting</h3>
       <dl class="faq" data-faq>
-        <div class="faq__row"><dt>What are your hours?</dt><dd>Every day, 10 AM to 6 PM — Monday through Sunday.</dd></div>
+        <div class="faq__row" id="faq-hours"><dt>What are your hours?</dt><dd>Every day, 10 AM to 6 PM — Monday through Sunday.</dd></div>
         <!-- TODO (pre-publish): confirm holiday hours with the client (Thanksgiving / Christmas). -->
-        <div class="faq__row"><dt>Where is Carson Antiques &amp; Collectibles Mall?</dt><dd>1831 N Carson St, Carson City, NV 89701 — on North Carson Street, under the yellow sign.</dd></div>
-        <div class="faq__row"><dt>Is there parking?</dt><dd>Yes — there's a lot right in front of the building.</dd></div>
-        <div class="faq__row"><dt>Is everything actually antique?</dt><dd>Not everything — and the sign out front says as much: Gifts · Home Decor · Art · Toys &amp; More. This is a multi-vendor mall, so the booths carry antiques, vintage items, collectibles and newer home decor side by side. That mix is the hunt.</dd></div>
-        <!-- TODO (pre-publish): client sign-off on this answer — honest and on-brand, but it is their voice to own. -->
-        <div class="faq__row"><dt>How big is the mall?</dt><dd>Over 21,000 square feet on two floors — Northern Nevada's largest antique mall, as the sign out front says.</dd></div>
-        <div class="faq__row"><dt>Is there an upstairs?</dt><dd>Yes. The Treasure Map on this page shows the main floor; there are more booths upstairs.</dd></div>
+        <div class="faq__row" id="faq-sundays"><dt>Are you open on Sundays?</dt><dd>Yes — every day of the week, Saturday and Sunday included, 10 AM to 6 PM.</dd></div>
+        <div class="faq__row" id="faq-where"><dt>Where is Carson Antiques &amp; Collectibles Mall?</dt><dd>1831 N Carson St, Carson City, NV 89701 — on North Carson Street, under the yellow sign.</dd></div>
+        <div class="faq__row" id="faq-parking"><dt>Is there parking?</dt><dd>Yes — there's a lot right in front of the building.</dd></div>
+        <div class="faq__row" id="faq-restrooms"><dt>Are there restrooms?</dt><dd>Yes — they're marked on the Treasure Map.</dd></div>
+        <div class="faq__row" id="faq-reno"><dt>How far is the mall from Reno?</dt><dd>About 31 miles — roughly 40 minutes south on I-580. We're at 1831 N Carson St, about a mile north of the State Capitol.</dd></div>
+        <div class="faq__row" id="faq-tahoe"><dt>How far is the mall from Lake Tahoe?</dt><dd>From Stateline it's about 26 miles, around 45 minutes via US-50. From Incline Village it's about 26 miles, around 50 minutes via NV-28 and US-50. From South Lake Tahoe it's about 30 miles, around 55 minutes via US-50.</dd></div>
+        <div class="faq__row" id="faq-nearby"><dt>What's near the mall?</dt><dd>The Nevada State Museum — the old Carson City Mint — is 0.7 miles south on North Carson Street, about a 15-minute walk. The Children's Museum of Northern Nevada and the State Capitol are on the same stretch. More ideas under <a href="#day-trip">Make a day of it in Carson City</a>.</dd></div>
+        <div class="faq__row" id="faq-size"><dt>How big is the mall?</dt><dd>Over 21,000 square feet on two floors — Northern Nevada's largest antique mall, as the sign out front says.</dd></div>
+        <div class="faq__row" id="faq-upstairs"><dt>Is there an upstairs?</dt><dd>Yes. The Treasure Map on this page shows the main floor; there are more booths upstairs.</dd></div>
         <!-- TODO (pre-publish): confirm the second floor is vendor booths with the client. -->
-        <div class="faq__row"><dt>Are there restrooms?</dt><dd>Yes — they're marked on the Treasure Map.</dd></div>
-        <div class="faq__row"><dt>Can I rent a booth?</dt><dd>That's how we work — vendors rent the numbered booths. Call (775) 461-3142 and ask about current availability.</dd></div>
+        <div class="faq__row" id="faq-antique"><dt>Is everything actually antique?</dt><dd>Not everything — and the sign out front says as much: Gifts · Home Decor · Art · Toys &amp; More. This is a multi-vendor mall, so the booths carry antiques, vintage items, collectibles and newer home decor side by side. That mix is the hunt.</dd></div>
+        <!-- TODO (pre-publish): client sign-off on this answer — honest and on-brand, but it is their voice to own. -->
+        <div class="faq__row" id="faq-how"><dt>How does an antique mall work?</dt><dd>Different vendors rent the numbered booths and stock them with their own finds, so every aisle is a different hunt. Browse at your own pace — the cashier is at the entrance.</dd></div>
+        <!-- TODO (pre-publish): confirm with the owner that every booth checks out at the front cashier before saying "check out". -->
       </dl>
+      <h3 id="faq-vendors">For vendors</h3>
+      <dl class="faq" data-faq>
+        <div class="faq__row" id="faq-rent"><dt>Can I rent a booth?</dt><dd>That's how we work — vendors rent the numbered booths. Call (775) 461-3142 and ask about current availability.</dd></div>
+        <div class="faq__row" id="faq-rates"><dt>How much does it cost to rent a booth?</dt><dd>Booth rates aren't posted online. Call (775) 461-3142 for current rates and availability.</dd></div>
+      </dl>
+      <!-- TODO (pre-publish): "Do you buy antiques or do appraisals?" — owner must answer before any copy (AI answers currently quote a "$50 appraisal" from dead Wix pages). -->
     </div>
   </section>
 
 </main>
 
-<!-- ===== Block 9 · Footer — exact NAP, hours, real socials, the small red X in the rule (D10 wink) ===== -->
-<footer class="band band--ground footer">
-  <div class="wrap">
+<!-- ===== 10 · Footer — exact NAP + hours, nav, real socials, Calm toggle; the yellow fascia strip with the fitted wordmark and the small X wink (3 taps = X marks the spot) ===== -->
+<footer class="footer">
+  <div class="band band--ground footer__main">
     <h2 class="sr-only">Contact</h2>
-    <div class="footer__grid">
-      <div class="footer__brand">
-        <p class="lockup">Carson Antiques &amp; Collectibles Mall</p>
-        <p class="footer__tag">Northern Nevada's largest antique mall · Carson City, NV</p>
-        <!-- TODO (pre-publish): obtain the vector logo from the client — the header and footer are typeset lockups until then. -->
-      </div>
+    <div class="wrap footer__grid">
+      <div class="footer__brand"><p class="footer__name">Carson Antiques &amp; Collectibles Mall</p><p class="footer__tag">Northern Nevada's largest antique mall · Carson City, NV</p><!-- TODO (pre-publish): obtain the vector logo from the client — the header and footer are typeset lockups until then. --></div>
       <address class="footer__nap">
         <span>1831 N Carson St, Carson City, NV 89701</span>
         <a href="tel:+17754613142">(775) 461-3142</a>
@@ -647,25 +936,39 @@
       </address>
       <nav class="footer__nav" aria-label="Footer">
         <ul>
-          <li><a href="#booths">The booths</a></li>
+          <li><a href="#booths">Booths</a></li>
           <li><a href="#map">Treasure Map</a></li>
           <li><a href="#rent">Rent a booth</a></li>
           <li><a href="#visit">Visit</a></li>
+          <li><a href="#day-trip">Day trip</a></li>
           <li><a href="#faq">FAQ</a></li>
         </ul>
       </nav>
-      <ul class="footer__links">
-        <li><a href="https://www.facebook.com/CARSONANTIQUESANDCOLLECTIBLESMALL/" rel="noopener">Facebook</a></li>
-        <li><a href="https://www.instagram.com/carsonantiquesandcollectibles" rel="noopener">Instagram</a></li>
-        <li><a href="https://www.yelp.com/biz/carson-antiques-and-collectibles-mall-carson-city" rel="noopener">Yelp</a></li>
-        <li><a href="https://www.google.com/maps?cid=8016809682534536257" rel="noopener">Get directions</a></li>
-      </ul>
+      <div class="footer__more">
+        <ul class="footer__links">
+          <li><a href="https://www.facebook.com/CARSONANTIQUESANDCOLLECTIBLESMALL/" rel="noopener">Facebook</a></li>
+          <li><a href="https://www.instagram.com/carsonantiquesandcollectibles" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.yelp.com/biz/carson-antiques-and-collectibles-mall-carson-city" rel="noopener">Yelp</a></li>
+          <li><a href="https://www.google.com/maps/dir/?api=1&amp;destination=Carson%20Antiques%20%26%20Collectibles%20Mall%2C%201831%20N%20Carson%20St%2C%20Carson%20City%2C%20NV%2089701&amp;destination_place_id=ChIJV4dzZtkKmYARQRRib-5tQW8" rel="noopener">Get directions</a></li>
+        </ul>
+        <button type="button" class="calm-toggle calm-toggle--footer" aria-pressed="false"><span class="calm-toggle__box" aria-hidden="true"></span>Calm motion</button>
+      </div>
     </div>
+  </div>
+  <div class="footer__fascia"><div class="wrap">
+    <p class="footer__wordmark"><span>Carson Antiques &amp;</span> <span>Collectibles Mall</span></p>
+    <p class="footer__fascia-tag">Gifts <i aria-hidden="true">●</i> Home Decor <i aria-hidden="true">●</i> Art <i aria-hidden="true">●</i> Toys <i aria-hidden="true">●</i> &amp; More!</p>
     <div class="footer__rule"><span class="xmark-wink" id="xmark-wink" aria-hidden="true"></span></div>
     <p class="legal">© 2026 Carson Antiques &amp; Collectibles Mall</p>
-  </div>
+  </div></div>
 </footer>
 
+<!-- ===== P · Phone action bar (≤767 + phone landscape) — Call · Directions · Hours. CSS shows it (works with no JS); app.js only tucks it while the hero CTAs are on screen. ===== -->
+<nav class="actionbar" id="actionbar" aria-label="Quick actions">
+  <a href="tel:+17754613142"><svg aria-hidden="true" focusable="false"><use href="#i-phone"/></svg><span>Call<span class="sr-only"> (775) 461-3142</span></span></a>
+  <a href="https://www.google.com/maps/dir/?api=1&amp;destination=Carson%20Antiques%20%26%20Collectibles%20Mall%2C%201831%20N%20Carson%20St%2C%20Carson%20City%2C%20NV%2089701&amp;destination_place_id=ChIJV4dzZtkKmYARQRRib-5tQW8" rel="noopener"><svg aria-hidden="true" focusable="false"><use href="#i-navigation"/></svg><span>Directions</span></a>
+  <a href="#hours"><svg aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span>Hours</span></a>
+</nav>
 
 <!-- Palette preview tool (Digital Horizon) — lets the client compare colour schemes. Remove this block + palette.js to retire it. -->
 <div class="palette-tool" id="palette-tool">

@@ -349,12 +349,12 @@
   }
 })();
 
-/* Phones: the embedded Google map (about 1.5 MB of Google scripts) waits until it is asked for. The iframe is hidden by CSS
-   on phones only, and a hidden lazy iframe never loads; "Get directions" right beside it already opens the phone's Maps app.
-   On desktop the button is display:none and the map loads exactly as before. */
+/* The embedded Google map (about 1.5 MB of Google scripts) waits until it is asked for — v2: on EVERY width (spec §4.8/A15).
+   The iframe is display:none by CSS until .map-open, and a hidden lazy iframe never loads; "Get directions" beside it opens
+   the visitor's Maps app. (v2 structure: wrapper renamed .visit__media -> .visit__map; behaviour unchanged.) */
 (() => {
   const btn = document.getElementById('map-reveal');
-  const media = btn && btn.closest('.visit__media');
+  const media = btn && btn.closest('.visit__map');
   if (!btn || !media) return;
   btn.addEventListener('click', () => {
     media.classList.add('map-open');

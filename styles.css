@@ -9,6 +9,20 @@
    Every band carries texture (canon #16): grain + one structural pattern. A flat fill is an automatic fail.
    ========================================================================== */
 
+/* ---------- fonts (spec §6.1/§8.2) — moved here from assets/fonts/fonts.css (deleted) so the page makes ONE render-blocking
+   CSS request. Self-hosted via the /fonts skill (Fontshare, ITF Free Font Licence, assets/fonts/LICENSE-ITF-Free-Font.txt) —
+   woff2 only, zero third-party requests. Source CSS: https://api.fontshare.com/v2/css?f[]=tanker%40400&display=swap ·
+   https://api.fontshare.com/v2/css?f[]=satoshi%40400%2C500%2C700&display=swap. Tanker = display only (never under 28px, the
+   phone header lockup excepted). Satoshi = body; static 400/500/700. tanker-400 + satoshi-700 are preloaded in <head>. */
+@font-face { font-family: 'Tanker'; src: url('assets/fonts/tanker-400.woff2') format('woff2'); font-weight: 400; font-display: swap; font-style: normal; }
+@font-face { font-family: 'Satoshi'; src: url('assets/fonts/satoshi-400.woff2') format('woff2'); font-weight: 400; font-display: swap; font-style: normal; }
+@font-face { font-family: 'Satoshi'; src: url('assets/fonts/satoshi-500.woff2') format('woff2'); font-weight: 500; font-display: swap; font-style: normal; }
+@font-face { font-family: 'Satoshi'; src: url('assets/fonts/satoshi-700.woff2') format('woff2'); font-weight: 700; font-display: swap; font-style: normal; }
+/* metric-matched fallbacks (local() only, font files untouched) — the swap moves no line boxes (CLS 0) */
+@font-face { font-family: 'Satoshi Fallback'; src: local('Arial'); font-weight: 400; size-adjust: 97.5%; ascent-override: 103.5%; descent-override: 24.6%; line-gap-override: 10.3%; }
+@font-face { font-family: 'Satoshi Fallback'; src: local('Arial Bold'); font-weight: 700; size-adjust: 97.6%; ascent-override: 103.5%; descent-override: 24.6%; line-gap-override: 10.2%; }
+@font-face { font-family: 'Tanker Fallback'; src: local('Impact'); font-weight: 400; size-adjust: 89.8%; ascent-override: 111.3%; descent-override: 28.9%; line-gap-override: 10.0%; }
+
 :root {
   --ground: #14201B;
   --chalk: #EDEBE3;
@@ -31,8 +45,8 @@
   --gutter: 16px;
   --band-pad: clamp(64px, 6vw + 24px, 120px);
 
-  --font-display: 'Tanker', 'Arial Narrow', Impact, sans-serif;
-  --font-body: 'Satoshi', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Tanker', 'Tanker Fallback', 'Arial Narrow', Impact, sans-serif;
+  --font-body: 'Satoshi', 'Satoshi Fallback', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   --rule-dark: rgb(var(--chalk-rgb) / .22);   /* hairline on the ground */
   --rule-light: rgb(var(--ground-rgb) / .28);     /* hairline on chalk */
@@ -680,3 +694,63 @@ svg.map.zone-service .booth:not([data-zone="service"]) { opacity: .28; }
   .hero__sub { margin-top: 10px; font-size: 1rem; }
   .hero__ctas { margin-top: 16px; }
 }
+
+/* =====================================================================================================
+   v2 STRUCTURE SCAFFOLD (package "structure", 2026-10-05). Only what the new v2 markup needs so it never breaks the
+   layout, never exposes a second copy of a control and never hides a fact; plus the two CSP moves. The visual package
+   (spec §11 V-01…V-15) owns the real styling and replaces/absorbs any rule here — nothing below is a design decision.
+   ===================================================================================================== */
+/* the HTML `hidden` contract wins over component display rules (.btn is inline-flex, which beat the UA [hidden] rule and
+   showed the not-yet-wired #copy-booth / #copy-addr buttons) */
+[hidden] { display: none !important; }
+/* §4.0 sprite — hidden WITHOUT display:none so its <symbol>s stay renderable through <use> */
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.ink-x__under { stroke: var(--chalk); }
+.ink-x__core { stroke: var(--barn); }
+/* icons inside controls are decorative and sized by their text (an unsized inline <svg> defaults to 300×150) */
+.btn svg, .marquee-pause svg, .actionbar svg { width: 1.25em; height: 1.25em; flex: none; }
+.chip__x { width: 22px; height: 22px; flex: none; }
+.chip::before { content: none; }                       /* §8.3: the inked X replaces v1's square marker */
+/* decorative hero layers never take a grid cell or flow space */
+.hero__lights { display: none; }                       /* rendered only under html.motion (motion package, M01) */
+.hero__body { position: relative; }
+.hero__trail { position: absolute; left: 0; top: 0; width: 0; height: 0; overflow: visible; pointer-events: none; }
+/* §4.2 / §4.1: exactly one Calm toggle per width in the tab order; Call leaves the phone header */
+.calm-toggle--phone { display: none; }
+@media (max-width: 767px) {
+  .calm-toggle--hero, .site-head__cta { display: none; }
+  .calm-toggle--phone { display: inline-flex; }
+}
+.site-head__open { display: none; }                    /* D-32: shown only where V-02 measures the row fits */
+.site-head__road { display: none; }                    /* visual V-02 / motion M07 */
+/* ribbon static fallback until V-04 (copy B is only for the scrubbed loop) */
+.ribbon { background: var(--yellow); color: var(--ground); overflow: hidden; }
+.ribbon__copy--b { display: none; }
+.tag__back { display: none; }                          /* the price tag's back — V-06 builds the flip */
+.visit__cover { display: none; }                       /* the storefront wipe panel — motion M26 */
+.map-hatch-line { stroke: var(--chalk); }              /* §6.5: moved out of a style="" attribute (CSP) */
+.skip-map { position: absolute; left: -9999px; }       /* §4.6: visible on focus */
+.skip-map:focus { position: static; display: inline-block; margin-bottom: 12px; }
+/* §6.6 hard CSS caps for the new desktop encodes */
+.worth__photo img { width: 100%; max-width: 510px; }
+.visit__photo img { width: 100%; max-width: 760px; }
+/* §4.8 map facade on EVERY width: the iframe stays display:none (so it never loads) until "Show the map here" */
+.visit__map iframe { display: none; width: 100%; max-width: 720px; height: 320px; border: 1px solid rgb(var(--ground-rgb) / .22); background: var(--ground-2); }
+.visit__map.map-open iframe { display: block; }
+.map-reveal { display: inline-flex; }
+.map-reveal[hidden] { display: none; }
+/* §4.12 / D-21: the action bar is CSS-shown on phones (works with no JS) and absent elsewhere; access A-02 docks it */
+.actionbar { display: none; }
+@media (max-width: 767px), (max-height: 500px) and (pointer: coarse) and (orientation: landscape) { .actionbar { display: flex; } }
+/* band colour flips the spec makes (§2: visit ground -> chalk, rent chalk -> barn) — keep every v1 text role legible until V-09/V-10 */
+.band--barn { background-color: var(--barn); color: var(--on-barn); }
+.band--barn a, .band--barn .rent__cta-line a { color: inherit; }
+.band--chalk .visit__note, .band--chalk .nap a { color: var(--ground); }
+.band--chalk .attr { color: var(--barn); }
+.band--chalk .btn--ghost { color: var(--ground); border-color: rgb(var(--ground-rgb) / .55); }
+/* §8.3 day-trip strip: strokes so the aria-hidden road reads at all until V-11 draws the final one */
+.street__road { width: 100%; height: auto; }
+.street__edge { stroke: var(--chalk); stroke-width: 2; }
+.street__centre { fill: none; stroke: var(--yellow-bright); stroke-width: 3; stroke-dasharray: 14 10; }
+.street__start { fill: var(--ground); stroke: var(--yellow); stroke-width: 4; }
+.street__pin { fill: var(--ground); stroke: var(--yellow); stroke-width: 3; }

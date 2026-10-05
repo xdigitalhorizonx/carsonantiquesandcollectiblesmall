@@ -1,0 +1,6 @@
+# SPEC-AMENDMENTS AM-2: build tooling, docs and evidence never ship. Vercel serves the static site as-is (no build step).
+tools/
+*.md
+*.log
+*.test.js
+evidence/
