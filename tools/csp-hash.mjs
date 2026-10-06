@@ -5,6 +5,8 @@
 //   node tools/csp-hash.mjs --check   -> exit 1 if vercel.json's hash differs from the recomputed one (no write)
 // The script is hashed exactly as written between <script> and </script>. It is kept on one line so a CRLF
 // (Windows checkout, core.autocrlf=true) and an LF (git / Vercel) copy hash identically.
+// No upgrade-insecure-requests in the policy on purpose: browsers ignore it in a Report-Only header (it is not
+// reportable). Add it back when this policy is switched to an enforcing Content-Security-Policy.
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';

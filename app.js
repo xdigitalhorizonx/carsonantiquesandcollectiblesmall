@@ -1,5 +1,5 @@
-/* Carson Antiques & Collectibles Mall — home v2 · app.js (SPEC §7; build-motion.md, fix-r1.md). ONE engine: anime.js 4.5.0
-   custom build. Start states only under html.motion; facts never start hidden; Calm = reduced path; signs rest at 0°. */
+/* Carson Antiques & Collectibles Mall · home v2 · app.js (SPEC §7). One engine: anime.js 4.5.0 custom build.
+   Start states only under html.motion; facts never start hidden; Calm = reduced path; signs rest at 0°. */
 (() => {
   'use strict';
   const H = document.documentElement, A = window.anime, hasAnime = !!(A && typeof A.animate === 'function');
@@ -31,7 +31,7 @@
   const tline = (hosts, then) => { const a = A.createTimeline({ onComplete: fin(hosts, then) }); runs.set(a, blockOf([].concat(hosts)[0])); return a; };
   const fxPlay = (t, p, then) => { const a = A.animate(t, { ...p, onComplete: x => { fx.delete(x); if (then) then(x); } }); fx.add(a); return a; };
 
-  /* once-triggers: one IntersectionObserver per threshold ("top at N % of the viewport", or "R visible") */
+  /* once-triggers: one IO per threshold */
   const pend = new Map(), ios = new Map(), claimed = new Set();
   const fire = (el, now) => {
     const p = pend.get(el); if (!p) return;
@@ -49,17 +49,23 @@
     }), { rootMargin: `0px 0px ${at - 100}% 0px`, threshold: ratio }));
     pend.set(el, { fn, io }); io.observe(el);
   };
-  /* focus wins (§7.2.10): the first focus inside a block completes its entrances */
+  /* focus wins (§7.2.10) */
   document.addEventListener('focusin', e => {
     const b = blockOf(e.target); if (!b) return;
     pend.forEach((p, el) => { if (b.contains(el)) fire(el, true); });
     runs.forEach((blk, a) => { if (blk === b) a.complete(); });
   });
 
-  /* scrubs (≤ 5 synced onScroll: M05 noun, M06 ribbon, M07 road, M11 lamp, M19 wall) */
+  document.addEventListener('click', e => {   // fix-r2 A-L7
+    const a = e.target.closest && e.target.closest('a[href^="#"]'), t = a && document.getElementById(a.hash.slice(1));
+    if (!t) return;
+    pend.forEach((p, el) => { if (el.contains(t)) fire(el, true); });
+  });
+
+  /* ≤ 5 synced onScroll */
   let scrubs = [], nounObs = null;
   const loose = [];
-  /* anime 4.5.0: a ScrollContainer's dataTimer never pauses (180 rAF/s idle) — never start it */
+  /* anime 4.5.0: never start a ScrollContainer's dataTimer (idle rAF) */
   const tame = o => { const c = o.container; if (c && !c.tamed) { c.tamed = 1; c.scrollTicker.onBegin = () => {}; c.dataTimer.pause(); } return o; };
   const scrub = (t, p, obs) => { const a = A.animate(t, { ease: 'linear', duration: 1000, ...p, autoplay: tame(A.onScroll(obs)) }); scrubs.push(a); return a; };
   const undraw = el => { if (el) ['pathLength', 'stroke-dasharray', 'stroke-dashoffset'].forEach(n => el.removeAttribute(n)); };
@@ -70,7 +76,7 @@
     undraw($('.map-wall'));
   };
 
-  /* Calm (§7.3) — one stored state, three buttons; same path as prefers-reduced-motion */
+  /* Calm (§7.3) = the reduced path */
   const quiet = () => {
     pend.forEach((p, el) => p.io.unobserve(el)); pend.clear();
     runs.forEach((b, a) => a.complete()); fx.forEach(a => a.complete());
@@ -93,13 +99,13 @@
   addEventListener('beforeprint', () => { pend.forEach((p, el) => fire(el, true)); quiet(); });
   addEventListener('afterprint', wake);
 
-  /* ---- shared scroll listener: velocity for the tag sway + the end-of-page reveal fallback ---- */
-  let lastY = null, lastT = 0, onVelocity = () => {};   // no scrollY read at boot: it would force a full layout
+  /* scroll: sway velocity + end-of-page fallback */
+  let lastY = null, lastT = 0, onVelocity = () => {};
   addEventListener('scroll', () => {
     const now = performance.now(), y = scrollY, v = lastY === null ? 0 : (y - lastY) / Math.max(1, now - lastT);
     lastY = y; lastT = now; onVelocity(v);
     if (pend.size && innerHeight + y >= document.documentElement.scrollHeight - 4)
-      pend.forEach((p, el) => { if (el.getBoundingClientRect().top < innerHeight) fire(el); });
+      pend.forEach((p, el) => { const r = el.getBoundingClientRect(); if (r.top < innerHeight) fire(el, r.bottom < 0); });
   }, { passive: true });
 
   /* scroll-shadow edges (nav, legend) */
@@ -126,7 +132,7 @@
   const mk = (n, at) => { const e = document.createElementNS(NS, n); for (const k in at) e.setAttribute(k, at[k]); return e; };
   let trailMasks = [], heroTl = null;
 
-  /* glyph boxes of every OTHER hero text line (Tanker: cap top = content top + .25 em, baseline = + 1 em) */
+  /* glyph boxes of the other hero lines (Tanker cap top = top + .25 em, baseline = + 1 em) */
   const inkBoxes = () => {
     const out = [], rg = document.createRange(), nodes = [];
     [h1, $('.hero__noun', body)].forEach(r => { if (!r) return; const tw = document.createTreeWalker(r, NodeFilter.SHOW_TEXT); for (let n; (n = tw.nextNode());) nodes.push(n); });
@@ -136,7 +142,7 @@
       rg.selectNodeContents(n);
       for (const r of rg.getClientRects()) out.push({ l: r.left, r: r.right, t: r.top + .25 * f, b: r.top + f });
     }
-    /* fix-r1 AC-37: the "in" disc + 2 px ring is an obstacle too */
+    /* + the "in" disc and its ring */
     const sl = $('.sl-in', h1);
     if (sl) { const r = sl.getBoundingClientRect(); out.push({ l: r.left - 2, r: r.right + 2, t: r.top - 2, b: r.bottom + 2 }); }
     return out;
@@ -146,27 +152,34 @@
     if (!trailSW) { const p = mk('path', {}); trailSvg.appendChild(p); trailSW = parseFloat(getComputedStyle(p).strokeWidth) || 5; p.remove(); }
     return trailSW;
   };
-  /* M02 overlay: one dashed path + one mask path per line box of "right here" (§7.2.6 — never draw CSS dashes) */
+  /* M02: a dashed path + a mask path per line box of "right here" (§7.2.6) */
   const buildTrail = () => {
     if (!trailSvg || !hl) return;
     if (heroTl) heroTl.complete();
     trailSvg.textContent = '';
     const B = body.getBoundingClientRect(), fs = parseFloat(getComputedStyle(hl).fontSize), clear = 3.5 + strokeW() / 2;
     const others = inkBoxes(), defs = mk('defs', {}); trailSvg.appendChild(defs);
-    trailMasks = Array.from(hl.getClientRects()).filter(r => r.width > 4).map((r, i) => {
-      let y = r.bottom - .17 * fs;
-      others.forEach(o => { if (o.t > r.top + .9 * fs && o.l < r.right && o.r > r.left && o.t < y + clear) y = o.t - clear; });
-      const x0 = r.left - B.left, x1 = r.right - B.left, yy = y - B.top, d = `M${x0.toFixed(1)} ${yy.toFixed(1)}H${x1.toFixed(1)}`;
+    trailMasks = [];
+    Array.from(hl.getClientRects()).filter(r => r.width > 4).forEach(r => {
+      const y0 = Math.max(r.bottom - .17 * fs, r.top + fs + strokeW() / 2);
+      let y = y0, a = r.left, b = r.right;
+      const cut = .3 * (b - a);
+      for (const o of others) {   /* an end obstacle trims; never above the own baseline */
+        if (!(o.t > r.top + .9 * fs && o.l < b && o.r > a && o.t < y + clear)) continue;
+        if (o.l <= a && o.r - a < cut) a = o.r + clear; else if (o.r >= b && b - o.l < cut) b = o.l - clear; else y = o.t - clear;
+      }
+      if (y < Math.min(y0, r.top + fs + strokeW() / 2 + 1) || b - a < 8) return;
+      const i = trailMasks.length, x0 = a - B.left, x1 = b - B.left, yy = y - B.top, d = `M${x0.toFixed(1)} ${yy.toFixed(1)}H${x1.toFixed(1)}`;
       const m = mk('mask', { id: 'trail-m' + i, maskUnits: 'userSpaceOnUse', x: x0 - 12, y: yy - 12, width: x1 - x0 + 24, height: 24 });
       const mp = mk('path', { d, fill: 'none', stroke: '#fff', 'stroke-width': 10 });
       m.appendChild(mp); defs.appendChild(m);
       trailSvg.appendChild(mk('path', { d, mask: `url(#trail-m${i})` }));
-      return mp;
+      trailMasks.push(mp);
     });
   };
   const heroIntro = () => {
     if (!live()) return;
-    /* fix-r1 §7.2.7: a slow boot skips the intro (the trail is already whole) */
+    /* §7.2.7: a slow boot skips the intro */
     if (performance.now() + 1080 > 5000) { if (chipX) chipX.classList.add('is-in'); return; }
     const tl = heroTl = tline([chipX], () => { heroTl = null; });
     const per = 450 / Math.max(1, trailMasks.length);
@@ -179,12 +192,13 @@
     if (chipX) tl.add(chipX, { opacity: [0, 1], scale: [1.6, 1], rotate: [-12, 0], duration: 380, ease: 'outBack' }, 700);
   };
   if (live() && lights) {   // M01; fix-r1: skipped if it can't end by 5 s
-    if (performance.now() + 900 > 5000) lights.classList.add('is-in');
+    const fcp = performance.getEntriesByName('first-contentful-paint')[0];
+    if (performance.now() + 900 > 5000 || (fcp && performance.now() - fcp.startTime > 300)) lights.classList.add('is-in');
     else { lights.style.opacity = '1'; play(lights, { opacity: [1, 0], duration: 900, ease: 'outQuad' }, [lights]); }
   }
   claimed.add(lights); claimed.add(chipX);
 
-  /* M05 — price-gun roll: two auto steps (only if they end before 5 s), then hero scroll 0 → .6 snaps the rest */
+  /* M05: two auto steps (only if done by 5 s), then hero scroll 0 → .6 snaps the rest */
   const nouns = $$('.nouns .noun');
   let ni = 0, nounAnims = [], nounBase = 0, autoT = [];
   nounTo = (i, instant) => {
@@ -211,7 +225,7 @@
 
   if (hero && body) {
     const ready = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
-    let lastW = 0, lastH = 0, built = false;   // nothing rebuilds before t0: a load-time resize would flash a static trail
+    let lastW = 0, lastH = 0, built = false;
     ready.then(() => setTimeout(() => { lastW = innerWidth; built = true; buildTrail(); heroIntro(); autoNouns(); }, 150));
     addEventListener('resize', () => { if (built && innerWidth !== lastW) { lastW = innerWidth; buildTrail(); } });
     if ('ResizeObserver' in window) new ResizeObserver(([e]) => {      // text spacing / text-only zoom (1.4.12)
@@ -221,7 +235,7 @@
     }).observe(h1);
   }
 
-  /* ===== X-05/X-06 scrubs · M05 noun · M06 ribbon · M07 road line · M11 lamp parallax · M19 wall ===== */
+  /* ===== scrubs: M05 noun · M06 ribbon · M07 road · M11 lamp · M19 wall ===== */
   const lamp = $('.worth__photo img'), wall = $('.map-wall'), figure = $('#map-figure');
   let lampW = 0, scrubT = 0;
   wakeScrubs = () => {
@@ -245,7 +259,7 @@
     scrubT = setTimeout(() => { if (innerWidth !== lampW && scrubs.length) { lampW = innerWidth; sleepScrubs(); wakeScrubs(); } }, 200);
   });
 
-  /* ===== X-06 · WORTH — M08 quote · M09 vinyl · M10 fact stamps ===== */
+  /* ===== WORTH M08–M10 ===== */
   const stampList = lis => {
     const tl = tline(lis);
     tl.add(lis, { '--tick': [1.6, 1], duration: 320, ease: 'outBack', delay: A.stagger(90) }, 0)
@@ -265,7 +279,7 @@
   const wm = $$('.worth__more [data-anim]');
   if (wm.length) { wm.forEach(l => claimed.add(l)); when(wm[0], () => play(wm, { opacity: [0, 1], translateY: [16, 0], duration: 600, ease: 'outExpo', delay: A.stagger(120) }, wm)); }
 
-  /* ===== X-07 · MARQUEE — M12 offscreen pause · M13 pause/play · M14 sway · M15 swing ===== */
+  /* ===== MARQUEE M12–M15 ===== */
   const marquee = $('#marquee'), mpBtn = $('#marquee-pause');
   if (marquee) {
     const copy = $('.marquee__copy', marquee);
@@ -317,7 +331,7 @@
     }
   }
 
-  /* ===== X-08 · BOOTHS — M16 plate spring · M17 shelf pull · M18 tick sweep ===== */
+  /* ===== BOOTHS M16–M18 ===== */
   const plate = $('.plate--enamel'), forrent = $('.forrent');
   const settleSign = (el, from) => play(el, { rotate: [from, 0], ease: spring() }, [el], () => rest(el));
   const kick = el => { if (el && el.classList.contains('is-in') && !still()) fxPlay(el, { rotate: [2.5, 0], ease: spring() }, () => rest(el)); };
@@ -339,8 +353,7 @@
     }, 90);
   }
 
-  /* ===== block 5 · TREASURE MAP: one Tab stop, roving tabindex, arrows + digit type-ahead, Esc chip (1.4.13), tap-to-pin,
-     legend = highlight only; M19–M22, #pick-booth, #booth-n (no focus move) ===== */
+  /* ===== TREASURE MAP: one Tab stop, roving tabindex, arrows + digits, Esc chip, tap-to-pin; M19–M22, #pick-booth, #booth-n ===== */
   const svg = $('svg.map');
   const scroller = $('#map-scroller');
   const chip = $('#map-chip');
@@ -351,7 +364,7 @@
   let eggText = null;
   const CELL = 6, VBX = 300, VBY = 236, VBW = 1470, VBH = 664;
   const say = (el, t) => { if (!el) return; el.textContent = ''; setTimeout(() => { el.textContent = t; }, 50); };
-  /* A-05: the ring's tab stop carries the key instructions (§9 A10) */
+  /* §9 A10 */
   const rove = g => {
     if (active && active !== g) { active.tabIndex = -1; active.removeAttribute('aria-describedby'); }
     g.tabIndex = 0; g.setAttribute('aria-describedby', 'map-keys'); active = g;
@@ -360,7 +373,7 @@
 
   const centre = g => { const r = $('rect', g); return { x: +r.getAttribute('x') + +r.getAttribute('width') / 2, y: +r.getAttribute('y') + +r.getAttribute('height') / 2 }; };
   const placeChip = g => {
-    /* fix-r1: measure the wrapping chip from x 0 */
+    /* measured from x 0 */
     chip.style.left = '0px'; chip.style.top = '0px';
     const fr = figure.getBoundingClientRect(), sr = scroller.getBoundingClientRect(), r = $('rect', g).getBoundingClientRect();
     const cw = chip.offsetWidth, ch = chip.offsetHeight;
@@ -372,13 +385,14 @@
   };
   const showChip = (g, pin) => {
     clearTimeout(hideTimer); dismissed = false;
-    chip.textContent = eggText && g.classList.contains('is-x') ? eggText : g.dataset.chip;
+    if (eggText && g.classList.contains('is-x')) chip.innerHTML = eggText.replace(/^(.+?\d\.) /, '<span class="nw">$1</span> <span class="nw">') + '</span>';
+    else chip.textContent = g.dataset.chip;
     chip.hidden = false; placeChip(g);
     regions.forEach(x => x.classList.toggle('is-active', x === g));
     if (pin) { pinned = g; chip.classList.add('is-pinned'); } else if (pinned !== g) { pinned = null; chip.classList.remove('is-pinned'); }
   };
 
-  /* M21 route layer: one solid mask path draws the dashed route (§7.2.6) + a 10 px walker dot */
+  /* M21: a solid mask path draws the dashed route + a walker dot */
   const routeLayer = svg && $('.map-route', svg), trailLayer = svg && $('.map-trail', svg);
   let walkAnims = [];
   const clearRoute = () => { walkAnims.forEach(a => a.cancel()); walkAnims = []; if (routeLayer) routeLayer.textContent = ''; };
@@ -444,7 +458,7 @@
       if (pinned && !figure.contains(e.target) && !(e.target.closest && e.target.closest('.map-tools'))) hideChip(true);
     });
 
-    /* keyboard — roving tabindex ring + geometric ↑/↓ + digit type-ahead; Enter/Space pin AND draw the way */
+    /* keyboard: ring ←/→, geometric ↑/↓, digits; Enter/Space pin + draw */
     const ring = regions;
     const nearest = (from, dir) => {
       const c = centre(from); let best = null, score = Infinity;
@@ -483,7 +497,7 @@
       if (handled) e.preventDefault();
     });
 
-    /* zone legend — highlight only, never a count; M22 ping */
+    /* legend: highlight only (M22) */
     const legend = $$('.legend__btn');
     legend.forEach(btn => btn.addEventListener('click', () => {
       const on = btn.getAttribute('aria-pressed') !== 'true';
@@ -495,7 +509,7 @@
       if (!still() && hit.length) fxPlay(hit, { scale: [{ from: 1, to: 1.04, duration: 140, ease: 'outQuad' }, { to: 1, duration: 140, ease: 'inQuad' }], delay: A.stagger(6) }, clean);
     }));
 
-    /* mobile scroller: open on the ENTRANCE, scroll-shadow edges, keep a pinned chip in place */
+    /* phone scroller opens on the ENTRANCE */
     const VB = svg.viewBox.baseVal;
     const edges = () => {
       figure.classList.toggle('can-left', scroller.scrollLeft > 2);
@@ -507,27 +521,27 @@
       const px = (ex - VB.x) / VB.width * svg.getBoundingClientRect().width;
       scroller.scrollLeft = Math.max(0, px - scroller.clientWidth / 2); edges();
     };
-    /* only a WIDTH change re-centres (address-bar resizes keep the visitor's pan) */
+    /* only a width change re-centres */
     let lastW = 0;
     later.push(() => { lastW = innerWidth; centreEntrance(); });
     addEventListener('resize', () => { if (innerWidth !== lastW) { lastW = innerWidth; centreEntrance(); } });
     let sr = 0;
     scroller.addEventListener('scroll', () => { edges(); if (!chip.hidden) { cancelAnimationFrame(sr); sr = requestAnimationFrame(() => placeChip(pinned || active)); } }, { passive: true });
 
-    /* M20 — stocking the floor: booths arrive from the ENTRANCE gap (delay = distance × .6 ms ≈ 1 s) */
+    /* M20: booths arrive from the ENTRANCE (delay = distance × .6 ms) */
     const floor = $('.map-booths', svg);
     let stocking = null;
     when(figure, () => {
       const ex = (+svg.dataset.entranceX0 + +svg.dataset.entranceX1) / 2, ey = +svg.dataset.entranceY;
       const dist = regions.map(g => { const c = centre(g); return Math.hypot(c.x - ex, c.y - ey); });
       if (pickBtn) pickBtn.setAttribute('aria-disabled', 'true');
-      /* fix-r1 AC-13: opacity only (scale re-laid out the SVG each frame) */
+      /* opacity only (AC-13) */
       return (stocking = play(regions, { opacity: [0, 1], duration: 450, ease: 'outExpo', delay: (el, i) => dist[i] * .6 }, [floor],
         () => { stocking = null; if (pickBtn) pickBtn.removeAttribute('aria-disabled'); }));
     }, 100, .3);
     stockNow = () => { fire(figure, true); if (stocking) stocking.complete(); };
 
-    /* #pick-booth — never moves focus; disabled while the floor is being stocked */
+    /* #pick-booth: never moves focus */
     if (pickBtn) pickBtn.addEventListener('click', () => {
       if (pickBtn.getAttribute('aria-disabled') === 'true') return;
       stockNow();
@@ -536,7 +550,7 @@
       say(mapStatus, `Start with Booth ${g.dataset.n}. No promises — go look.`);
     });
 
-    /* #booth-n (A11): pin, rove, draw, announce; focus not moved */
+    /* #booth-n (A11): focus not moved */
     let prevFocus = null;
     document.addEventListener('focusin', e => { if (!(e.target.closest && e.target.closest('g.booth'))) prevFocus = e.target; });
     const fromHash = () => {
@@ -546,7 +560,7 @@
       stockNow();
       figure.scrollIntoView({ block: 'center', behavior: 'auto' });
       eggText = null; pin(g, 'hash');
-      if (document.activeElement === g) {   // the browser focuses a focusable fragment target; A11 keeps focus where it was
+      if (document.activeElement === g) {
         if (prevFocus && prevFocus.isConnected && prevFocus !== document.body) prevFocus.focus({ preventScroll: true }); else g.blur();
       }
       say(live1, `Booth ${g.dataset.n} — the way from the entrance is drawn on the map.`);
@@ -555,8 +569,7 @@
     if (location.hash) (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(fromHash);
   }
 
-  /* ===== D10 / M34 · X MARKS THE SPOT — type `treasure` or tap the footer X 3×: a BFS trail (6-unit grid over the
-     map walls) from the ENTRANCE to a random booth, mask-drawn after the scroll settles, walker, X stamp, 6 s site beat ===== */
+  /* ===== M34 X MARKS THE SPOT: type `treasure` or tap the footer X 3× — BFS trail, walker, X stamp, 6 s beat ===== */
   if (svg && booths.length) {
     const W = Math.ceil(VBW / CELL) + 1, Hh = Math.ceil(VBH / CELL) + 1;
     let walls = null;
@@ -613,12 +626,11 @@
       }
       simp.push(pts[pts.length - 1]);
       simp.unshift([gx, gy + 6]);
-      simp.push([bx + bw / 2, by + bh / 2]);
       let len = 0; for (let i = 1; i < simp.length; i++) len += Math.hypot(simp[i][0] - simp[i - 1][0], simp[i][1] - simp[i - 1][1]);
       return { d: 'M' + simp.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' L'), len, cx: bx + bw / 2, cy: by + bh / 2 };
     };
 
-    /* to the map: jump if > 1.5 viewports, then a smooth settle; resolves on scrollend (1 s fallback) */
+    /* jump if > 1.5 viewports, then a smooth settle */
     const jump = y => { H.style.scrollBehavior = 'auto'; scrollTo(0, y); H.style.scrollBehavior = ''; };
     const toMap = cx => new Promise(res => {
       centreOn(cx, true);
@@ -635,14 +647,15 @@
       scrollTo({ top: target, behavior: 'smooth' });
     });
 
-    /* the 6 s whole-site beat: ribbon split-flap, both hung signs swing once, tags in view flip, rules march */
+    /* the 6 s beat: ribbon flap, signs swing, tags flip, rules march */
     const track = $('.ribbon__track'), ribs = $$('.ribbon__copy'), ribHTML = ribs.map(p => p.innerHTML);
     const ribbon = (n, on) => {
-      const swap = () => ribs.forEach((p, i) => { p.innerHTML = on ? `<span class="seg">X marks the spot — Booth ${n}&nbsp;<i>●</i></span> <span class="seg">No promises&nbsp;<i>●</i></span> <span class="seg">Go look&nbsp;<i>●</i></span>` : ribHTML[i]; });
+      const rb = ribs[0].closest('.ribbon');
+      const swap = () => ribs.forEach((p, i) => { if (!i) rb.style.minHeight = on ? rb.offsetHeight + 'px' : ''; p.innerHTML = on ? `<span class="seg">X marks the spot — Booth ${n}&nbsp;<i>●</i></span> <span class="seg">No promises&nbsp;<i>●</i></span> <span class="seg">Go look&nbsp;<i>●</i></span>` : ribHTML[i]; });
       if (still() || !track) { swap(); return; }
       fxPlay(track, { rotateX: [0, 90], duration: 280, ease: 'inQuad' }, () => { swap(); fxPlay(track, { rotateX: [-90, 0], duration: 320, ease: 'outQuad' }); });
     };
-    /* fix-r1: one beat at a time — a re-trigger restarts the clock on the same observer */
+    /* one beat at a time */
     let beatT = 0, beatN = null, flipIO = null, flipped = [];
     const swung = new Set(), signs = [[plate, 3], [forrent, -3]].filter(([el]) => el);
     const swingSign = (el, a) => { if (swung.has(el) || still()) return; swung.add(el); fxPlay(el, { rotate: [a, 0], ease: spring() }, () => rest(el)); };
@@ -664,7 +677,7 @@
       document.body.classList.add('x-marks');
       beatN = n; ribbon(n, true);
       swung.clear();
-      signs.forEach(([el, a]) => {   // M34: both hung signs swing at once (spec); one off screen swings again when it comes into view
+      signs.forEach(([el, a]) => {
         if (pend.has(el)) { pend.get(el).io.unobserve(el); pend.delete(el); }
         el.classList.add('is-in');
         const r = el.getBoundingClientRect();
@@ -683,7 +696,7 @@
           });
         });
         if (!again) $$('.tag').forEach(t => flipIO.observe(t));
-        signs.forEach(([el]) => { flipIO.unobserve(el); flipIO.observe(el); });   // (re)observing reports the signs already on screen
+        signs.forEach(([el]) => { flipIO.unobserve(el); flipIO.observe(el); });
       }
       beatT = setTimeout(() => beatOff(true), 6000);
     };
@@ -728,10 +741,10 @@
       });
     };
 
-    /* Escape anywhere closes the egg chip; the X stays */
+    /* Esc closes the chip; the X stays */
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && eggText && !chip.hidden) hideChip(true); });
 
-    /* trigger 1: type "treasure" anywhere (never inside an editable field) */
+    /* type "treasure" (never in a field) */
     let buf = '';
     document.addEventListener('keydown', e => {
       const t = e.target; if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
@@ -739,15 +752,15 @@
       buf = (buf + e.key.toLowerCase()).slice(-8);
       if (buf === 'treasure') { buf = ''; xMarksTheSpot(); }
     });
-    /* trigger 2: three taps on the small red X in the footer rule within 1.5 s */
+    /* 3 taps on the footer X in 1.5 s */
     const wink = $('#xmark-wink');
     if (wink) { let taps = [];
       wink.addEventListener('click', () => { const now = Date.now(); taps = taps.filter(t => now - t < 1500); taps.push(now); if (taps.length >= 3) { taps = []; xMarksTheSpot(); } });
     }
   }
 
-  /* ===== X-10 · RENT M23–M24 · VISIT M25–M27 · DAY TRIP M28–M29 · FAQ M30 · FOOTER M31 · BAR M33 ===== */
-  when(forrent, () => settleSign(forrent, -4));   // fix-r1: −4°, inside the §7.2.9 cap (M23 said −5°; flagged to the director)
+  /* ===== M23–M33 ===== */
+  when(forrent, () => settleSign(forrent, -4));   // −4°: §7.2.9 cap
   if (forrent) {
     forrent.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse' && fine.matches) kick(forrent); });
     forrent.addEventListener('focus', () => { if (forrent.matches(':focus-visible')) kick(forrent); });
@@ -755,8 +768,7 @@
   const ledger = $$('.rent__ledger [data-anim]');
   if (ledger.length) { ledger.forEach(l => claimed.add(l)); when(ledger[0].parentElement, () => stampList(ledger)); }
 
-  /* TODAY (A8): Carson City weekday by US-Pacific arithmetic (DST 2nd Sun Mar → 1st Sun Nov; = Intl 2025–2030, tools/open-now.test.mjs,
-     review by 2030-06-01 or if DST law changes) — no 50 ms ICU load at 4× CPU. Open now (A9, D-20): built, shipped OFF. */
+  /* TODAY (A8): US-Pacific arithmetic (= Intl 2025–2030, tools/open-now.test.mjs; review by 2030-06-01). Open now (A9): built, OFF. */
   /* open-now:begin */
   const laTime = (d = new Date()) => {
     const y = d.getUTCFullYear(), sun = (m, n) => 1 + (7 - new Date(Date.UTC(y, m, 1)).getUTCDay()) % 7 + 7 * (n - 1);
@@ -777,7 +789,7 @@
   };
   /* open-now:end */
   const laDay = d => laTime(d).wd;
-  /* fix-r1: re-mark on tab return + once a minute */
+  /* re-marked on tab return + each minute */
   let markedDay = -1;
   const markToday = () => {
     const wd = laDay(); if (wd === markedDay) return; markedDay = wd;
@@ -796,7 +808,7 @@
     tick(); setInterval(tick, 6e4);
   }
 
-  /* A-05/A-06 copy booth link / address (clipboard API only; address fallback = select) */
+  /* copy booth link / address */
   const clip = navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext ? t => navigator.clipboard.writeText(t) : null;
   const copyBooth = $('#copy-booth'), copyAddr = $('#copy-addr');
   if (clip && copyBooth) {
@@ -837,7 +849,7 @@
     return tl;
   });
 
-  /* M28 — North Carson Street draws; each walk pin drops when the line reaches its routed distance */
+  /* M28: pins drop as the line reaches their routed distance */
   const street = $('.street');
   if (street) {
     const roads = $$('.street__road', street), masks = [];
@@ -867,7 +879,7 @@
   const fwm = $('.footer__wordmark');
   when(fwm, () => play($$('.fw > span', fwm), { translateY: ['100%', '0%'], duration: 800, ease: 'outExpo', delay: A.stagger(90) }, [fwm]), 95);
 
-  /* M33: the bar tucks only while the hero CTAs AND the hours chip are fully on screen (AC-32; fix-r1) */
+  /* M33: tucked only while the CTAs and the chip are fully on screen */
   const ctas = $('#hero-ctas'), hoursChip = $('#open-chip');
   if (ctas && 'IntersectionObserver' in window) {
     const onScreen = new Map();
@@ -884,7 +896,7 @@
     when(el, () => play(el, { translateY: [el.dataset.anim === 'rise' ? 16 : 12, 0], opacity: [el.dataset.anim === 'rise' ? 0 : 1, 1], duration: 600, ease: 'outExpo' }, [el]));
   });
 
-  /* fix-r1: tiles render after load, one per idle slice (their images don't race the hero) */
+  /* tiles render after load, one per idle slice */
   const tilesIn = () => { const ts = $$('.tile:not(.is-ready)'); const step = () => { const t = ts.shift(); if (t) { t.classList.add('is-ready'); idle(step); } }; idle(step); };
   if (document.readyState === 'complete') tilesIn(); else addEventListener('load', tilesIn, { once: true });
 
@@ -896,7 +908,7 @@
   requestAnimationFrame(() => setTimeout(next, 0));
 })();
 
-/* Google map iframe (~1.5 MB) stays unloaded until "Show the map here" (every width, §4.8/A15) */
+/* the map iframe loads only on "Show the map here" (A15) */
 (() => {
   const btn = document.getElementById('map-reveal');
   const media = btn && btn.closest('.visit__map');
