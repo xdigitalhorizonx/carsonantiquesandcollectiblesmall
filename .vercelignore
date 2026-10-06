@@ -5,7 +5,7 @@ tools/
 *.test.js
 evidence/
 # fix-r2 (spec 5.5 NOPRICE / D-25 / D-26): the masters below carry legible price stickers, a sale sign or grocery-wall
-# slogans. They stay in git because tools/encode.py derives the shipped -np / -np2 files from them; they never deploy.
+# slogans. They stay in git because tools/encode.py derives the shipped -np / -np3 files from them; they never deploy.
 /assets/band-quotes-oil-lamps-3840x1267.jpg
 /assets/hero-aisle-band-3840x2400.jpg
 /assets/hero-aisle-mobile-1560x3376.jpg

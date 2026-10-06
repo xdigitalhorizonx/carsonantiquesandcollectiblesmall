@@ -3,9 +3,10 @@
 (() => {
   'use strict';
   const H = document.documentElement, A = window.anime, hasAnime = !!(A && typeof A.animate === 'function');
-  if (hasAnime) H.classList.add('motion-ok'); else H.classList.remove('motion');   // §7.2.1 watchdog contract
+  /* §7.2.1 watchdog; a failed boot keeps html.rib (one-line ribbon), so nothing moves */
+  if (hasAnime) H.classList.add('motion-ok'); else H.classList.remove('motion');
   /* a crawler-tall viewport gets the end state (§7.4 map guard) */
-  if (matchMedia('(min-height: 2600px)').matches) H.classList.remove('motion');
+  if (matchMedia('(min-height: 2600px)').matches) H.classList.remove('motion', 'rib');
   H.classList.add('js');
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const mq = matchMedia('(prefers-reduced-motion: reduce)');
@@ -27,8 +28,8 @@
   const fx = new Set();
   const blockOf = el => el && el.closest && (el.closest('section, footer, header') || document.body);
   const fin = (hosts, then) => a => { runs.delete(a); [].concat(hosts || []).forEach(h => h && h.classList.add('is-in')); clean(a); if (then) then(a); };
-  const play = (t, p, hosts, then) => { const a = A.animate(t, { ...p, onComplete: fin(hosts, then) }); runs.set(a, blockOf([].concat(hosts)[0])); return a; };
-  const tline = (hosts, then) => { const a = A.createTimeline({ onComplete: fin(hosts, then) }); runs.set(a, blockOf([].concat(hosts)[0])); return a; };
+  const play = (t, p, hosts, then) => { const a = A.animate(t, { ...p, onComplete: fin(hosts, then) }); runs.set(a, [].concat(hosts)); return a; };
+  const tline = (hosts, then) => { const a = A.createTimeline({ onComplete: fin(hosts, then) }); runs.set(a, [].concat(hosts)); return a; };
   const fxPlay = (t, p, then) => { const a = A.animate(t, { ...p, onComplete: x => { fx.delete(x); if (then) then(x); } }); fx.add(a); return a; };
 
   /* once-triggers: one IO per threshold */
@@ -53,7 +54,7 @@
   document.addEventListener('focusin', e => {
     const b = blockOf(e.target); if (!b) return;
     pend.forEach((p, el) => { if (b.contains(el)) fire(el, true); });
-    runs.forEach((blk, a) => { if (blk === b) a.complete(); });
+    runs.forEach((hs, a) => { if (blockOf(hs[0]) === b) a.complete(); });
   });
 
   document.addEventListener('click', e => {   // fix-r2 A-L7
@@ -81,11 +82,11 @@
     pend.forEach((p, el) => p.io.unobserve(el)); pend.clear();
     runs.forEach((b, a) => a.complete()); fx.forEach(a => a.complete());
     beatOff(false);   // fix-r1 AC-10
-    sleepScrubs(); swayOff(); settleAll(); H.classList.remove('motion'); loose.forEach(undraw);
+    sleepScrubs(); swayOff(); settleAll(); H.classList.remove('motion', 'rib'); loose.forEach(undraw);
     $$('.map-route .walker, .map-trail .walker').forEach(w => w.remove());
     nounTo(0, true); marqueeRegion();
   };
-  const wake = () => { if (still()) return; H.classList.add('motion'); wakeScrubs(); marqueeRegion(); };
+  const wake = () => { if (still()) return; H.classList.add('motion', 'rib'); wakeScrubs(); marqueeRegion(); };
   const toggles = $$('.calm-toggle');
   const syncToggles = () => toggles.forEach(b => b.setAttribute('aria-pressed', H.classList.contains('calm') ? 'true' : 'false'));
   toggles.forEach(b => b.addEventListener('click', () => {
@@ -99,13 +100,18 @@
   addEventListener('beforeprint', () => { pend.forEach((p, el) => fire(el, true)); quiet(); });
   addEventListener('afterprint', wake);
 
-  /* scroll: sway velocity + end-of-page fallback */
-  let lastY = null, lastT = 0, onVelocity = () => {};
+  /* scroll: sway velocity; 150 ms after it stops: end-of-page fallback + finish entrances a fly-by left off screen (§7.2.8) */
+  let lastY = null, lastT = 0, onVelocity = () => {}, stopT = 0;
+  const off = el => { const r = el.getBoundingClientRect(); return r.bottom < 0 || r.top > innerHeight; };
+  const settled = () => {
+    if (pend.size && innerHeight + scrollY >= document.documentElement.scrollHeight - 4)
+      pend.forEach((p, el) => { if (el.getBoundingClientRect().top < innerHeight) fire(el, off(el)); });
+    runs.forEach((hs, a) => { if (hs.every(h => !h || off(h))) a.complete(); });
+  };
   addEventListener('scroll', () => {
     const now = performance.now(), y = scrollY, v = lastY === null ? 0 : (y - lastY) / Math.max(1, now - lastT);
     lastY = y; lastT = now; onVelocity(v);
-    if (pend.size && innerHeight + y >= document.documentElement.scrollHeight - 4)
-      pend.forEach((p, el) => { const r = el.getBoundingClientRect(); if (r.top < innerHeight) fire(el, r.bottom < 0); });
+    clearTimeout(stopT); stopT = setTimeout(settled, 150);
   }, { passive: true });
 
   /* scroll-shadow edges (nav, legend) */
@@ -124,6 +130,13 @@
     });
   };
   shadowEdges($('.site-nav ul'), $('.site-nav'));
+  /* 1.4.12: an overflowing nav scrolls sideways under a vertical wheel */
+  const navUl = $('.site-nav ul');
+  if (navUl) navUl.addEventListener('wheel', e => {
+    const max = navUl.scrollWidth - navUl.clientWidth, d = e.deltaY * (e.deltaMode === 1 ? 16 : 1);
+    if (max < 2 || Math.abs(e.deltaY) <= Math.abs(e.deltaX) || (d < 0 ? navUl.scrollLeft <= 0 : navUl.scrollLeft >= max - 1)) return;
+    navUl.scrollLeft += d; e.preventDefault();
+  }, { passive: false });
   shadowEdges($('#legend'), $('#legend-wrap'));
 
   /* ===== X-04 · HERO — M01 lights · M02 trail underline · M03 "in" stamp · M04 chip X · M05 noun roll ===== */
@@ -219,7 +232,7 @@
     const t0 = performance.now();
     [1800, 3600].forEach((d, k) => {
       if (t0 + d + 420 > 5000) return;                                   // §7.2.7 autoplay ≤ 5 s from navigation
-      autoT.push(setTimeout(() => { if (!still()) { nounBase = k + 1; nounTo(k + 1); } }, d));
+      autoT.push(setTimeout(() => { if (!still()) { nounBase = k + 1; nounTo(k + 1, performance.now() + 420 > 4900); } }, d));   // late timer: snap (≤ 5 s)
     });
   };
 
@@ -245,7 +258,8 @@
       if (o.progress > 0) autoStop();
       nounTo(nounBase + Math.round(Math.min(1, o.progress / .6) * (nouns.length - 1 - nounBase)));
     } }));
-    if ($('.ribbon__track')) scrub('.ribbon__track', { translateX: ['-28%', '0%'] }, { target: '.ribbon', enter: 'bottom bottom', leave: 'top top', sync: .25 });
+    /* M06: 28 % drive right; rest −50 % = the same frame as 0 (failed boot) */
+    if ($('.ribbon__track')) scrub('.ribbon__track', { translateX: ['-50%', '-22%'] }, { target: '.ribbon', enter: 'bottom bottom', leave: 'top top', sync: .25 });
     const road = $('.site-head__road');
     if (road) scrub(road, { scaleX: [0, 1] }, { target: document.body, enter: 'top top', leave: 'bottom bottom', sync: true });
     if (lamp) {
@@ -345,6 +359,7 @@
     when(grid, () => {
       const w = innerWidth, st = () => (w >= 1024 ? A.stagger(70, { grid: [3, 2] }) : w >= 680 ? A.stagger(70, { grid: [2, 3] }) : A.stagger(60));
       const tl = tline(arts, () => {
+        if (off(grid)) return;   // finished off screen: no sweep
         arts.forEach((a, i) => { const t = a.closest('.tile'); setTimeout(() => { t.classList.add('tick-sweep'); setTimeout(() => t.classList.remove('tick-sweep'), 450); }, i * 70); });
       });
       tl.add(arts, { opacity: [0, 1], translateY: [24, 0], duration: 800, ease: 'outExpo', delay: st() }, 0)
@@ -625,7 +640,7 @@
         if ((b[0] - a[0]) * (c[1] - b[1]) !== (b[1] - a[1]) * (c[0] - b[0])) simp.push(b);
       }
       simp.push(pts[pts.length - 1]);
-      simp.unshift([gx, gy + 6]);
+      simp.unshift([simp[0][0], gy + 6]);   // straight out of the door
       let len = 0; for (let i = 1; i < simp.length; i++) len += Math.hypot(simp[i][0] - simp[i - 1][0], simp[i][1] - simp[i - 1][1]);
       return { d: 'M' + simp.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' L'), len, cx: bx + bw / 2, cy: by + bh / 2 };
     };
@@ -768,13 +783,13 @@
   const ledger = $$('.rent__ledger [data-anim]');
   if (ledger.length) { ledger.forEach(l => claimed.add(l)); when(ledger[0].parentElement, () => stampList(ledger)); }
 
-  /* TODAY (A8): US-Pacific arithmetic (= Intl 2025–2030, tools/open-now.test.mjs; review by 2030-06-01). Open now (A9): built, OFF. */
+  /* TODAY (A8): Intl, America/Los_Angeles. Open now (A9): built, OFF. */
   /* open-now:begin */
+  let laFmt = null;   // built on first use (~35 ms at 4x CPU): never in the boot task
   const laTime = (d = new Date()) => {
-    const y = d.getUTCFullYear(), sun = (m, n) => 1 + (7 - new Date(Date.UTC(y, m, 1)).getUTCDay()) % 7 + 7 * (n - 1);
-    const dst = d >= Date.UTC(y, 2, sun(2, 2), 10) && d < Date.UTC(y, 10, sun(10, 1), 9);
-    const t = new Date(d.getTime() - (dst ? 7 : 8) * 36e5);
-    return { y: t.getUTCFullYear(), mo: t.getUTCMonth(), day: t.getUTCDate(), wd: t.getUTCDay(), min: t.getUTCHours() * 60 + t.getUTCMinutes() };
+    laFmt = laFmt || new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', year: 'numeric', month: 'numeric', day: 'numeric', weekday: 'short', hour: 'numeric', minute: 'numeric', hourCycle: 'h23' });
+    const p = {}; laFmt.formatToParts(d).forEach(x => { p[x.type] = x.value; });
+    return { y: +p.year, mo: p.month - 1, day: +p.day, wd: 'SunMonTueWedThuFriSat'.indexOf(p.weekday) / 3, min: p.hour * 60 + +p.minute };
   };
   /* TODO (pre-publish): holiday list unconfirmed (Thanksgiving, Dec 24/25/31, Jan 1) — keep open-status off until the client confirms */
   const holiday = t => (t.mo === 10 && t.wd === 4 && t.day >= 22 && t.day <= 28) || (t.mo === 11 && (t.day === 24 || t.day === 25 || t.day === 31)) || (t.mo === 0 && t.day === 1);
@@ -799,7 +814,7 @@
       if (t) t.hidden = !on;
     });
   };
-  markToday();
+  idle(markToday);   // below the fold: idle time
   setInterval(markToday, 6e4);
   document.addEventListener('visibilitychange', () => { if (!document.hidden) markToday(); });
   const openEl = $('#open-status');

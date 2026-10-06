@@ -25,7 +25,7 @@ check('Thu 19 Nov 2026 (3rd Thu) 11:00', openState(at(2026, 11, 19, 11, 0, 8)), 
 check('Sat 23:30 PT is Saturday', laTime(at(2026, 10, 10, 23, 30, 7)).wd, 6);
 check('Sun 00:30 PT is Sunday', laTime(at(2026, 10, 11, 0, 30, 7)).wd, 0);
 check('Sun 00:30 PST is Sunday', laTime(at(2027, 1, 17, 0, 30, 8)).wd, 0);
-// laTime agrees with Intl America/Los_Angeles every 15 min over 2025-01-01 … 2031-01-01 (REVIEW by 2030-06-01, or at once if US DST law changes: then swap laTime back to Intl)
+// laTime agrees with an independent Intl America/Los_Angeles formatter every 15 min over 2025-01-01 … 2031-01-01 (fix-r3: laTime itself is Intl now, spec §9 A8; this guards the parts parsing)
 const fmt = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', year: 'numeric', month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric', hourCycle: 'h23', weekday: 'short' });
 const WD = { Sun: 0, Mon: 1, Tue: 2, Wed: 3, Thu: 4, Fri: 5, Sat: 6 };
 let mism = 0, n = 0;
