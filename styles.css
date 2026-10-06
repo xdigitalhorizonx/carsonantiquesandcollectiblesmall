@@ -133,7 +133,7 @@ h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.75rem; lin
 @media (min-width: 1024px) {   /* booths-zone lift (D-26): chalk soft-light anchored right, clear of the copy — AC-07 numbers in build-visual.md */
   .hero::after { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; mix-blend-mode: soft-light; background: radial-gradient(ellipse 48% 56% at 90% 70%, rgb(var(--chalk-rgb) / .7), transparent 80%); }
 }
-.hero__lights { display: none; position: absolute; inset: 0; z-index: -1; background: rgb(var(--ground-rgb) / .35); pointer-events: none; }   /* M01 overlay (motion shows it) */
+.hero__lights { display: none; position: absolute; inset: 0; z-index: -1; background: rgb(var(--ground-rgb) / .35); pointer-events: none; }   /* M01 overlay (html.motion shows it until .is-in) */
 .hero__top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 16px; }
 .chip {
   display: inline-flex; flex-wrap: wrap; align-items: center; row-gap: 4px; padding: 8px 9px 8px 8px; letter-spacing: -.01em;
@@ -184,8 +184,8 @@ h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.75rem; lin
   .sl-big, .sl-tail { -webkit-text-stroke: .07em var(--ground); paint-order: stroke fill; }
   .sl-in { -webkit-text-stroke: 0; }
 }
-.hero__trail { position: absolute; left: 0; top: 0; width: 0; height: 0; overflow: visible; pointer-events: none; }
-.hero__trail path { fill: none; stroke: var(--yellow-bright); stroke-width: 5; stroke-dasharray: 14 9; stroke-linecap: butt; }
+.hero__trail { position: absolute; left: 0; top: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }   /* sized: Chrome paints nothing in a 0 × 0 outer <svg> */
+.hero__trail > path { fill: none; stroke: var(--yellow-bright); stroke-width: 5; stroke-dasharray: 14 9; stroke-linecap: butt; }
 .hero__noun { margin-top: 14px; font-family: var(--font-display); font-size: clamp(1.75rem, 1rem + 2.2vw, 2.75rem); line-height: 1.05; }
 .nouns { display: inline-grid; vertical-align: baseline; text-align: left; clip-path: inset(-.08em -.6em); }   /* M05 clip */
 .noun { grid-area: 1 / 1; color: var(--yellow-bright); opacity: 0; white-space: nowrap; }
@@ -491,7 +491,8 @@ svg.map.zone-perimeter .booth:not([data-zone="perimeter"]), svg.map.zone-case .b
 svg.map.zone-service .booth:not([data-zone="service"]) { opacity: .28; }
 .xmark { stroke: var(--barn); stroke-width: 4; stroke-linecap: square; }
 .map-xmarks { opacity: .9; }
-/* M21 route + walker */
+/* M21 route + walker (never catch the pointer: a second click on the booth must reach it) */
+.map-route, .map-trail { pointer-events: none; }
 .map-route .route-base { fill: none; stroke: var(--ground); stroke-width: 8; stroke-linecap: round; stroke-linejoin: round; }
 .map-route .route-dash { fill: none; stroke: var(--yellow-bright); stroke-width: 4; stroke-dasharray: 12 9; stroke-linejoin: round; }
 .map-route .walker, .map-trail .walker { fill: var(--yellow-bright); stroke: var(--ground); stroke-width: 2; }
@@ -704,8 +705,59 @@ svg.map.zone-service .booth:not([data-zone="service"]) { opacity: .28; }
   .bar-tucked .actionbar { transform: translateY(110%); visibility: hidden; transition: transform .22s cubic-bezier(.25, .46, .45, .94), visibility 0s linear .22s; }
 }
 
-.x-marks { --rule-w: 2px; --rule-style: dashed; --rule-dark: var(--barn); --rule-light: var(--barn); }
-.x-marks .rule::before { background: var(--barn); }
+/* X · motion (SPEC §7; build-motion.md). Start states exist ONLY under html.motion and drop on .is-in, so no-JS, reduced,
+   Calm and a failed boot all render the end state. Facts never start hidden: "settle" moves ≤ 12 px at opacity 1. */
+html.motion [data-anim="rise"]:not(.is-in), html.motion [data-anim="shelf"]:not(.is-in) { opacity: 0; transform: translateY(16px); }
+html.motion [data-anim="shelf"]:not(.is-in) { transform: translateY(24px); }
+html.motion [data-anim="shelf"]:not(.is-in) img { transform: translateY(6%) scale(1.06); transition: none; }
+html.motion [data-anim="settle"]:not(.is-in) { transform: translateY(12px); }
+html.motion .worth__facts [data-anim]:not(.is-in), html.motion .rent__ledger [data-anim]:not(.is-in) { transform: translateX(10px); --tick: 1.6; }
+html.motion [data-anim="stamp"]:not(.is-in) { opacity: 0; }
+html.motion .plate--enamel:not(.is-in) { transform: rotate(4deg); }
+html.motion .forrent:not(.is-in) { transform: rotate(-5deg); }
+.rent-band { overflow-x: clip; }   /* the plate's −5° start corners must not widen a phone page (2 px, measured) */
+html.motion .worth__quote:not(.is-in) blockquote { --quote-s: 1.4; --quote-o: 0; }
+html.motion .worth__quote:not(.is-in) .vinyl { --vinyl: 0; }
+html.motion .board:not(.is-in) { --today-bar: 0; }
+html.motion .guide:not(.is-in) { --lane: 0; }
+html.motion .faq:not(.is-in) { --rule-s: 0; }
+html.motion .hero__lights:not(.is-in) { display: block; }
+html.motion .ribbon__track { transform: translateX(-28%); }   /* M06 rest at scroll 0 (JS scrubs it) */
+html.motion .map-booths:not(.is-in) .booth { opacity: 0; }
+html.motion .street:not(.is-in) .street__pin { transform: translateY(-12px) scale(.6); transition: none; }
+html.motion .footer__wordmark:not(.is-in) .fw > span { transform: translateY(100%); }
+svg.map .booth { transform-box: fill-box; transform-origin: 50% 50%; }
+.map-trail .trail-x { transform-box: fill-box; transform-origin: 50% 50%; }
+/* M26 wipe: the cover box is a static clip; its ::before panel slides out (--wipe 0 → 1), the photo never fades */
+html.motion .visit__cover:not(.is-in) { display: block; position: absolute; left: 0; top: 0; width: 100%; aspect-ratio: 1536 / 1044; overflow: hidden; pointer-events: none; }
+.visit__cover::before { content: ""; position: absolute; inset: 0; background: var(--ground-2) var(--grain-light); transform: translateX(calc(var(--wipe, 0) * 101%)); }
+/* M31: each wordmark line rises inside its own clip (padding widens the clip box without moving the text) */
+.footer__wordmark .fw { display: block; overflow: hidden; padding-block: .08em; margin-block: -.08em; }
+.footer__wordmark .fw > span { display: inline-block; }
+@media (min-width: 768px) { .footer__wordmark .fw { display: inline-block; vertical-align: top; } }
+html.motion .guide:not(.is-in) .guide__line::after { transition: none; }   /* M27 draws --lane frame by frame */
+.tile.tick-sweep .tile__text::after { transform: scaleX(1); }               /* M18 one sweep after the shelf pull */
+.forrent { transition: translate .18s ease; }                               /* M23 lift (rotation stays anime's) */
+.forrent:hover, .forrent:focus-visible { translate: 0 -2px; }
+/* M12 offscreen pause · M15 tap/hover swing pivots on the card ring */
+.marquee.is-off .marquee__copy { animation-play-state: paused; }
+.tag__card { transform-origin: 50% 0; }
+/* M32 Call icon rings twice per entry */
+@keyframes ring { 20%, 60% { transform: rotate(12deg); } 40%, 80% { transform: rotate(-12deg); } }
+@media (hover: hover) { .btn[href^="tel:"]:hover svg { animation: ring .42s ease-in-out; } }
+.btn[href^="tel:"]:focus-visible svg { animation: ring .42s ease-in-out; }
+/* M34 whole-site beat: rules become marching map dashes (compositor-only pseudo translate, clipped by the rule's own box) */
+.x-marks .rule, .x-marks .footer__rule { clip-path: inset(-30px 0 -24px 0); border-top-color: transparent; }
+.x-marks .rule::after, .x-marks .footer__rule::after {
+  content: ""; position: absolute; left: -24px; right: 0; top: -1px; height: 2px;
+  background: repeating-linear-gradient(90deg, var(--yellow) 0 14px, transparent 14px 24px); animation: x-march .6s linear infinite;
+}
+.x-marks .band--chalk .rule::after { background-image: repeating-linear-gradient(90deg, var(--barn) 0 14px, transparent 14px 24px); }
+.x-marks .footer__rule::after { top: -2px; background-image: repeating-linear-gradient(90deg, var(--ground) 0 14px, transparent 14px 24px); }
+.x-marks .band--chalk .rule::before { background: var(--barn); }
+.x-marks .ribbon { perspective: 700px; }
+.x-marks .tag { perspective: 900px; }
+@keyframes x-march { to { transform: translateX(24px); } }
 
 /* reduced motion + Calm: kill every CSS transition/animation */
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; animation: none !important; } }

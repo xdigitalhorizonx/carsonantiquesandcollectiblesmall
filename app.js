@@ -1,38 +1,107 @@
-/* Carson Antiques & Collectibles Mall — home-v1 · app.js
-   ONE motion library: anime.js v4.5.0 (assets/anime.umd.min.js, MIT, self-hosted). It owns the noun cycle, the reveals,
-   the price-tag swing and the easter-egg trail. The marquee runs on a CSS @keyframes transform (director l.163) — JS only
-   refines its speed. Under prefers-reduced-motion: marquee static (CSS), noun frozen on "oil lamps", no swing, reveals
-   instant, the trail appears whole with no pulse and no scroll. Everything here degrades: with this file missing the map
-   still renders every number, the marquee still moves, the first noun is visible. */
+/* Carson Antiques & Collectibles Mall — home v2 · app.js. Motion = SPEC.md §7 (package "motion"; notes in the run folder,
+   build-motion.md). ONE engine: anime.js 4.5.0 custom build (window.anime). Start states live only under html.motion and
+   drop on .is-in; facts never start hidden; Calm = the reduced-motion path; signs rest at 0°. */
 (() => {
   'use strict';
-  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const A = window.anime;
-  const hasAnime = !!(A && typeof A.animate === 'function');
-  const $ = (s, r = document) => r.querySelector(s);
-  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
-  document.documentElement.classList.add('js');
+  const H = document.documentElement, A = window.anime, hasAnime = !!(A && typeof A.animate === 'function');
+  if (hasAnime) H.classList.add('motion-ok'); else H.classList.remove('motion');   // §7.2.1 watchdog contract
+  /* a viewport taller than any person's (a crawler's one-tall-window render) gets the end state: with a 100svh hero
+     nothing below it would ever intersect, and the §7.4 map guard wants booth labels readable at scroll progress 0 */
+  if (matchMedia('(min-height: 2600px)').matches) H.classList.remove('motion');
+  H.classList.add('js');
+  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const mq = matchMedia('(prefers-reduced-motion: reduce)');
+  const fine = matchMedia('(hover: hover) and (pointer: fine)');
+  const still = () => !hasAnime || mq.matches || H.classList.contains('calm');
+  const live = () => !still() && H.classList.contains('motion');
+  const NS = 'http://www.w3.org/2000/svg';
+  const spring = (s = 120, d = 8) => A.createSpring({ mass: 1, stiffness: s, damping: d });
+  const clean = a => { try { A.utils.cleanInlineStyles(a); } catch (e) { /* not a renderable */ } };
+  const rest = el => el && el.style.removeProperty('transform');
+  const later = [];
 
-  /* ---- the console hint (D10) — byte-exact string from content.md §7 ---- */
-  console.log('%cPsst, hey you — over here. Type "treasure" and X marks the spot.',
-    'color:#D9A400;background:#14201B;font:700 14px/1.6 Satoshi,system-ui,sans-serif;padding:8px 14px;border-left:4px solid #7A2E1F;');
 
-  /* ---- block 2 · marquee: constant px/s across breakpoints (CSS --dur is the no-JS default) ---- */
-  const marquee = $('#marquee');
-  if (marquee) {
-    const copy = $('.marquee__copy', marquee);
-    const setSpeed = () => {
-      const gap = parseFloat(getComputedStyle(marquee).getPropertyValue('--gap')) || 24;
-      const w = copy.getBoundingClientRect().width + gap;
-      marquee.style.setProperty('--dur', (w / 60).toFixed(2) + 's');   // 60 CSS px per second
-    };
-    setSpeed();
-    let rt = 0;
-    addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(setSpeed, 200); });
-    if (reduced) {   // the strip is static + overflow-x:auto (CSS): make it a focusable named region so keyboard users can pan to photos 5-9
-      marquee.tabIndex = 0; marquee.setAttribute('role', 'region'); marquee.setAttribute('aria-labelledby', 'marquee-h2');
-    }
-  }
+  /* ===== X-02/X-03 · boot, registries, once-reveals, Calm ===== */
+  const IN = '[data-anim],.hero__lights,.map-booths,.faq,.street,.footer__wordmark';
+  const settleAll = () => $$(IN).forEach(e => e.classList.add('is-in'));
+  const runs = new Map();
+  const fx = new Set();
+  const blockOf = el => el && el.closest && (el.closest('section, footer, header') || document.body);
+  const fin = (hosts, then) => a => { runs.delete(a); [].concat(hosts || []).forEach(h => h && h.classList.add('is-in')); clean(a); if (then) then(a); };
+  const play = (t, p, hosts, then) => { const a = A.animate(t, { ...p, onComplete: fin(hosts, then) }); runs.set(a, blockOf([].concat(hosts)[0])); return a; };
+  const tline = (hosts, then) => { const a = A.createTimeline({ onComplete: fin(hosts, then) }); runs.set(a, blockOf([].concat(hosts)[0])); return a; };
+  const fxPlay = (t, p, then) => { const a = A.animate(t, { ...p, onComplete: x => { fx.delete(x); if (then) then(x); } }); fx.add(a); return a; };
+
+  /* once-triggers: one IntersectionObserver per threshold ("top at N % of the viewport", or "R visible") */
+  const pend = new Map(), ios = new Map(), claimed = new Set();
+  const fire = (el, now) => {
+    const p = pend.get(el); if (!p) return;
+    pend.delete(el); p.io.unobserve(el);
+    const a = live() ? p.fn() : null;
+    if (a && now) a.complete();
+  };
+  const when = (el, fn, at = 85, ratio = 0) => {
+    if (!el) return;
+    claimed.add(el);
+    if (!live()) return;
+    const k = at + '/' + ratio; let io = ios.get(k);
+    if (!io) ios.set(k, io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting && e.intersectionRatio >= ratio) fire(e.target);
+    }), { rootMargin: `0px 0px ${at - 100}% 0px`, threshold: ratio }));
+    pend.set(el, { fn, io }); io.observe(el);
+  };
+  /* focus wins (§7.2.10): the first focus inside a block completes its entrances */
+  document.addEventListener('focusin', e => {
+    const b = blockOf(e.target); if (!b) return;
+    pend.forEach((p, el) => { if (b.contains(el)) fire(el, true); });
+    runs.forEach((blk, a) => { if (blk === b) a.complete(); });
+  });
+
+  /* scrubs (≤ 5 synced onScroll: M05 noun, M06 ribbon, M07 road, M11 lamp, M19 wall) */
+  let scrubs = [], nounObs = null;
+  const loose = [];
+  /* anime 4.5.0 bug: a ScrollContainer's scrollTicker resumes its 30 fps dataTimer once and nothing ever pauses it, so the
+     engine ticks forever (measured 180 rAF/s idle). We use neither its velocity nor its direction: never start it. */
+  const tame = o => { const c = o.container; if (c && !c.tamed) { c.tamed = 1; c.scrollTicker.onBegin = () => {}; c.dataTimer.pause(); } return o; };
+  const scrub = (t, p, obs) => { const a = A.animate(t, { ease: 'linear', duration: 1000, ...p, autoplay: tame(A.onScroll(obs)) }); scrubs.push(a); return a; };
+  const undraw = el => { if (el) ['pathLength', 'stroke-dasharray', 'stroke-dashoffset'].forEach(n => el.removeAttribute(n)); };
+  let wakeScrubs = () => {}, swayOff = () => {}, nounTo = () => {}, marqueeRegion = () => {};
+  const sleepScrubs = () => {
+    scrubs.forEach(a => a.revert()); scrubs = [];
+    if (nounObs) { nounObs.revert(); nounObs = null; }
+    undraw($('.map-wall'));
+  };
+
+  /* Calm (§7.3) — one stored state, three buttons; same path as prefers-reduced-motion */
+  const quiet = () => {
+    pend.forEach((p, el) => p.io.unobserve(el)); pend.clear();
+    runs.forEach((b, a) => a.complete()); fx.forEach(a => a.complete());
+    sleepScrubs(); swayOff(); settleAll(); H.classList.remove('motion'); loose.forEach(undraw);
+    $$('.map-route .walker, .map-trail .walker').forEach(w => w.remove());
+    nounTo(0, true); marqueeRegion();
+  };
+  const wake = () => { if (still()) return; H.classList.add('motion'); wakeScrubs(); marqueeRegion(); };
+  const toggles = $$('.calm-toggle');
+  const syncToggles = () => toggles.forEach(b => b.setAttribute('aria-pressed', H.classList.contains('calm') ? 'true' : 'false'));
+  toggles.forEach(b => b.addEventListener('click', () => {
+    const on = !H.classList.contains('calm');
+    try { if (on) localStorage.setItem('cacm-motion', 'calm'); else localStorage.removeItem('cacm-motion'); } catch (e) { /* private mode */ }
+    H.classList.toggle('calm', on); syncToggles();
+    if (on) quiet(); else wake();
+  }));
+  syncToggles();
+  if (mq.addEventListener) mq.addEventListener('change', () => (still() ? quiet() : wake()));
+  addEventListener('beforeprint', () => { pend.forEach((p, el) => fire(el, true)); quiet(); });
+  addEventListener('afterprint', wake);
+
+  /* ---- shared scroll listener: velocity for the tag sway + the end-of-page reveal fallback ---- */
+  let lastY = null, lastT = 0, onVelocity = () => {};   // no scrollY read at boot: it would force a full layout
+  addEventListener('scroll', () => {
+    const now = performance.now(), y = scrollY, v = lastY === null ? 0 : (y - lastY) / Math.max(1, now - lastT);
+    lastY = y; lastT = now; onVelocity(v);
+    if (pend.size && innerHeight + y >= document.documentElement.scrollHeight - 4)
+      pend.forEach((p, el) => { if (el.getBoundingClientRect().top < innerHeight) fire(el); });
+  }, { passive: true });
 
   /* ---- scroll-shadow edges for the horizontal rows that can outrun a small screen (header nav, zone legend) ---- */
   const shadowEdges = (scroller, host) => {
@@ -42,65 +111,235 @@
       host.classList.toggle('can-left', can && scroller.scrollLeft > 2);
       host.classList.toggle('can-right', can && scroller.scrollLeft + scroller.clientWidth < scroller.scrollWidth - 2);
     };
-    edges(); scroller.addEventListener('scroll', edges, { passive: true }); addEventListener('resize', edges);
+    later.push(edges); scroller.addEventListener('scroll', edges, { passive: true }); addEventListener('resize', edges);
   };
   shadowEdges($('.site-nav ul'), $('.site-nav'));
   shadowEdges($('#legend'), $('#legend-wrap'));
 
-  /* ---- block 1 · the cycling noun — an inline-grid stack, so the sentence never reflows (CLS 0) ---- */
-  const nouns = $$('.hero__noun .noun');
-  if (hasAnime && !reduced && nouns.length > 1) {
-    let i = 0, timer = 0;
-    const step = () => {
-      const cur = nouns[i], nxt = nouns[(i + 1) % nouns.length];
-      A.animate(cur, { opacity: [1, 0], translateY: [0, -10], duration: 380, ease: 'inQuad',
-        onComplete: () => { cur.classList.remove('is-on'); cur.setAttribute('aria-hidden', 'true'); } });
-      nxt.classList.add('is-on'); nxt.removeAttribute('aria-hidden');
-      A.animate(nxt, { opacity: [0, 1], translateY: [12, 0], duration: 560, delay: 260, ease: 'outExpo' });
-      i = (i + 1) % nouns.length;
+  /* ===== X-04 · HERO — M01 lights · M02 trail underline · M03 "in" stamp · M04 chip X · M05 noun roll ===== */
+  const hero = $('#hero'), h1 = $('#hero-h1'), body = $('.hero__body'), hl = h1 && $('.hl', h1);
+  const trailSvg = $('.hero__trail'), lights = $('.hero__lights'), chipX = $('.chip__x');
+  const mk = (n, at) => { const e = document.createElementNS(NS, n); for (const k in at) e.setAttribute(k, at[k]); return e; };
+  let trailMasks = [], heroTl = null;
+
+  /* glyph boxes of every OTHER hero text line (Tanker: cap top = content top + .25 em, baseline = + 1 em) */
+  const inkBoxes = () => {
+    const out = [], rg = document.createRange(), nodes = [];
+    [h1, $('.hero__noun', body)].forEach(r => { if (!r) return; const tw = document.createTreeWalker(r, NodeFilter.SHOW_TEXT); for (let n; (n = tw.nextNode());) nodes.push(n); });
+    for (const n of nodes) {
+      if (!n.data.trim() || hl.contains(n) || (n.parentElement.closest('.noun') && !n.parentElement.closest('.is-on'))) continue;
+      const f = parseFloat(getComputedStyle(n.parentElement).fontSize);
+      rg.selectNodeContents(n);
+      for (const r of rg.getClientRects()) out.push({ l: r.left, r: r.right, t: r.top + .25 * f, b: r.top + f });
+    }
+    return out;
+  };
+  /* M02 overlay: one dashed path + one mask path per line box of "right here" (§7.2.6 — never draw CSS dashes) */
+  const buildTrail = () => {
+    if (!trailSvg || !hl) return;
+    if (heroTl) heroTl.complete();
+    trailSvg.textContent = '';
+    const B = body.getBoundingClientRect(), fs = parseFloat(getComputedStyle(hl).fontSize);
+    const others = inkBoxes(), defs = mk('defs', {}); trailSvg.appendChild(defs);
+    trailMasks = Array.from(hl.getClientRects()).filter(r => r.width > 4).map((r, i) => {
+      let y = r.bottom - .17 * fs;
+      others.forEach(o => { if (o.t > r.top + .9 * fs && o.l < r.right && o.r > r.left && o.t < y + 3.5) y = o.t - 3.5; });
+      const x0 = r.left - B.left, x1 = r.right - B.left, yy = y - B.top, d = `M${x0.toFixed(1)} ${yy.toFixed(1)}H${x1.toFixed(1)}`;
+      const m = mk('mask', { id: 'trail-m' + i, maskUnits: 'userSpaceOnUse', x: x0 - 12, y: yy - 12, width: x1 - x0 + 24, height: 24 });
+      const mp = mk('path', { d, fill: 'none', stroke: '#fff', 'stroke-width': 10 });
+      m.appendChild(mp); defs.appendChild(m);
+      trailSvg.appendChild(mk('path', { d, mask: `url(#trail-m${i})` }));
+      return mp;
+    });
+  };
+  const heroIntro = () => {
+    if (!live()) return;
+    const tl = heroTl = tline([chipX], () => { heroTl = null; });
+    const per = 450 / Math.max(1, trailMasks.length);
+    trailMasks.forEach((m, i) => tl.add(A.svg.createDrawable(m), { draw: ['0 0', '0 1'], duration: per, ease: 'inOutQuad' }, i * per));
+    const sl = $('.sl-in', h1);
+    if (sl) tl.add(sl, {
+      scale: [{ from: 1, to: 1.22, duration: 150, ease: 'outQuad' }, { to: 1, duration: 270, ease: 'outBack' }],
+      rotate: [{ from: 0, to: -10, duration: 150, ease: 'outQuad' }, { to: 0, duration: 270, ease: 'outBack' }]
+    }, 380);
+    if (chipX) tl.add(chipX, { opacity: [0, 1], scale: [1.6, 1], rotate: [-12, 0], duration: 380, ease: 'outBack' }, 700);
+  };
+  if (live() && lights) {   // M01, first frame. The inline seed stops anime reading computed style (= a forced full layout at boot)
+    lights.style.opacity = '1';
+    play(lights, { opacity: [1, 0], duration: 900, ease: 'outQuad' }, [lights]);
+  }
+  claimed.add(lights); claimed.add(chipX);
+
+  /* M05 — price-gun roll: two auto steps (only if they end before 5 s), then hero scroll 0 → .6 snaps the rest */
+  const nouns = $$('.nouns .noun');
+  let ni = 0, nounAnims = [], nounBase = 0, autoT = [];
+  nounTo = (i, instant) => {
+    i = Math.max(0, Math.min(nouns.length - 1, i));
+    if (i === ni) { if (instant) nounAnims.forEach(a => a.complete()); return; }
+    nounAnims.forEach(a => a.complete()); nounAnims = [];
+    const out = nouns[ni], inn = nouns[i], dir = i > ni ? 1 : -1; ni = i;
+    inn.classList.add('is-on'); inn.removeAttribute('aria-hidden'); out.setAttribute('aria-hidden', 'true');
+    if (instant || still()) { out.classList.remove('is-on'); return; }
+    nounAnims = [
+      A.animate(out, { translateY: ['0%', -100 * dir + '%'], duration: 420, ease: 'outBack(1.2)', onComplete: a => { out.classList.remove('is-on'); clean(a); } }),
+      A.animate(inn, { translateY: [100 * dir + '%', '0%'], duration: 420, ease: 'outBack(1.2)', onComplete: clean })
+    ];
+  };
+  const autoStop = () => { autoT.forEach(clearTimeout); autoT = []; };
+  const autoNouns = () => {
+    if (!live() || nouns.length < 3) return;
+    const t0 = performance.now();
+    [1800, 3600].forEach((d, k) => {
+      if (t0 + d + 420 > 5000) return;                                   // §7.2.7 autoplay ≤ 5 s from navigation
+      autoT.push(setTimeout(() => { if (!still()) { nounBase = k + 1; nounTo(k + 1); } }, d));
+    });
+  };
+
+  if (hero && body) {
+    const ready = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+    let lastW = 0, lastH = 0, built = false;   // nothing rebuilds before t0: a load-time resize would flash a static trail
+    ready.then(() => setTimeout(() => { lastW = innerWidth; built = true; buildTrail(); heroIntro(); autoNouns(); }, 150));
+    addEventListener('resize', () => { if (built && innerWidth !== lastW) { lastW = innerWidth; buildTrail(); } });
+    if ('ResizeObserver' in window) new ResizeObserver(([e]) => {      // text spacing / text-only zoom (1.4.12)
+      const h = Math.round(e.contentRect.height * 10);
+      if (built && lastH && h !== lastH) buildTrail();
+      lastH = h;
+    }).observe(h1);
+  }
+
+  /* ===== X-05/X-06 scrubs · M05 noun · M06 ribbon · M07 road line · M11 lamp parallax · M19 wall ===== */
+  const lamp = $('.worth__photo img'), wall = $('.map-wall'), figure = $('#map-figure');
+  let lampW = 0, scrubT = 0;
+  wakeScrubs = () => {
+    if (scrubs.length || !live()) return;
+    lampW = innerWidth;
+    if (hero) nounObs = tame(A.onScroll({ target: hero, enter: 'top top', leave: 'top bottom', sync: true, onUpdate: o => {
+      if (o.progress > 0) autoStop();
+      nounTo(nounBase + Math.round(Math.min(1, o.progress / .6) * (nouns.length - 1 - nounBase)));
+    } }));
+    if ($('.ribbon__track')) scrub('.ribbon__track', { translateX: ['-28%', '0%'] }, { target: '.ribbon', enter: 'bottom bottom', leave: 'top top', sync: .25 });
+    const road = $('.site-head__road');
+    if (road) scrub(road, { scaleX: [0, 1] }, { target: document.body, enter: 'top top', leave: 'bottom bottom', sync: true });
+    if (lamp) {
+      const amp = Math.min(innerWidth < 768 ? 12 : 24, lamp.getBoundingClientRect().height * .03);
+      scrub(lamp, { translateY: [-amp, amp] }, { target: '.worth__photo', sync: true });
+    }
+    if (wall && figure) scrub(A.svg.createDrawable(wall), { draw: ['0 0', '0 1'] }, { target: figure, enter: '85% top', leave: '45% top', sync: true });
+  };
+  addEventListener('resize', () => {
+    clearTimeout(scrubT);
+    scrubT = setTimeout(() => { if (innerWidth !== lampW && scrubs.length) { lampW = innerWidth; sleepScrubs(); wakeScrubs(); } }, 200);
+  });
+
+  /* ===== X-06 · WORTH — M08 quote · M09 vinyl · M10 fact stamps ===== */
+  const stampList = lis => {
+    const tl = tline(lis);
+    tl.add(lis, { '--tick': [1.6, 1], duration: 320, ease: 'outBack', delay: A.stagger(90) }, 0)
+      .add(lis, { translateX: [10, 0], duration: 320, ease: 'outQuad', delay: A.stagger(90) }, 0);
+    return tl;
+  };
+  const wq = $('.worth__quote');
+  when(wq, () => {
+    const tl = tline([wq]);
+    tl.add(wq, { opacity: [0, 1], translateY: [16, 0], duration: 600, ease: 'outExpo' }, 0)
+      .add($('blockquote', wq), { '--quote-s': [1.4, 1], '--quote-o': [0, 1], duration: 360, ease: 'outBack' }, 0)
+      .add($('.vinyl', wq), { '--vinyl': [0, 1], duration: 500, ease: 'outQuad' }, 560);
+    return tl;
+  });
+  const wf = $('.worth__facts');
+  if (wf) { const lis = $$('[data-anim]', wf); lis.forEach(l => claimed.add(l)); when(wf, () => stampList(lis)); }
+  const wm = $$('.worth__more [data-anim]');
+  if (wm.length) { wm.forEach(l => claimed.add(l)); when(wm[0], () => play(wm, { opacity: [0, 1], translateY: [16, 0], duration: 600, ease: 'outExpo', delay: A.stagger(120) }, wm)); }
+
+  /* ===== X-07 · MARQUEE — M12 offscreen pause · M13 pause/play · M14 sway · M15 swing ===== */
+  const marquee = $('#marquee'), mpBtn = $('#marquee-pause');
+  if (marquee) {
+    const copy = $('.marquee__copy', marquee);
+    const setSpeed = () => {
+      const gap = parseFloat(getComputedStyle(marquee).getPropertyValue('--gap')) || 24;
+      marquee.style.setProperty('--dur', ((copy.getBoundingClientRect().width + gap) / 60).toFixed(2) + 's');
     };
-    const start = () => { if (!timer) timer = setInterval(step, 2600); };
-    const stop = () => { clearInterval(timer); timer = 0; };
-    start();
-    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+    later.push(setSpeed);
+    let rt = 0;
+    addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(setSpeed, 200); });
+    const paused = () => marquee.classList.contains('is-paused');
+    marqueeRegion = () => {
+      if (still() || paused()) { marquee.tabIndex = 0; marquee.setAttribute('role', 'region'); marquee.setAttribute('aria-labelledby', 'marquee-h2'); }
+      else { marquee.removeAttribute('tabindex'); marquee.removeAttribute('role'); marquee.removeAttribute('aria-labelledby'); }
+    };
+    marqueeRegion();
+    if (mpBtn) mpBtn.addEventListener('click', () => {
+      const on = !paused();
+      marquee.classList.toggle('is-paused', on);
+      $('span', mpBtn).textContent = on ? 'Play the photo strip' : 'Pause the photo strip';
+      $('use', mpBtn).setAttribute('href', on ? '#i-play' : '#i-pause');
+      if (on) swayOff();
+      marqueeRegion();
+    });
+    let inView = false;
+    if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => {
+      inView = e.isIntersecting; marquee.classList.toggle('is-off', !inView);
+    }).observe(marquee);
+
+    if (hasAnime) {
+      const tags = $$('.tag', marquee);
+      let sway = null, swayT = 0;
+      swayOff = () => { clearTimeout(swayT); if (sway) { sway.revert(); sway = null; } };
+      onVelocity = v => {
+        if (!inView || still() || paused() || Math.abs(v) < .05) return;
+        if (!sway) sway = A.createAnimatable(tags, { rotate: 500, ease: 'out(3)' });
+        const max = innerWidth < 768 ? 2 : 3;
+        sway.rotate(Math.max(-max, Math.min(max, v * 1.6)));
+        clearTimeout(swayT); swayT = setTimeout(() => { if (sway) sway.rotate(0); }, 140);
+      };
+      const swing = card => fxPlay(card, { rotate: [{ to: 3, duration: 200, ease: 'outQuad' }, { to: -2, duration: 220 }, { to: 0, duration: 260, ease: 'outQuad' }] }, () => rest(card));
+      tags.forEach(tag => {
+        const card = $('.tag__card', tag);
+        tag.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse' && fine.matches && !still()) swing(card); });
+        tag.addEventListener('pointerdown', e => { if (e.pointerType === 'touch' && !still()) swing(card); });
+      });
+    }
   }
 
-  /* ---- scroll reveals — start state is set HERE, never in CSS, so a no-JS / reduced-motion page is never blank ---- */
-  const reveals = $$('[data-reveal]');
-  if (hasAnime && !reduced && 'IntersectionObserver' in window && reveals.length) {
-    A.utils.set(reveals, { opacity: 0, translateY: 18 });
-    const shown = new WeakSet();
-    const show = el => { if (shown.has(el)) return; shown.add(el);
-      A.animate(el, { opacity: 1, translateY: 0, duration: 720, ease: 'outExpo', delay: +(el.dataset.reveal || 0) }); };
-    const io = new IntersectionObserver(entries => {
-      for (const en of entries) if (en.isIntersecting) { show(en.target); io.unobserve(en.target); }
-    }, { rootMargin: '0px 0px -6% 0px', threshold: 0.04 });
-    reveals.forEach(el => io.observe(el));
-    setTimeout(() => reveals.forEach(el => { io.unobserve(el); show(el); }), 3000);   // safety: nothing stays hidden
-  }
+  /* ===== X-08 · BOOTHS — M16 plate spring · M17 shelf pull · M18 tick sweep ===== */
+  const plate = $('.plate--enamel'), forrent = $('.forrent');
+  const settleSign = (el, from) => play(el, { rotate: [from, 0], ease: spring() }, [el], () => rest(el));
+  const kick = el => { if (el && el.classList.contains('is-in') && !still()) fxPlay(el, { rotate: [2.5, 0], ease: spring() }, () => rest(el)); };
+  when(plate, () => settleSign(plate, 4));
+  if (plate) plate.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse' && fine.matches) kick(plate); });
 
-  /* ---- block 2 · price-tag swing on hover (pointer devices only) ---- */
-  if (hasAnime && !reduced && matchMedia('(hover: hover)').matches) {
-    $$('.tag').forEach(tag => tag.addEventListener('pointerenter', () => {
-      A.animate(tag, { rotate: [{ to: 3, duration: 200, ease: 'outQuad' }, { to: -2, duration: 220 }, { to: 0, duration: 260, ease: 'outQuad' }] });
-    }));
+  const grid = $('#tile-grid');
+  if (grid) {
+    const arts = $$('[data-anim="shelf"]', grid);
+    arts.forEach(a => claimed.add(a));
+    when(grid, () => {
+      const w = innerWidth, st = () => (w >= 1024 ? A.stagger(70, { grid: [3, 2] }) : w >= 680 ? A.stagger(70, { grid: [2, 3] }) : A.stagger(60));
+      const tl = tline(arts, () => {
+        arts.forEach((a, i) => { const t = a.closest('.tile'); setTimeout(() => { t.classList.add('tick-sweep'); setTimeout(() => t.classList.remove('tick-sweep'), 450); }, i * 70); });
+      });
+      tl.add(arts, { opacity: [0, 1], translateY: [24, 0], duration: 800, ease: 'outExpo', delay: st() }, 0)
+        .add(arts.map(a => $('img', a)), { translateY: ['6%', '0%'], scale: [1.06, 1], duration: 900, ease: 'outExpo', delay: st() }, 0);
+      return tl;
+    }, 90);
   }
 
   /* =====================================================================
-     block 4 · THE TREASURE MAP — one Tab stop, roving tabindex, arrows + digit type-ahead, Esc-dismissible hoverable chip
-     (WCAG 1.4.13), tap-to-pin on touch, zone legend = highlight only. Chip text = the aria-label = content.md §7 strings.
+     block 5 · THE TREASURE MAP — one Tab stop, roving tabindex, arrows + digit type-ahead, Esc-dismissible hoverable
+     chip (WCAG 1.4.13), tap-to-pin, zone legend = highlight only. v2: M19 wall (scrub above), M20 stocking the floor,
+     M21 walk me there (mask draw + walker), M22 legend ping, #pick-booth, #booth-n links (no focus move).
      ===================================================================== */
   const svg = $('svg.map');
-  const figure = $('#map-figure');
   const scroller = $('#map-scroller');
   const chip = $('#map-chip');
-  const regions = svg ? $$('g.booth', svg) : [];           // DOM order = the ring: 1→80, cases, cashier, restrooms, G, G, entrance
+  const regions = svg ? $$('g.booth', svg) : [];
   const booths = regions.filter(g => g.dataset.n);
+  const live1 = $('#egg-live'), mapStatus = $('#map-status'), pickBtn = $('#pick-booth');
   let active = booths[0] || null, pinned = null, hideTimer = 0, dismissed = false, typeBuf = '', typeTimer = 0;
-  let eggText = null;                                       // set while X-marks-the-spot owns the chip
+  let eggText = null;
+  const CELL = 6, VBX = 300, VBY = 236, VBW = 1470, VBH = 664;
+  const say = (el, t) => { if (!el) return; el.textContent = ''; setTimeout(() => { el.textContent = t; }, 50); };
 
   const centre = g => { const r = $('rect', g); return { x: +r.getAttribute('x') + +r.getAttribute('width') / 2, y: +r.getAttribute('y') + +r.getAttribute('height') / 2 }; };
-
   const placeChip = g => {
     const fr = figure.getBoundingClientRect(), sr = scroller.getBoundingClientRect(), r = $('rect', g).getBoundingClientRect();
     const cw = chip.offsetWidth, ch = chip.offsetHeight;
@@ -117,10 +356,22 @@
     regions.forEach(x => x.classList.toggle('is-active', x === g));
     if (pin) { pinned = g; chip.classList.add('is-pinned'); } else if (pinned !== g) { pinned = null; chip.classList.remove('is-pinned'); }
   };
+
+  /* M21 route layer: one solid mask path draws the dashed route (§7.2.6) + a 10 px walker dot */
+  const routeLayer = svg && $('.map-route', svg), trailLayer = svg && $('.map-trail', svg);
+  let walkAnims = [];
+  const clearRoute = () => { walkAnims.forEach(a => a.cancel()); walkAnims = []; if (routeLayer) routeLayer.textContent = ''; };
+  const lay = (layer, r, paths, id, dot) => {
+    layer.innerHTML = `<defs><mask id="${id}" maskUnits="userSpaceOnUse" x="${VBX}" y="${VBY}" width="${VBW}" height="${VBH}"><path d="${r.d}" fill="none" stroke="#fff" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/></mask></defs><g mask="url(#${id})">${paths}</g>` +
+      (dot ? `<circle class="walker" cx="0" cy="0" r="${(5 * VBW / svg.getBoundingClientRect().width).toFixed(1)}"/>` : '');
+    return { mp: $('mask path', layer), path: $('g > path:last-child', layer), dot: $('.walker', layer) };
+  };
   const hideChip = force => {
     if (pinned && !force) return;
+    const was = pinned;
     clearTimeout(hideTimer); chip.hidden = true; chip.classList.remove('is-pinned'); pinned = null;
     regions.forEach(x => x.classList.remove('is-active'));
+    if (force) { clearRoute(); if (was) document.dispatchEvent(new CustomEvent('cacm:pin', { detail: null })); }
   };
   const scheduleHide = () => { clearTimeout(hideTimer); hideTimer = setTimeout(() => hideChip(false), 120); };
   const moveFocus = g => {
@@ -129,6 +380,30 @@
     g.tabIndex = 0; active = g;
     g.focus({ preventScroll: false });
     showChip(g, false);
+  };
+  const centreOn = (x, smooth) => {
+    if (scroller.scrollWidth <= scroller.clientWidth + 2) return;
+    const mid = (x - VBX) / VBW * svg.getBoundingClientRect().width;
+    scroller.scrollTo({ left: Math.max(0, mid - scroller.clientWidth / 2), behavior: smooth && !still() ? 'smooth' : 'auto' });
+  };
+
+  let route = () => null, stockNow = () => {};
+  const walk = g => {
+    clearRoute();
+    if (!routeLayer || g.id === 'entrance') return;
+    const r = route(g); if (!r) return;
+    const L = lay(routeLayer, r, `<path class="route-base" d="${r.d}"/><path class="route-dash" d="${r.d}"/>`, 'route-mask', !still());
+    if (still()) return;
+    const D = Math.min(1800, Math.max(700, r.len));
+    walkAnims = [fxPlay(A.svg.createDrawable(L.mp), { draw: ['0 0', '0 1'], duration: D, ease: 'inOutQuad' }),
+      fxPlay(L.dot, { ...A.svg.createMotionPath(L.path), duration: D, ease: 'inOutQuad' })];
+  };
+  const pin = (g, how) => {
+    if (active) active.tabIndex = -1;
+    g.tabIndex = 0; active = g;
+    showChip(g, true); walk(g);
+    if (how === 'hash' || how === 'pick') centreOn(centre(g).x, true);
+    document.dispatchEvent(new CustomEvent('cacm:pin', { detail: g }));
   };
 
   if (svg) {
@@ -139,25 +414,26 @@
       g.addEventListener('click', e => {
         e.preventDefault();
         if (pinned === g) { hideChip(true); return; }
-        if (active) active.tabIndex = -1; g.tabIndex = 0; active = g;
-        showChip(g, true);
+        pin(g, 'tap');
       });
       g.addEventListener('focus', () => { if (!pinned && !dismissed) showChip(g, false); });
       g.addEventListener('blur', () => { if (!pinned) scheduleHide(); });
     });
-    chip.addEventListener('pointerenter', () => clearTimeout(hideTimer));       // hoverable (1.4.13)
+    chip.addEventListener('pointerenter', () => clearTimeout(hideTimer));
     chip.addEventListener('pointerleave', () => { if (!pinned) scheduleHide(); });
-    document.addEventListener('pointerdown', e => { if (pinned && !figure.contains(e.target)) hideChip(true); });
+    document.addEventListener('pointerdown', e => {
+      if (pinned && !figure.contains(e.target) && !(e.target.closest && e.target.closest('.map-tools'))) hideChip(true);
+    });
 
-    /* keyboard — roving tabindex ring + geometric ↑/↓ + digit type-ahead */
+    /* keyboard — roving tabindex ring + geometric ↑/↓ + digit type-ahead; Enter/Space pin AND draw the way */
     const ring = regions;
     const nearest = (from, dir) => {
       const c = centre(from); let best = null, score = Infinity;
       for (const g of regions) {
         if (g === from) continue;
         const p = centre(g), dy = p.y - c.y, dx = p.x - c.x;
-        if (dir < 0 ? dy >= -4 : dy <= 4) continue;              // must be above / below
-        const s = Math.abs(dy) + 2.6 * Math.abs(dx);              // same-column bias: walk the aisle, not the list
+        if (dir < 0 ? dy >= -4 : dy <= 4) continue;
+        const s = Math.abs(dy) + 2.6 * Math.abs(dx);
         if (s < score) { score = s; best = g; }
       }
       return best;
@@ -173,7 +449,7 @@
         case 'ArrowDown': moveFocus(nearest(g, 1) || g); break;
         case 'Home': moveFocus(ring[0]); break;
         case 'End': moveFocus(ring[ring.length - 1]); break;
-        case 'Enter': case ' ': (pinned === g) ? hideChip(true) : showChip(g, true); break;
+        case 'Enter': case ' ': if (pinned === g) hideChip(true); else pin(g, 'key'); break;
         case 'Escape': dismissed = true; hideChip(true); break;
         default:
           if (/^[0-9]$/.test(e.key)) {
@@ -188,13 +464,16 @@
       if (handled) e.preventDefault();
     });
 
-    /* zone legend — highlight only, never a count */
+    /* zone legend — highlight only, never a count; M22 ping */
     const legend = $$('.legend__btn');
     legend.forEach(btn => btn.addEventListener('click', () => {
       const on = btn.getAttribute('aria-pressed') !== 'true';
       legend.forEach(b => b.setAttribute('aria-pressed', 'false'));
       svg.classList.remove('zone-front', 'zone-aisle', 'zone-perimeter', 'zone-case', 'zone-service');
-      if (on) { btn.setAttribute('aria-pressed', 'true'); svg.classList.add('zone-' + btn.dataset.zone); }
+      if (!on) return;
+      btn.setAttribute('aria-pressed', 'true'); svg.classList.add('zone-' + btn.dataset.zone);
+      const hit = regions.filter(g => g.dataset.zone === btn.dataset.zone);
+      if (!still() && hit.length) fxPlay(hit, { scale: [{ from: 1, to: 1.04, duration: 140, ease: 'outQuad' }, { to: 1, duration: 140, ease: 'inQuad' }], delay: A.stagger(6) }, clean);
     }));
 
     /* mobile scroller: open on the ENTRANCE, scroll-shadow edges, keep a pinned chip in place */
@@ -209,49 +488,88 @@
       const px = (ex - VB.x) / VB.width * svg.getBoundingClientRect().width;
       scroller.scrollLeft = Math.max(0, px - scroller.clientWidth / 2); edges();
     };
-    centreEntrance();
     /* phones fire resize each time the address bar collapses while scrolling; only a WIDTH change (rotation, a
        resized window) re-centres, so a visitor's own pan across the map survives vertical scrolling */
-    let lastW = innerWidth;
+    let lastW = 0;
+    later.push(() => { lastW = innerWidth; centreEntrance(); });
     addEventListener('resize', () => { if (innerWidth !== lastW) { lastW = innerWidth; centreEntrance(); } });
     let sr = 0;
     scroller.addEventListener('scroll', () => { edges(); if (!chip.hidden) { cancelAnimationFrame(sr); sr = requestAnimationFrame(() => placeChip(pinned || active)); } }, { passive: true });
+
+    /* M20 — stocking the floor: booths arrive from the ENTRANCE gap (delay = distance × .6 ms ≈ 1 s) */
+    const floor = $('.map-booths', svg);
+    let stocking = null;
+    when(figure, () => {
+      const ex = (+svg.dataset.entranceX0 + +svg.dataset.entranceX1) / 2, ey = +svg.dataset.entranceY;
+      const dist = regions.map(g => { const c = centre(g); return Math.hypot(c.x - ex, c.y - ey); });
+      if (pickBtn) pickBtn.setAttribute('aria-disabled', 'true');
+      return (stocking = play(regions, { opacity: [0, 1], scale: [.9, 1], duration: 450, ease: 'outExpo', delay: (el, i) => dist[i] * .6 }, [floor],
+        () => { stocking = null; if (pickBtn) pickBtn.removeAttribute('aria-disabled'); }));
+    }, 100, .3);
+    stockNow = () => { fire(figure, true); if (stocking) stocking.complete(); };
+
+    /* #pick-booth — never moves focus; disabled while the floor is being stocked */
+    if (pickBtn) pickBtn.addEventListener('click', () => {
+      if (pickBtn.getAttribute('aria-disabled') === 'true') return;
+      stockNow();
+      const g = hasAnime ? A.utils.randomPick(booths) : booths[Math.floor(Math.random() * booths.length)];
+      eggText = null; pin(g, 'pick');
+      say(mapStatus, `Start with Booth ${g.dataset.n}. No promises — go look.`);
+    });
+
+    /* #booth-n on load + hashchange (§9 A11): pin n, roving tabindex, draw the way, announce — focus is not moved */
+    let prevFocus = null;
+    document.addEventListener('focusin', e => { if (!(e.target.closest && e.target.closest('g.booth'))) prevFocus = e.target; });
+    const fromHash = () => {
+      const m = /^#booth-(\d+)$/.exec(location.hash); if (!m) return;
+      const g = booths.find(b => b.dataset.n === String(+m[1]));
+      if (!g) { say(mapStatus, `There's no booth ${m[1]} on the main-floor map.`); return; }
+      stockNow();
+      figure.scrollIntoView({ block: 'center', behavior: 'auto' });
+      eggText = null; pin(g, 'hash');
+      if (document.activeElement === g) {   // the browser focuses a focusable fragment target; A11 keeps focus where it was
+        if (prevFocus && prevFocus.isConnected && prevFocus !== document.body) prevFocus.focus({ preventScroll: true }); else g.blur();
+      }
+      say(live1, `Booth ${g.dataset.n} — the way from the entrance is drawn on the map.`);
+    };
+    addEventListener('hashchange', fromHash);
+    if (location.hash) (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(fromHash);
   }
 
   /* =====================================================================
-     D10 · "X MARKS THE SPOT" — type `treasure`, or tap the small red X in the footer rule three times.
+     D10 / M34 · "X MARKS THE SPOT" — type `treasure`, or tap the small red X in the footer rule three times.
      The trail WALKS THE AISLES: a BFS on a 6-unit grid over the map's own geometry (every rect.wall + the outer wall),
-     from the ENTRANCE gap to a booth chosen at trigger time. Reduced motion = whole trail at once, no pulse, no scroll.
+     from the ENTRANCE gap to a booth chosen at trigger time. v2: the draw finally shows (mask), starts after the
+     scroll settles, a walker rides it, the X stamps, and the whole site beats for 6 s. Reduced/Calm = all at once.
      ===================================================================== */
   if (svg && booths.length) {
-    const CELL = 6, VBX = 300, VBY = 236, VBW = 1470, VBH = 664;
-    const W = Math.ceil(VBW / CELL) + 1, H = Math.ceil(VBH / CELL) + 1;
+    const W = Math.ceil(VBW / CELL) + 1, Hh = Math.ceil(VBH / CELL) + 1;
     let walls = null;
     const buildWalls = () => {
-      walls = new Uint8Array(W * H);
+      walls = new Uint8Array(W * Hh);
       const block = (x, y, w, h) => {
-        for (let yy = Math.max(0, Math.floor((y - VBY) / CELL)); yy < Math.min(H, Math.ceil((y + h - VBY) / CELL)); yy++)
+        for (let yy = Math.max(0, Math.floor((y - VBY) / CELL)); yy < Math.min(Hh, Math.ceil((y + h - VBY) / CELL)); yy++)
           for (let xx = Math.max(0, Math.floor((x - VBX) / CELL)); xx < Math.min(W, Math.ceil((x + w - VBX) / CELL)); xx++) walls[yy * W + xx] = 1;
       };
       $$('rect.wall', svg).forEach(r => block(+r.getAttribute('x'), +r.getAttribute('y'), +r.getAttribute('width'), +r.getAttribute('height')));
       const f = $('.map-floor', svg), ox = +f.getAttribute('x'), oy = +f.getAttribute('y'), ow = +f.getAttribute('width'), oh = +f.getAttribute('height');
-      for (let yy = 0; yy < H; yy++) for (let xx = 0; xx < W; xx++) {
+      for (let yy = 0; yy < Hh; yy++) for (let xx = 0; xx < W; xx++) {
         const X = VBX + xx * CELL, Y = VBY + yy * CELL;
         if (!(ox < X && X < ox + ow && oy < Y && Y < oy + oh)) walls[yy * W + xx] = 1;
       }
     };
-    const route = target => {
+    route = target => {
       if (!walls) buildWalls();
       const gx = (+svg.dataset.entranceX0 + +svg.dataset.entranceX1) / 2, gy = +svg.dataset.entranceY;
       const sx = Math.floor((gx - VBX) / CELL), sy = Math.floor((gy - 8 - VBY) / CELL);
       const start = sy * W + sx;
-      const prev = new Int32Array(W * H).fill(-1); prev[start] = start;
+      const prev = new Int32Array(W * Hh).fill(-1); prev[start] = start;
       const q = [start]; let qi = 0;
       while (qi < q.length) {
-        const c = q[qi++], x = c % W, y = (c - x) / W;
+        const c = q[qi++], x = c % W;
         const nb = [c + 1, c - 1, c + W, c - W];
         for (let k = 0; k < 4; k++) {
-          const n = nb[k]; if (n < 0 || n >= W * H) continue;
+          const n = nb[k]; if (n < 0 || n >= W * Hh) continue;
           if (k === 0 && x === W - 1) continue; if (k === 1 && x === 0) continue;
           if (walls[n] || prev[n] !== -1) continue;
           prev[n] = c; q.push(n);
@@ -264,7 +582,7 @@
       for (let y = y0; y <= y1; y++) { ringCells.push([x0, y], [x1, y]); }
       let end = -1, bestD = Infinity;
       for (const [x, y] of ringCells) {
-        if (x < 0 || y < 0 || x >= W || y >= H) continue;
+        if (x < 0 || y < 0 || x >= W || y >= Hh) continue;
         const c = y * W + x; if (prev[c] === -1) continue;
         let d = 0, k = c; while (k !== start && d < 100000) { k = prev[k]; d++; }
         if (d < bestD) { bestD = d; end = c; }
@@ -273,61 +591,111 @@
       const cells = []; let k = end;
       while (k !== start) { cells.push(k); k = prev[k]; } cells.push(start); cells.reverse();
       const pts = cells.map(c => { const x = c % W, y = (c - x) / W; return [VBX + x * CELL + CELL / 2, VBY + y * CELL + CELL / 2]; });
-      const simp = [pts[0]];                                    // orthogonal polyline: keep only the turns
+      const simp = [pts[0]];
       for (let i = 1; i < pts.length - 1; i++) {
         const a = simp[simp.length - 1], b = pts[i], c = pts[i + 1];
         if ((b[0] - a[0]) * (c[1] - b[1]) !== (b[1] - a[1]) * (c[0] - b[0])) simp.push(b);
       }
       simp.push(pts[pts.length - 1]);
-      simp.unshift([gx, gy + 6]);                                // start just outside the door, walk in through the gap
-      simp.push([bx + bw / 2, by + bh / 2]);                     // finish on the booth itself
+      simp.unshift([gx, gy + 6]);
+      simp.push([bx + bw / 2, by + bh / 2]);
       let len = 0; for (let i = 1; i < simp.length; i++) len += Math.hypot(simp[i][0] - simp[i - 1][0], simp[i][1] - simp[i - 1][1]);
       return { d: 'M' + simp.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' L'), len, cx: bx + bw / 2, cy: by + bh / 2 };
     };
 
-    const layer = $('.map-trail', svg), live = $('#egg-live');
+    /* scroll to the map: an instant jump when it is > 1.5 viewports away, then a short smooth settle; resolves on
+       scrollend at the target (1 s fallback) */
+    const jump = y => { H.style.scrollBehavior = 'auto'; scrollTo(0, y); H.style.scrollBehavior = ''; };
+    const toMap = cx => new Promise(res => {
+      centreOn(cx, true);
+      const fr = figure.getBoundingClientRect();
+      const target = Math.round(Math.max(0, Math.min(scrollY + fr.top + fr.height / 2 - innerHeight / 2, document.documentElement.scrollHeight - innerHeight)));
+      if (Math.abs(target - scrollY) < 4) return res();
+      if (still()) { jump(target); return res(); }
+      if (Math.abs(target - scrollY) > 1.5 * innerHeight) jump(target - Math.sign(target - scrollY) * innerHeight);
+      let t = 0;
+      const done = () => { clearTimeout(t); removeEventListener('scrollend', end); res(); };
+      const end = () => { if (Math.abs(scrollY - target) < 4) done(); };
+      t = setTimeout(done, 1000);
+      addEventListener('scrollend', end);
+      scrollTo({ top: target, behavior: 'smooth' });
+    });
+
+    /* the 6 s whole-site beat: ribbon split-flap, both hung signs swing once, tags in view flip, rules march */
+    const track = $('.ribbon__track'), ribs = $$('.ribbon__copy'), ribHTML = ribs.map(p => p.innerHTML);
+    const ribbon = (n, on) => {
+      const swap = () => ribs.forEach((p, i) => { p.innerHTML = on ? `X marks the spot — Booth ${n}&nbsp;<i>●</i> No promises&nbsp;<i>●</i> Go look&nbsp;<i>●</i>` : ribHTML[i]; });
+      if (still() || !track) { swap(); return; }
+      fxPlay(track, { rotateX: [0, 90], duration: 280, ease: 'inQuad' }, () => { swap(); fxPlay(track, { rotateX: [-90, 0], duration: 320, ease: 'outQuad' }); });
+    };
+    let beatT = 0, flipIO = null, flipped = [];
+    const beat = n => {
+      clearTimeout(beatT);
+      document.body.classList.add('x-marks');
+      ribbon(n, true);
+      [[plate, 3], [forrent, -3]].forEach(([el, a]) => {
+        if (!el) return;
+        if (pend.has(el)) { pend.get(el).io.unobserve(el); pend.delete(el); }
+        el.classList.add('is-in');
+        if (!still()) fxPlay(el, { rotate: [a, 0], ease: spring() }, () => rest(el));
+      });
+      if (!still() && 'IntersectionObserver' in window) {
+        flipIO = new IntersectionObserver(es => {
+          const batch = es.filter(e => e.isIntersecting && !flipped.includes(e.target)).map(e => e.target)
+            .sort((a, b) => a.getBoundingClientRect().left - b.getBoundingClientRect().left);
+          batch.forEach((t, i) => {
+            flipped.push(t);
+            fxPlay($('.tag__card', t), { rotateY: [0, 180], duration: 600, ease: 'inOutQuad', delay: Math.abs(i - (batch.length - 1) / 2) * 70 });
+          });
+        });
+        $$('.tag').forEach(t => flipIO.observe(t));
+      }
+      beatT = setTimeout(() => {
+        document.body.classList.remove('x-marks');
+        ribbon(n, false);
+        if (flipIO) { flipIO.disconnect(); flipIO = null; }
+        const back = flipped; flipped = [];
+        back.forEach((t, i) => { const c = $('.tag__card', t); fxPlay(c, { rotateY: [180, 360], duration: 600, ease: 'inOutQuad', delay: Math.abs(i - (back.length - 1) / 2) * 70 }, () => rest(c)); });
+      }, 6000);
+    };
+
+    const live2 = $('#egg-live');
     let lastBooth = null, running = false;
     const xMarksTheSpot = () => {
       if (running) return; running = true;
-      layer.innerHTML = '';
       if (lastBooth) { lastBooth.classList.remove('is-x'); if (hasAnime) A.utils.remove($('rect', lastBooth)); $('rect', lastBooth).style.fill = ''; }
       hideChip(true); eggText = null;
+      stockNow();
       const pick = hasAnime ? A.utils.randomPick(booths) : booths[Math.floor(Math.random() * booths.length)];
       const r = route(pick);
       if (!r) { running = false; return; }
-      const NS = 'http://www.w3.org/2000/svg';
-      const path = document.createElementNS(NS, 'path'); path.setAttribute('class', 'trail'); path.setAttribute('d', r.d); layer.appendChild(path);
+      const L = lay(trailLayer, r, `<path class="trail" d="${r.d}"/>`, 'trail-mask', !still());
       const mkX = (cls, s) => { const p = document.createElementNS(NS, 'path'); p.setAttribute('class', cls);
         p.setAttribute('d', `M${r.cx - s},${r.cy - s} L${r.cx + s},${r.cy + s} M${r.cx + s},${r.cy - s} L${r.cx - s},${r.cy + s}`); return p; };
       const xOuter = mkX('trail-x', 14), xCore = mkX('trail-x trail-x--core', 14);
       const text = `X marks the spot — Booth ${pick.dataset.n}. No promises. Go look.`;
       const finish = () => {
-        layer.appendChild(xOuter); layer.appendChild(xCore);
+        trailLayer.appendChild(xOuter); trailLayer.appendChild(xCore);
+        if (L.dot && still()) L.dot.remove();
         pick.classList.add('is-x'); lastBooth = pick; eggText = text;
         if (active) active.tabIndex = -1; pick.tabIndex = 0; active = pick;
         showChip(pick, true);
-        if (live) { live.textContent = ''; setTimeout(() => { live.textContent = text; }, 50); }
-        document.body.classList.add('x-marks'); setTimeout(() => document.body.classList.remove('x-marks'), 2200);
+        say(live2, text);
+        beat(pick.dataset.n);
         running = false;
+        if (still()) return;
+        fxPlay([xOuter, xCore], { opacity: [0, 1], scale: [1.6, 1], rotate: [-12, 0], duration: 380, ease: 'outBack' });
+        const tok = n => getComputedStyle(H).getPropertyValue(n).trim();
+        A.animate($('rect', pick), { fill: [tok('--chalk'), tok('--yellow-bright')], duration: 360, loop: 3, alternate: true, ease: 'inOutQuad',
+          onComplete: () => { $('rect', pick).style.fill = ''; } });
       };
-      const scrollMap = () => {
-        figure.scrollIntoView({ block: 'center', behavior: reduced ? 'auto' : 'smooth' });
-        if (scroller.scrollWidth > scroller.clientWidth + 2) {
-          const mid = (r.cx - VBX) / VBW * svg.getBoundingClientRect().width;
-          scroller.scrollTo({ left: Math.max(0, mid - scroller.clientWidth / 2), behavior: reduced ? 'auto' : 'smooth' });
-        }
-      };
-      if (reduced || !hasAnime) { scrollMap(); finish(); return; }
-      scrollMap();
-      const drawable = A.svg.createDrawable(path);
-      A.animate(drawable, { draw: ['0 0', '0 1'], duration: Math.min(2600, Math.max(900, r.len * 1.2)), ease: 'inOutQuad', delay: 350,
-        onComplete: () => {
-          finish();
-          const tok = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-          A.animate($('rect', pick), { fill: [tok('--chalk'), tok('--yellow-bright')], duration: 360, loop: 3, alternate: true, ease: 'inOutQuad',
-            onComplete: () => { $('rect', pick).style.fill = ''; } });
-          A.animate([xOuter, xCore], { scale: [0, 1], duration: 420, ease: 'outBack', transformOrigin: `${r.cx}px ${r.cy}px` });
-        } });
+      const drawable = still() ? null : A.svg.createDrawable(L.mp);
+      toMap(r.cx).then(() => {
+        if (!drawable || still()) { if (drawable) undraw(L.mp); finish(); return; }
+        const D = Math.min(2600, Math.max(900, r.len * 1.2));
+        fxPlay(drawable, { draw: ['0 0', '0 1'], duration: D, ease: 'inOutQuad' }, finish);
+        fxPlay(L.dot, { ...A.svg.createMotionPath(L.path), duration: D, ease: 'inOutQuad' });
+      });
     };
 
     /* Escape anywhere dismisses the pinned egg chip (the SVG's own Escape branch covers focus inside the map); the X stays on the map */
@@ -347,6 +715,91 @@
       wink.addEventListener('click', () => { const now = Date.now(); taps = taps.filter(t => now - t < 1500); taps.push(now); if (taps.length >= 3) { taps = []; xMarksTheSpot(); } });
     }
   }
+
+  /* ===== X-10 · RENT M23–M24 · VISIT M25–M27 · DAY TRIP M28–M29 · FAQ M30 · FOOTER M31 · BAR M33 ===== */
+  when(forrent, () => settleSign(forrent, -5));
+  if (forrent) {
+    forrent.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse' && fine.matches) kick(forrent); });
+    forrent.addEventListener('focus', () => { if (forrent.matches(':focus-visible')) kick(forrent); });
+  }
+  const ledger = $$('.rent__ledger [data-anim]');
+  if (ledger.length) { ledger.forEach(l => claimed.add(l)); when(ledger[0].parentElement, () => stampList(ledger)); }
+
+  /* TODAY on the letter board (A8; pulled forward so M25 has its bar): today in Carson City, no open/closed claim.
+     US Pacific time by arithmetic (DST: 2nd Sun of March 02:00 → 1st Sun of Nov 02:00) — identical to
+     Intl America/Los_Angeles for every hour 2025–2030 (build-motion.md), without the 50 ms ICU time-zone load that
+     Intl.DateTimeFormat costs on a 4×-throttled phone. If US DST law changes, swap back to Intl. */
+  const laDay = (d = new Date()) => {
+    const y = d.getUTCFullYear(), sun = (m, n) => 1 + (7 - new Date(Date.UTC(y, m, 1)).getUTCDay()) % 7 + 7 * (n - 1);
+    const dst = d >= Date.UTC(y, 2, sun(2, 2), 10) && d < Date.UTC(y, 10, sun(10, 1), 9);
+    return new Date(d.getTime() - (dst ? 7 : 8) * 36e5).getUTCDay();
+  };
+  const today = $(`.board__days li[data-day="${laDay()}"]`);
+  if (today) { today.setAttribute('aria-current', 'date'); const t = $('.board__today', today); if (t) t.hidden = false; }
+  const board = $('#hours');
+  when(board, () => {
+    const tl = tline([board]);
+    tl.add(board, { translateY: [12, 0], duration: 500, ease: 'outExpo' }, 0).add(board, { '--today-bar': [0, 1], duration: 500, ease: 'outQuad' }, 150);
+    return tl;
+  });
+  const cover = $('.visit__cover');
+  when(cover, () => play(cover, { '--wipe': [0, 1], duration: 700, ease: 'inOutQuad' }, [cover]));
+  const guide = $('#getting-here');
+  when(guide, () => {
+    const lines = $$('.guide__line', guide), st = () => A.stagger(innerWidth < 768 ? 90 : 120);
+    const tl = tline([guide]);
+    tl.add(guide, { translateY: [12, 0], duration: 500, ease: 'outExpo' }, 0)
+      .add(lines, { '--lane': [0, 1], duration: 400, ease: 'outQuad', delay: st() }, 120)
+      .add($$('.g-cta', guide), { translateX: [{ from: 0, to: 4, duration: 200, ease: 'outQuad' }, { to: 0, duration: 200, ease: 'inQuad' }], delay: st() }, 320);
+    return tl;
+  });
+
+  /* M28 — North Carson Street draws; each walk pin drops when the line reaches its routed distance */
+  const street = $('.street');
+  if (street) {
+    const roads = $$('.street__road', street), masks = [];
+    const streetMasks = () => { if (masks.length || !live()) return; roads.forEach((s, i) => {
+      const c = $('.street__centre', s); if (!c) return;
+      const vb = s.viewBox.baseVal, m = mk('mask', { id: 'street-m' + i, maskUnits: 'userSpaceOnUse', x: vb.x, y: vb.y, width: vb.width, height: vb.height });
+      const mp = mk('path', { d: c.getAttribute('d'), fill: 'none', stroke: '#fff', 'stroke-width': 14 });
+      m.appendChild(mp); s.insertBefore(m, s.firstChild); c.setAttribute('mask', `url(#street-m${i})`);
+      masks.push(...A.svg.createDrawable(mp)); loose.push(mp);
+    }); };
+    later.push(streetMasks);
+    when(street, () => {
+      streetMasks();
+      const tl = tline([street]);
+      masks.forEach(d => tl.add(d, { draw: ['0 0', '0 1'], duration: 1200, ease: 'inOutQuad' }, 0));
+      [['kids', .58], ['mint', .67], ['capitol', .91]].forEach(([k, d]) =>
+        tl.add($$('.street__pin--' + k, street), { translateY: [-12, 0], scale: [.6, 1], ease: spring(180, 14) }, Math.round(1200 * d)));
+      return tl;
+    }, 100, .3);
+  }
+  [$$('.street__stops [data-anim]'), $$('.drives__list [data-anim]')].forEach(cards => {
+    if (!cards.length) return;
+    cards.forEach(c => claimed.add(c));
+    when(cards[0].parentElement, () => play(cards, { translateY: [12, 0], duration: 500, ease: 'outExpo', delay: A.stagger(80) }, cards));
+  });
+  $$('dl.faq').forEach(dl => when(dl, () => play($$('.faq__row', dl), { '--rule-s': [0, 1], duration: 400, ease: 'outExpo', delay: A.stagger(40) }, [dl])));
+  const fwm = $('.footer__wordmark');
+  when(fwm, () => play($$('.fw > span', fwm), { translateY: ['100%', '0%'], duration: 800, ease: 'outExpo', delay: A.stagger(90) }, [fwm]), 95);
+
+  /* M33 — the phone action bar tucks while the hero CTAs are on screen (CSS transition; instant under reduced / Calm) */
+  const ctas = $('#hero-ctas');
+  if (ctas && 'IntersectionObserver' in window) new IntersectionObserver(([e]) => H.classList.toggle('bar-tucked', e.isIntersecting)).observe(ctas);
+
+  /* safety net: any start-state element nothing above claimed still lands (rise / settle), so nothing stays hidden */
+  $$('[data-anim]').forEach(el => {
+    if (claimed.has(el) || el.closest('svg') || el.closest('#tile-grid')) return;
+    when(el, () => play(el, { translateY: [el.dataset.anim === 'rise' ? 16 : 12, 0], opacity: [el.dataset.anim === 'rise' ? 0 : 1, 1], duration: 600, ease: 'outExpo' }, [el]));
+  });
+
+  /* boot state: no entrances when motion is off (reduced, Calm, or the 2.5 s watchdog already fired) */
+  if (live()) later.push(wakeScrubs); else settleAll();
+  later.push(() => console.log('%cPsst, hey you — over here. Type "treasure" and X marks the spot.',   // the D10 hint, byte-exact (content.md §7)
+    'color:#D9A400;background:#14201B;font:700 14px/1.6 Satoshi,system-ui,sans-serif;padding:8px 14px;border-left:4px solid #7A2E1F;'));
+  const next = () => { const f = later.shift(); if (!f) return; try { f(); } catch (e) { console.error(e); } setTimeout(next, 0); };
+  requestAnimationFrame(() => setTimeout(next, 0));
 })();
 
 /* The embedded Google map (about 1.5 MB of Google scripts) waits until it is asked for — v2: on EVERY width (spec §4.8/A15).
