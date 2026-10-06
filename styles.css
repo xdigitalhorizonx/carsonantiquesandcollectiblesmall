@@ -647,6 +647,7 @@ svg.map.zone-service .booth:not([data-zone="service"]) { opacity: .28; }
 .board__days li[aria-current="date"]::before { content: ""; position: absolute; left: 0; right: 0; top: -2px; height: 4px; background: var(--yellow-bright); transform-origin: 0 50%; transform: scaleX(var(--today-bar, 1)); }
 .board__today { color: var(--yellow-bright); font-size: 1rem; letter-spacing: .02em; }
 .board__note { margin-top: 14px; font-weight: 500; font-size: 1rem; }
+.worth__facts li, .worth__more p, .rent__ledger li, .board__note, .stop__meta { text-wrap: pretty; }   /* no one-word last lines */
 .visit__holiday { margin-top: 22px; font-weight: 500; }
 .visit__photo { position: relative; width: min(100%, 760px); }
 .visit__photo picture { display: block; }

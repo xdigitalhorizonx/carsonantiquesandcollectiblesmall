@@ -1,6 +1,6 @@
 /* Carson Antiques & Collectibles Mall · home v2 · app.js (SPEC §7). One engine: anime.js 4.5.0 custom build.
    Start states only under html.motion; facts never start hidden; Calm = reduced path; signs rest at 0°. */
-(() => {
+requestAnimationFrame(() => setTimeout(() => {   // AC-13: boot after the first frame, so the first full layout is the browser's own, not forced inside this task
   'use strict';
   const H = document.documentElement, A = window.anime, hasAnime = !!(A && typeof A.animate === 'function');
   /* §7.2.1 watchdog; a failed boot keeps html.rib (one-line ribbon), so nothing moves */
@@ -238,9 +238,15 @@
 
   if (hero && body) {
     const ready = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
-    let lastW = 0, lastH = 0, built = false;
-    ready.then(() => setTimeout(() => { lastW = innerWidth; built = true; buildTrail(); heroIntro(); autoNouns(); }, 150));
-    addEventListener('resize', () => { if (built && innerWidth !== lastW) { lastW = innerWidth; buildTrail(); } });
+    let lastW = 0, lastH = 0, lastTop = 0, built = false;
+    const topIn = () => (hl ? Math.round(hl.getBoundingClientRect().top - body.getBoundingClientRect().top) : 0);
+    ready.then(() => setTimeout(() => { lastW = innerWidth; built = true; buildTrail(); lastTop = topIn(); heroIntro(); autoNouns(); }, 150));
+    /* a height-only resize can move the H1 inside .hero__body (the 820 px short step) without resizing it */
+    addEventListener('resize', () => {
+      if (!built) return;
+      const t = topIn();
+      if (innerWidth !== lastW || t !== lastTop) { lastW = innerWidth; lastTop = t; buildTrail(); }
+    });
     if ('ResizeObserver' in window) new ResizeObserver(([e]) => {      // text spacing / text-only zoom (1.4.12)
       const h = Math.round(e.contentRect.height * 10);
       if (built && lastH && h !== lastH) buildTrail();
@@ -744,8 +750,8 @@
         if (still()) return;
         fxPlay([xOuter, xCore], { opacity: [0, 1], scale: [1.6, 1], rotate: [-12, 0], duration: 380, ease: 'outBack' });
         const tok = n => getComputedStyle(H).getPropertyValue(n).trim();
-        A.animate($('rect', pick), { fill: [tok('--chalk'), tok('--yellow-bright')], duration: 360, loop: 3, alternate: true, ease: 'inOutQuad',
-          onComplete: () => { $('rect', pick).style.fill = ''; } });
+        fxPlay($('rect', pick), { fill: [tok('--chalk'), tok('--yellow-bright')], duration: 360, loop: 3, alternate: true, ease: 'inOutQuad' },
+          () => { $('rect', pick).style.fill = ''; });   // in fx, so Calm completes it (AC-10)
       };
       const drawable = still() ? null : A.svg.createDrawable(L.mp);
       toMap(r.cx).then(() => {
@@ -921,7 +927,7 @@
     'color:#D9A400;background:#14201B;font:700 14px/1.6 Satoshi,system-ui,sans-serif;padding:8px 14px;border-left:4px solid #7A2E1F;'));
   const next = () => { const f = later.shift(); if (!f) return; try { f(); } catch (e) { console.error(e); } setTimeout(next, 0); };
   requestAnimationFrame(() => setTimeout(next, 0));
-})();
+}, 0));
 
 /* the map iframe loads only on "Show the map here" (A15) */
 (() => {
