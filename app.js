@@ -1,12 +1,10 @@
-/* Carson Antiques & Collectibles Mall — home v2 · app.js. Motion = SPEC.md §7 (package "motion"; notes in the run folder,
-   build-motion.md). ONE engine: anime.js 4.5.0 custom build (window.anime). Start states live only under html.motion and
-   drop on .is-in; facts never start hidden; Calm = the reduced-motion path; signs rest at 0°. */
+/* Carson Antiques & Collectibles Mall — home v2 · app.js (SPEC §7; build-motion.md, fix-r1.md). ONE engine: anime.js 4.5.0
+   custom build. Start states only under html.motion; facts never start hidden; Calm = reduced path; signs rest at 0°. */
 (() => {
   'use strict';
   const H = document.documentElement, A = window.anime, hasAnime = !!(A && typeof A.animate === 'function');
   if (hasAnime) H.classList.add('motion-ok'); else H.classList.remove('motion');   // §7.2.1 watchdog contract
-  /* a viewport taller than any person's (a crawler's one-tall-window render) gets the end state: with a 100svh hero
-     nothing below it would ever intersect, and the §7.4 map guard wants booth labels readable at scroll progress 0 */
+  /* a crawler-tall viewport gets the end state (§7.4 map guard) */
   if (matchMedia('(min-height: 2600px)').matches) H.classList.remove('motion');
   H.classList.add('js');
   const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
@@ -19,6 +17,7 @@
   const clean = a => { try { A.utils.cleanInlineStyles(a); } catch (e) { /* not a renderable */ } };
   const rest = el => el && el.style.removeProperty('transform');
   const later = [];
+  const idle = window.requestIdleCallback ? f => requestIdleCallback(f, { timeout: 800 }) : f => setTimeout(f, 50);
 
 
   /* ===== X-02/X-03 · boot, registries, once-reveals, Calm ===== */
@@ -60,12 +59,11 @@
   /* scrubs (≤ 5 synced onScroll: M05 noun, M06 ribbon, M07 road, M11 lamp, M19 wall) */
   let scrubs = [], nounObs = null;
   const loose = [];
-  /* anime 4.5.0 bug: a ScrollContainer's scrollTicker resumes its 30 fps dataTimer once and nothing ever pauses it, so the
-     engine ticks forever (measured 180 rAF/s idle). We use neither its velocity nor its direction: never start it. */
+  /* anime 4.5.0: a ScrollContainer's dataTimer never pauses (180 rAF/s idle) — never start it */
   const tame = o => { const c = o.container; if (c && !c.tamed) { c.tamed = 1; c.scrollTicker.onBegin = () => {}; c.dataTimer.pause(); } return o; };
   const scrub = (t, p, obs) => { const a = A.animate(t, { ease: 'linear', duration: 1000, ...p, autoplay: tame(A.onScroll(obs)) }); scrubs.push(a); return a; };
   const undraw = el => { if (el) ['pathLength', 'stroke-dasharray', 'stroke-dashoffset'].forEach(n => el.removeAttribute(n)); };
-  let wakeScrubs = () => {}, swayOff = () => {}, nounTo = () => {}, marqueeRegion = () => {};
+  let wakeScrubs = () => {}, swayOff = () => {}, nounTo = () => {}, marqueeRegion = () => {}, beatOff = () => {};
   const sleepScrubs = () => {
     scrubs.forEach(a => a.revert()); scrubs = [];
     if (nounObs) { nounObs.revert(); nounObs = null; }
@@ -76,6 +74,7 @@
   const quiet = () => {
     pend.forEach((p, el) => p.io.unobserve(el)); pend.clear();
     runs.forEach((b, a) => a.complete()); fx.forEach(a => a.complete());
+    beatOff(false);   // fix-r1 AC-10
     sleepScrubs(); swayOff(); settleAll(); H.classList.remove('motion'); loose.forEach(undraw);
     $$('.map-route .walker, .map-trail .walker').forEach(w => w.remove());
     nounTo(0, true); marqueeRegion();
@@ -103,7 +102,7 @@
       pend.forEach((p, el) => { if (el.getBoundingClientRect().top < innerHeight) fire(el); });
   }, { passive: true });
 
-  /* ---- scroll-shadow edges for the horizontal rows that can outrun a small screen (header nav, zone legend) ---- */
+  /* scroll-shadow edges (nav, legend) */
   const shadowEdges = (scroller, host) => {
     if (!scroller || !host) return;
     const edges = () => {
@@ -112,7 +111,7 @@
       host.classList.toggle('can-right', can && scroller.scrollLeft + scroller.clientWidth < scroller.scrollWidth - 2);
     };
     later.push(edges); scroller.addEventListener('scroll', edges, { passive: true }); addEventListener('resize', edges);
-    /* A-01: focus doesn't scroll a half-visible item in; bring it fully in, clear of the fade (2.4.7) */
+    /* A-01: bring a focused item fully in (2.4.7) */
     scroller.addEventListener('focusin', e => {
       const a = e.target.getBoundingClientRect(), s = scroller.getBoundingClientRect(), m = 46;
       if (a.left - m < s.left) scroller.scrollLeft -= s.left - a.left + m; else if (a.right + m > s.right) scroller.scrollLeft += a.right + m - s.right;
@@ -137,18 +136,26 @@
       rg.selectNodeContents(n);
       for (const r of rg.getClientRects()) out.push({ l: r.left, r: r.right, t: r.top + .25 * f, b: r.top + f });
     }
+    /* fix-r1 AC-37: the "in" disc + 2 px ring is an obstacle too */
+    const sl = $('.sl-in', h1);
+    if (sl) { const r = sl.getBoundingClientRect(); out.push({ l: r.left - 2, r: r.right + 2, t: r.top - 2, b: r.bottom + 2 }); }
     return out;
+  };
+  let trailSW = 0;
+  const strokeW = () => {
+    if (!trailSW) { const p = mk('path', {}); trailSvg.appendChild(p); trailSW = parseFloat(getComputedStyle(p).strokeWidth) || 5; p.remove(); }
+    return trailSW;
   };
   /* M02 overlay: one dashed path + one mask path per line box of "right here" (§7.2.6 — never draw CSS dashes) */
   const buildTrail = () => {
     if (!trailSvg || !hl) return;
     if (heroTl) heroTl.complete();
     trailSvg.textContent = '';
-    const B = body.getBoundingClientRect(), fs = parseFloat(getComputedStyle(hl).fontSize);
+    const B = body.getBoundingClientRect(), fs = parseFloat(getComputedStyle(hl).fontSize), clear = 3.5 + strokeW() / 2;
     const others = inkBoxes(), defs = mk('defs', {}); trailSvg.appendChild(defs);
     trailMasks = Array.from(hl.getClientRects()).filter(r => r.width > 4).map((r, i) => {
       let y = r.bottom - .17 * fs;
-      others.forEach(o => { if (o.t > r.top + .9 * fs && o.l < r.right && o.r > r.left && o.t < y + 3.5) y = o.t - 3.5; });
+      others.forEach(o => { if (o.t > r.top + .9 * fs && o.l < r.right && o.r > r.left && o.t < y + clear) y = o.t - clear; });
       const x0 = r.left - B.left, x1 = r.right - B.left, yy = y - B.top, d = `M${x0.toFixed(1)} ${yy.toFixed(1)}H${x1.toFixed(1)}`;
       const m = mk('mask', { id: 'trail-m' + i, maskUnits: 'userSpaceOnUse', x: x0 - 12, y: yy - 12, width: x1 - x0 + 24, height: 24 });
       const mp = mk('path', { d, fill: 'none', stroke: '#fff', 'stroke-width': 10 });
@@ -159,6 +166,8 @@
   };
   const heroIntro = () => {
     if (!live()) return;
+    /* fix-r1 §7.2.7: a slow boot skips the intro (the trail is already whole) */
+    if (performance.now() + 1080 > 5000) { if (chipX) chipX.classList.add('is-in'); return; }
     const tl = heroTl = tline([chipX], () => { heroTl = null; });
     const per = 450 / Math.max(1, trailMasks.length);
     trailMasks.forEach((m, i) => tl.add(A.svg.createDrawable(m), { draw: ['0 0', '0 1'], duration: per, ease: 'inOutQuad' }, i * per));
@@ -169,9 +178,9 @@
     }, 380);
     if (chipX) tl.add(chipX, { opacity: [0, 1], scale: [1.6, 1], rotate: [-12, 0], duration: 380, ease: 'outBack' }, 700);
   };
-  if (live() && lights) {   // M01, first frame. The inline seed stops anime reading computed style (= a forced full layout at boot)
-    lights.style.opacity = '1';
-    play(lights, { opacity: [1, 0], duration: 900, ease: 'outQuad' }, [lights]);
+  if (live() && lights) {   // M01; fix-r1: skipped if it can't end by 5 s
+    if (performance.now() + 900 > 5000) lights.classList.add('is-in');
+    else { lights.style.opacity = '1'; play(lights, { opacity: [1, 0], duration: 900, ease: 'outQuad' }, [lights]); }
   }
   claimed.add(lights); claimed.add(chipX);
 
@@ -290,9 +299,11 @@
       const tags = $$('.tag', marquee);
       let sway = null, swayT = 0;
       swayOff = () => { clearTimeout(swayT); if (sway) { sway.revert(); sway = null; } };
+      const swayOn = () => { if (!sway) sway = A.createAnimatable(tags, { rotate: 500, ease: 'out(3)' }); };
+      later.push(() => idle(() => { if (live()) swayOn(); }));   // fix-r1: built in idle time
       onVelocity = v => {
         if (!inView || still() || paused() || Math.abs(v) < .05) return;
-        if (!sway) sway = A.createAnimatable(tags, { rotate: 500, ease: 'out(3)' });
+        swayOn();
         const max = innerWidth < 768 ? 2 : 3;
         sway.rotate(Math.max(-max, Math.min(max, v * 1.6)));
         clearTimeout(swayT); swayT = setTimeout(() => { if (sway) sway.rotate(0); }, 140);
@@ -328,11 +339,8 @@
     }, 90);
   }
 
-  /* =====================================================================
-     block 5 · THE TREASURE MAP — one Tab stop, roving tabindex, arrows + digit type-ahead, Esc-dismissible hoverable
-     chip (WCAG 1.4.13), tap-to-pin, zone legend = highlight only. v2: M19 wall (scrub above), M20 stocking the floor,
-     M21 walk me there (mask draw + walker), M22 legend ping, #pick-booth, #booth-n links (no focus move).
-     ===================================================================== */
+  /* ===== block 5 · TREASURE MAP: one Tab stop, roving tabindex, arrows + digit type-ahead, Esc chip (1.4.13), tap-to-pin,
+     legend = highlight only; M19–M22, #pick-booth, #booth-n (no focus move) ===== */
   const svg = $('svg.map');
   const scroller = $('#map-scroller');
   const chip = $('#map-chip');
@@ -352,6 +360,8 @@
 
   const centre = g => { const r = $('rect', g); return { x: +r.getAttribute('x') + +r.getAttribute('width') / 2, y: +r.getAttribute('y') + +r.getAttribute('height') / 2 }; };
   const placeChip = g => {
+    /* fix-r1: measure the wrapping chip from x 0 */
+    chip.style.left = '0px'; chip.style.top = '0px';
     const fr = figure.getBoundingClientRect(), sr = scroller.getBoundingClientRect(), r = $('rect', g).getBoundingClientRect();
     const cw = chip.offsetWidth, ch = chip.offsetHeight;
     let left = r.left - fr.left + r.width / 2 - cw / 2;
@@ -497,8 +507,7 @@
       const px = (ex - VB.x) / VB.width * svg.getBoundingClientRect().width;
       scroller.scrollLeft = Math.max(0, px - scroller.clientWidth / 2); edges();
     };
-    /* phones fire resize each time the address bar collapses while scrolling; only a WIDTH change (rotation, a
-       resized window) re-centres, so a visitor's own pan across the map survives vertical scrolling */
+    /* only a WIDTH change re-centres (address-bar resizes keep the visitor's pan) */
     let lastW = 0;
     later.push(() => { lastW = innerWidth; centreEntrance(); });
     addEventListener('resize', () => { if (innerWidth !== lastW) { lastW = innerWidth; centreEntrance(); } });
@@ -512,7 +521,8 @@
       const ex = (+svg.dataset.entranceX0 + +svg.dataset.entranceX1) / 2, ey = +svg.dataset.entranceY;
       const dist = regions.map(g => { const c = centre(g); return Math.hypot(c.x - ex, c.y - ey); });
       if (pickBtn) pickBtn.setAttribute('aria-disabled', 'true');
-      return (stocking = play(regions, { opacity: [0, 1], scale: [.9, 1], duration: 450, ease: 'outExpo', delay: (el, i) => dist[i] * .6 }, [floor],
+      /* fix-r1 AC-13: opacity only (scale re-laid out the SVG each frame) */
+      return (stocking = play(regions, { opacity: [0, 1], duration: 450, ease: 'outExpo', delay: (el, i) => dist[i] * .6 }, [floor],
         () => { stocking = null; if (pickBtn) pickBtn.removeAttribute('aria-disabled'); }));
     }, 100, .3);
     stockNow = () => { fire(figure, true); if (stocking) stocking.complete(); };
@@ -526,7 +536,7 @@
       say(mapStatus, `Start with Booth ${g.dataset.n}. No promises — go look.`);
     });
 
-    /* #booth-n on load + hashchange (§9 A11): pin n, roving tabindex, draw the way, announce — focus is not moved */
+    /* #booth-n (A11): pin, rove, draw, announce; focus not moved */
     let prevFocus = null;
     document.addEventListener('focusin', e => { if (!(e.target.closest && e.target.closest('g.booth'))) prevFocus = e.target; });
     const fromHash = () => {
@@ -545,12 +555,8 @@
     if (location.hash) (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(fromHash);
   }
 
-  /* =====================================================================
-     D10 / M34 · "X MARKS THE SPOT" — type `treasure`, or tap the small red X in the footer rule three times.
-     The trail WALKS THE AISLES: a BFS on a 6-unit grid over the map's own geometry (every rect.wall + the outer wall),
-     from the ENTRANCE gap to a booth chosen at trigger time. v2: the draw finally shows (mask), starts after the
-     scroll settles, a walker rides it, the X stamps, and the whole site beats for 6 s. Reduced/Calm = all at once.
-     ===================================================================== */
+  /* ===== D10 / M34 · X MARKS THE SPOT — type `treasure` or tap the footer X 3×: a BFS trail (6-unit grid over the
+     map walls) from the ENTRANCE to a random booth, mask-drawn after the scroll settles, walker, X stamp, 6 s site beat ===== */
   if (svg && booths.length) {
     const W = Math.ceil(VBW / CELL) + 1, Hh = Math.ceil(VBH / CELL) + 1;
     let walls = null;
@@ -612,8 +618,7 @@
       return { d: 'M' + simp.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' L'), len, cx: bx + bw / 2, cy: by + bh / 2 };
     };
 
-    /* scroll to the map: an instant jump when it is > 1.5 viewports away, then a short smooth settle; resolves on
-       scrollend at the target (1 s fallback) */
+    /* to the map: jump if > 1.5 viewports, then a smooth settle; resolves on scrollend (1 s fallback) */
     const jump = y => { H.style.scrollBehavior = 'auto'; scrollTo(0, y); H.style.scrollBehavior = ''; };
     const toMap = cx => new Promise(res => {
       centreOn(cx, true);
@@ -633,39 +638,54 @@
     /* the 6 s whole-site beat: ribbon split-flap, both hung signs swing once, tags in view flip, rules march */
     const track = $('.ribbon__track'), ribs = $$('.ribbon__copy'), ribHTML = ribs.map(p => p.innerHTML);
     const ribbon = (n, on) => {
-      const swap = () => ribs.forEach((p, i) => { p.innerHTML = on ? `<span class="seg">X marks the spot — Booth ${n}</span>&nbsp;<i>●</i> <span class="seg">No promises</span>&nbsp;<i>●</i> <span class="seg">Go look</span>&nbsp;<i>●</i>` : ribHTML[i]; });
+      const swap = () => ribs.forEach((p, i) => { p.innerHTML = on ? `<span class="seg">X marks the spot — Booth ${n}&nbsp;<i>●</i></span> <span class="seg">No promises&nbsp;<i>●</i></span> <span class="seg">Go look&nbsp;<i>●</i></span>` : ribHTML[i]; });
       if (still() || !track) { swap(); return; }
       fxPlay(track, { rotateX: [0, 90], duration: 280, ease: 'inQuad' }, () => { swap(); fxPlay(track, { rotateX: [-90, 0], duration: 320, ease: 'outQuad' }); });
     };
-    let beatT = 0, flipIO = null, flipped = [];
+    /* fix-r1: one beat at a time — a re-trigger restarts the clock on the same observer */
+    let beatT = 0, beatN = null, flipIO = null, flipped = [];
+    const swung = new Set(), signs = [[plate, 3], [forrent, -3]].filter(([el]) => el);
+    const swingSign = (el, a) => { if (swung.has(el) || still()) return; swung.add(el); fxPlay(el, { rotate: [a, 0], ease: spring() }, () => rest(el)); };
+    beatOff = animate => {
+      clearTimeout(beatT); beatT = 0; swung.clear();
+      if (flipIO) { flipIO.disconnect(); flipIO = null; }
+      document.body.classList.remove('x-marks');
+      if (beatN !== null) { ribbon(beatN, false); beatN = null; }
+      const back = flipped; flipped = [];
+      back.forEach((t, i) => {
+        const c = $('.tag__card', t);
+        if (animate && !still()) fxPlay(c, { rotateY: [180, 360], duration: 600, ease: 'inOutQuad', delay: Math.abs(i - (back.length - 1) / 2) * 70 }, () => rest(c));
+        else { if (hasAnime) A.utils.remove(c); rest(c); }
+      });
+    };
     const beat = n => {
+      const again = !!beatT;
       clearTimeout(beatT);
       document.body.classList.add('x-marks');
-      ribbon(n, true);
-      [[plate, 3], [forrent, -3]].forEach(([el, a]) => {
-        if (!el) return;
+      beatN = n; ribbon(n, true);
+      swung.clear();
+      signs.forEach(([el, a]) => {   // M34: both hung signs swing at once (spec); one off screen swings again when it comes into view
         if (pend.has(el)) { pend.get(el).io.unobserve(el); pend.delete(el); }
         el.classList.add('is-in');
+        const r = el.getBoundingClientRect();
         if (!still()) fxPlay(el, { rotate: [a, 0], ease: spring() }, () => rest(el));
+        if (r.bottom > 0 && r.top < innerHeight) swung.add(el);
       });
       if (!still() && 'IntersectionObserver' in window) {
-        flipIO = new IntersectionObserver(es => {
-          const batch = es.filter(e => e.isIntersecting && !flipped.includes(e.target)).map(e => e.target)
+        if (!flipIO) flipIO = new IntersectionObserver(es => {
+          const vis = es.filter(e => e.isIntersecting).map(e => e.target);
+          signs.forEach(([el, a]) => { if (vis.includes(el)) swingSign(el, a); });
+          const batch = vis.filter(t => t.classList.contains('tag') && !flipped.includes(t))
             .sort((a, b) => a.getBoundingClientRect().left - b.getBoundingClientRect().left);
           batch.forEach((t, i) => {
             flipped.push(t);
             fxPlay($('.tag__card', t), { rotateY: [0, 180], duration: 600, ease: 'inOutQuad', delay: Math.abs(i - (batch.length - 1) / 2) * 70 });
           });
         });
-        $$('.tag').forEach(t => flipIO.observe(t));
+        if (!again) $$('.tag').forEach(t => flipIO.observe(t));
+        signs.forEach(([el]) => { flipIO.unobserve(el); flipIO.observe(el); });   // (re)observing reports the signs already on screen
       }
-      beatT = setTimeout(() => {
-        document.body.classList.remove('x-marks');
-        ribbon(n, false);
-        if (flipIO) { flipIO.disconnect(); flipIO = null; }
-        const back = flipped; flipped = [];
-        back.forEach((t, i) => { const c = $('.tag__card', t); fxPlay(c, { rotateY: [180, 360], duration: 600, ease: 'inOutQuad', delay: Math.abs(i - (back.length - 1) / 2) * 70 }, () => rest(c)); });
-      }, 6000);
+      beatT = setTimeout(() => beatOff(true), 6000);
     };
 
     const live2 = $('#egg-live');
@@ -708,7 +728,7 @@
       });
     };
 
-    /* Escape anywhere dismisses the pinned egg chip (the SVG's own Escape branch covers focus inside the map); the X stays on the map */
+    /* Escape anywhere closes the egg chip; the X stays */
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && eggText && !chip.hidden) hideChip(true); });
 
     /* trigger 1: type "treasure" anywhere (never inside an editable field) */
@@ -727,7 +747,7 @@
   }
 
   /* ===== X-10 · RENT M23–M24 · VISIT M25–M27 · DAY TRIP M28–M29 · FAQ M30 · FOOTER M31 · BAR M33 ===== */
-  when(forrent, () => settleSign(forrent, -5));
+  when(forrent, () => settleSign(forrent, -4));   // fix-r1: −4°, inside the §7.2.9 cap (M23 said −5°; flagged to the director)
   if (forrent) {
     forrent.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse' && fine.matches) kick(forrent); });
     forrent.addEventListener('focus', () => { if (forrent.matches(':focus-visible')) kick(forrent); });
@@ -735,11 +755,8 @@
   const ledger = $$('.rent__ledger [data-anim]');
   if (ledger.length) { ledger.forEach(l => claimed.add(l)); when(ledger[0].parentElement, () => stampList(ledger)); }
 
-  /* TODAY on the letter board (A8; pulled forward so M25 has its bar): today in Carson City, no open/closed claim.
-     US Pacific time by arithmetic (DST: 2nd Sun of March 02:00 → 1st Sun of Nov 02:00) — identical to
-     Intl America/Los_Angeles for every hour 2025–2030 (build-motion.md), without the 50 ms ICU time-zone load that
-     Intl.DateTimeFormat costs on a 4×-throttled phone. If US DST law changes, swap back to Intl.
-     "Open now" (§9 A9, D-20): built, shipped OFF (runs only if the head script sets data-open-status="on"); unit-tested. */
+  /* TODAY (A8): Carson City weekday by US-Pacific arithmetic (DST 2nd Sun Mar → 1st Sun Nov; = Intl 2025–2030, tools/open-now.test.mjs,
+     review by 2030-06-01 or if DST law changes) — no 50 ms ICU load at 4× CPU. Open now (A9, D-20): built, shipped OFF. */
   /* open-now:begin */
   const laTime = (d = new Date()) => {
     const y = d.getUTCFullYear(), sun = (m, n) => 1 + (7 - new Date(Date.UTC(y, m, 1)).getUTCDay()) % 7 + 7 * (n - 1);
@@ -760,15 +777,26 @@
   };
   /* open-now:end */
   const laDay = d => laTime(d).wd;
-  const today = $(`.board__days li[data-day="${laDay()}"]`);
-  if (today) { today.setAttribute('aria-current', 'date'); const t = $('.board__today', today); if (t) t.hidden = false; }
+  /* fix-r1: re-mark on tab return + once a minute */
+  let markedDay = -1;
+  const markToday = () => {
+    const wd = laDay(); if (wd === markedDay) return; markedDay = wd;
+    $$('.board__days li').forEach(li => {
+      const on = li.dataset.day === String(wd), t = $('.board__today', li);
+      if (on) li.setAttribute('aria-current', 'date'); else li.removeAttribute('aria-current');
+      if (t) t.hidden = !on;
+    });
+  };
+  markToday();
+  setInterval(markToday, 6e4);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) markToday(); });
   const openEl = $('#open-status');
   if (openEl && H.dataset.openStatus === 'on') {   // once a minute, no live region (§9 A9)
     const tick = () => { const s = openState(); openEl.textContent = s || ''; openEl.hidden = !s; };
     tick(); setInterval(tick, 6e4);
   }
 
-  /* A-05/A-06 · copy a booth link / the address (one helper); hidden without the clipboard API; address fallback = select it */
+  /* A-05/A-06 copy booth link / address (clipboard API only; address fallback = select) */
   const clip = navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext ? t => navigator.clipboard.writeText(t) : null;
   const copyBooth = $('#copy-booth'), copyAddr = $('#copy-addr');
   if (clip && copyBooth) {
@@ -839,24 +867,28 @@
   const fwm = $('.footer__wordmark');
   when(fwm, () => play($$('.fw > span', fwm), { translateY: ['100%', '0%'], duration: 800, ease: 'outExpo', delay: A.stagger(90) }, [fwm]), 95);
 
-  /* M33 — the phone bar tucks while the hero CTAs are on screen; A-02: and the hours chip too, so Hours stays one tap (AC-32) */
+  /* M33: the bar tucks only while the hero CTAs AND the hours chip are fully on screen (AC-32; fix-r1) */
   const ctas = $('#hero-ctas'), hoursChip = $('#open-chip');
   if (ctas && 'IntersectionObserver' in window) {
     const onScreen = new Map();
     const io = new IntersectionObserver(es => {
-      es.forEach(e => onScreen.set(e.target, e.isIntersecting));
+      es.forEach(e => onScreen.set(e.target, e.isIntersecting && e.intersectionRatio >= .99));
       H.classList.toggle('bar-tucked', onScreen.get(ctas) === true && (!hoursChip || onScreen.get(hoursChip) === true));
-    });
+    }, { threshold: [0, .99, 1] });
     io.observe(ctas); if (hoursChip) io.observe(hoursChip);
   }
 
-  /* safety net: any start-state element nothing above claimed still lands (rise / settle), so nothing stays hidden */
+  /* safety net: every unclaimed start state still lands */
   $$('[data-anim]').forEach(el => {
     if (claimed.has(el) || el.closest('svg') || el.closest('#tile-grid')) return;
     when(el, () => play(el, { translateY: [el.dataset.anim === 'rise' ? 16 : 12, 0], opacity: [el.dataset.anim === 'rise' ? 0 : 1, 1], duration: 600, ease: 'outExpo' }, [el]));
   });
 
-  /* boot state: no entrances when motion is off (reduced, Calm, or the 2.5 s watchdog already fired) */
+  /* fix-r1: tiles render after load, one per idle slice (their images don't race the hero) */
+  const tilesIn = () => { const ts = $$('.tile:not(.is-ready)'); const step = () => { const t = ts.shift(); if (t) { t.classList.add('is-ready'); idle(step); } }; idle(step); };
+  if (document.readyState === 'complete') tilesIn(); else addEventListener('load', tilesIn, { once: true });
+
+  /* boot: no entrances when motion is off */
   if (live()) later.push(wakeScrubs); else settleAll();
   later.push(() => console.log('%cPsst, hey you — over here. Type "treasure" and X marks the spot.',   // the D10 hint, byte-exact (content.md §7)
     'color:#D9A400;background:#14201B;font:700 14px/1.6 Satoshi,system-ui,sans-serif;padding:8px 14px;border-left:4px solid #7A2E1F;'));
@@ -864,9 +896,7 @@
   requestAnimationFrame(() => setTimeout(next, 0));
 })();
 
-/* The embedded Google map (about 1.5 MB of Google scripts) waits until it is asked for — v2: on EVERY width (spec §4.8/A15).
-   The iframe is display:none by CSS until .map-open, and a hidden lazy iframe never loads; "Get directions" beside it opens
-   the visitor's Maps app. (v2 structure: wrapper renamed .visit__media -> .visit__map; behaviour unchanged.) */
+/* Google map iframe (~1.5 MB) stays unloaded until "Show the map here" (every width, §4.8/A15) */
 (() => {
   const btn = document.getElementById('map-reveal');
   const media = btn && btn.closest('.visit__map');

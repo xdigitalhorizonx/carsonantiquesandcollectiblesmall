@@ -17,11 +17,22 @@ Outputs (spec 6.6):
   python tools/encode.py --phone-hero    # ONLY the v2 phone-hero re-encode below (access A-09, build-access.md)
   m/hero-aisle-mobile-780-v2.avif (q44) <- hero-aisle-mobile-1560x3376.jpg: same 780 px as v1's m/hero-aisle-mobile-780.avif,
                                            ~105 KB instead of 160 KB (the phone LCP image; Lighthouse mobile 88 -> 92)
+  python tools/encode.py --phone-hero-v2 # fix-r1 (AC-25): the 960 / 1170 / 1560 phone-hero rungs at the 780-v2 settings (AVIF q44),
+                                         new names (immutable /assets): m/hero-aisle-mobile-{960,1170,1560}-v2.avif
+  python tools/encode.py --lamp-760      # fix-r1: a 760 rung of the same lamp crop (AVIF q60 / WebP q80 / JPEG q82) for 400-430 px phones
+  python tools/encode.py --noprice [--crops <dir>]
+                                         fix-r1 (NOPRICE, spec 5.5): feathered blur patches over the legible price stickers in
+                                         three photos v1 shipped unchanged, written under new -np names:
+                                         m/marquee-05-mm-dispenser-yelp30-np-{480,720}.avif/.webp + -np-750x1000.jpg   ("$135.00" star, tag)
+                                         m/marquee-06-oak-wall-telephone-yelp14-np-{480,720}.avif/.webp + -np-750x1000.jpg ("$279" star, "$35" bag)
+                                         m/tile-home-goods-chandeliers-np-{480,720,full}.avif/.webp + -np-1116x1488.jpg   ("$650" lamp tag)
+                                         A crop could not do it: every crop that drops a sticker leaves < 680 px of width,
+                                         under 2x of the 340 px marquee card / 420 px tile at DPR 2 (AC-23).
 """
 import os
 import sys
 
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFilter
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, 'assets')
@@ -55,9 +66,81 @@ def phone_hero():
     print(f'm/hero-aisle-mobile-780-v2.avif {im.width}x{im.height} {os.path.getsize(path) / 1024:.1f} KB')
 
 
+def phone_hero_v2():
+    src = Image.open(os.path.join(SRC, 'hero-aisle-mobile-1560x3376.jpg')).convert('RGB')
+    for w in (960, 1170, 1560):
+        im = src if w == src.width else src.resize((w, round(src.height * w / src.width)), Image.LANCZOS)
+        path = os.path.join(SRC, 'm', f'hero-aisle-mobile-{w}-v2.avif')
+        save(im, path, 'avif', 44)
+        print(f'm/hero-aisle-mobile-{w}-v2.avif {im.width}x{im.height} {os.path.getsize(path) / 1024:.1f} KB')
+
+
+# (master, out stem, patches as (x0, y0, x1, y1) in master pixels, widths {label: px}, jpeg name)
+NOPRICE = [
+    ('marquee-05-mm-dispenser-yelp30-750x1000.jpg', 'marquee-05-mm-dispenser-yelp30-np', [(498, 250, 608, 398), (656, 0, 718, 62)],
+     {'480': 480, '720': 720}, 'marquee-05-mm-dispenser-yelp30-np-750x1000.jpg'),
+    ('marquee-06-oak-wall-telephone-yelp14-750x1000.jpg', 'marquee-06-oak-wall-telephone-yelp14-np', [(340, 136, 490, 224), (526, 776, 624, 868)],
+     {'480': 480, '720': 720}, 'marquee-06-oak-wall-telephone-yelp14-np-750x1000.jpg'),
+    ('tile-home-goods-chandeliers-1116x1488.jpg', 'tile-home-goods-chandeliers-np', [(446, 926, 574, 1088)],
+     {'480': 480, '720': 720, 'full': 1116}, 'tile-home-goods-chandeliers-np-1116x1488.jpg'),
+]
+
+
+def unprice(im, patches):
+    """Feathered Gaussian blur over each patch: the sticker's digits and handwriting go, the object stays."""
+    out = im.copy()
+    for x0, y0, x1, y1 in patches:
+        pad = 24
+        bx0, by0, bx1, by1 = max(0, x0 - pad), max(0, y0 - pad), min(im.width, x1 + pad), min(im.height, y1 + pad)
+        region = im.crop((bx0, by0, bx1, by1))
+        blurred = region.filter(ImageFilter.GaussianBlur(10)).filter(ImageFilter.GaussianBlur(6))
+        mask = Image.new('L', region.size, 0)
+        ImageDraw.Draw(mask).rounded_rectangle((x0 - bx0, y0 - by0, x1 - bx0, y1 - by0), radius=14, fill=255)
+        mask = mask.filter(ImageFilter.GaussianBlur(7))
+        out.paste(Image.composite(blurred, region, mask), (bx0, by0))
+    return out
+
+
+def noprice(crops=None):
+    for master, stem, patches, widths, jpg in NOPRICE:
+        src = unprice(Image.open(os.path.join(SRC, master)).convert('RGB'), patches)
+        jp = os.path.join(SRC, 'm', jpg)
+        save(src, jp, 'jpg', 84)
+        print(f'm/{jpg:52} {src.width}x{src.height} {os.path.getsize(jp) / 1024:7.1f} KB')
+        for label, w in widths.items():
+            im = src if w == src.width else src.resize((w, round(src.height * w / src.width)), Image.LANCZOS)
+            for fmt, q in (('avif', 52), ('webp', 72)):
+                name = f'{stem}-{label}.{fmt}'
+                path = os.path.join(SRC, 'm', name)
+                save(im, path, fmt, q)
+                print(f'm/{name:52} {im.width}x{im.height} {os.path.getsize(path) / 1024:7.1f} KB')
+        if crops:
+            os.makedirs(crops, exist_ok=True)
+            for i, (x0, y0, x1, y1) in enumerate(patches):   # 100 % review crops of the shipped largest encode, patch +/- 60 px
+                dec = Image.open(os.path.join(SRC, 'm', f'{stem}-{list(widths)[-1]}.avif')).convert('RGB')
+                k = dec.width / src.width
+                box = (max(0, int((x0 - 60) * k)), max(0, int((y0 - 60) * k)), min(dec.width, int((x1 + 60) * k)), min(dec.height, int((y1 + 60) * k)))
+                dec.crop(box).save(os.path.join(crops, f'crop100-{stem}-patch{i}.png'))
+
+
+def lamp_760():
+    src = Image.open(os.path.join(SRC, 'band-quotes-oil-lamps-3840x1267.jpg')).convert('RGB').crop(LAMP_BOX)
+    im = src.resize((760, round(src.height * 760 / src.width)), Image.LANCZOS)
+    for fmt, q in (('avif', 60), ('webp', 80), ('jpg', 82)):
+        path = os.path.join(OUT, f'lamp-panel-760.{fmt}')
+        save(im, path, fmt, q)
+        print(f'd/lamp-panel-760.{fmt} {im.width}x{im.height} {os.path.getsize(path) / 1024:.1f} KB')
+
+
 def main():
     if '--phone-hero' in sys.argv:
         return phone_hero()
+    if '--phone-hero-v2' in sys.argv:
+        return phone_hero_v2()
+    if '--lamp-760' in sys.argv:
+        return lamp_760()
+    if '--noprice' in sys.argv:
+        return noprice(sys.argv[sys.argv.index('--crops') + 1] if '--crops' in sys.argv else None)
     crops = None
     if '--crops' in sys.argv:
         crops = sys.argv[sys.argv.index('--crops') + 1]
