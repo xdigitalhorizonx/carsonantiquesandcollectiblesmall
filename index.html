@@ -471,8 +471,8 @@
     </div>
     <!-- Fascia ribbon (D-04): the storefront fascia words only, verified on visit-storefront-exterior-1536x1044.jpg — no facts ever ride it. aria-hidden: decorative, scroll-scrubbed. -->
     <div class="ribbon" aria-hidden="true"><div class="ribbon__track">
-      <p class="ribbon__copy">Carson Antiques &amp; Collectibles Mall <i>●</i> Gifts <i>●</i> Home Decor <i>●</i> Art <i>●</i> Toys <i>●</i> &amp; More! <i>●</i></p>
-      <p class="ribbon__copy ribbon__copy--b">Carson Antiques &amp; Collectibles Mall <i>●</i> Gifts <i>●</i> Home Decor <i>●</i> Art <i>●</i> Toys <i>●</i> &amp; More! <i>●</i></p>
+      <p class="ribbon__copy">Carson Antiques &amp; Collectibles Mall&nbsp;<i>●</i> Gifts&nbsp;<i>●</i> Home Decor&nbsp;<i>●</i> Art&nbsp;<i>●</i> Toys&nbsp;<i>●</i> &amp; More!&nbsp;<i>●</i></p>
+      <p class="ribbon__copy ribbon__copy--b">Carson Antiques &amp; Collectibles Mall&nbsp;<i>●</i> Gifts&nbsp;<i>●</i> Home Decor&nbsp;<i>●</i> Art&nbsp;<i>●</i> Toys&nbsp;<i>●</i> &amp; More!&nbsp;<i>●</i></p>
     </div></div>
   </section>
 
@@ -855,6 +855,7 @@
    <div class="wrap">
     <header class="sec-head"><hr class="rule"><h2 id="trip-h2">Make a day of it in Carson City</h2>
      <p class="lede">We're on North Carson Street, about a mile north of the Capitol — close enough to walk to the old Mint, the Children's Museum and the Capitol itself. Distances are from our front door.</p></header>
+    <!-- Street strip (V-11): pins sit at the routed distances on a 1.0 mi line (0.58 / 0.67 / 0.91 mi = 58 / 67 / 91 %): horizontal x = 40 + d × 940 (≥ 900 px), vertical y = 30 + d × 300 (phones, south = down). Labels are short names only; every fact is in the cards. -->
     <!-- Day-trip sources: spec §5.3 (addresses re-read 2026-10-05; routes audit-seo 2026-10-05, OSRM + Valhalla from the GBP pin). -->
     <!-- §5.3 source table (ships as this comment; spec task S-10):
          Stop                                     | Address (read 2026-10-05)                                   | Routed (drive mi · walk min, OSRM / Valhalla) | Ships
@@ -866,7 +867,8 @@
          Stewart Indian School Cultural Center & Museum | 1 Jacobsen Way (stewartindianschool.com/contact-us)   | 5.13 / 4.94 mi · 12.0 / 11.6 min drive        | 5 mi south, about a 15-min drive · nothing beyond the name.
          "About a mile north of the Capitol" = 0.9 mi routed. -->
     <div class="street">
-     <svg class="street__road" viewBox="0 0 1000 120" aria-hidden="true" focusable="false"><line class="street__edge" x1="40" y1="48" x2="980" y2="48"/><line class="street__edge" x1="40" y1="72" x2="980" y2="72"/><path class="street__centre" d="M40 60 H980" data-anim="draw"/><circle class="street__start" cx="40" cy="60" r="14"/><circle class="street__pin street__pin--kids" cx="585" cy="60" r="7"/><circle class="street__pin street__pin--mint" cx="670" cy="60" r="7"/><circle class="street__pin street__pin--capitol" cx="895" cy="60" r="7"/></svg>
+     <svg class="street__road street__road--h" viewBox="0 0 1000 150" aria-hidden="true" focusable="false"><line class="street__edge" x1="40" y1="62" x2="985" y2="62"/><line class="street__edge" x1="40" y1="88" x2="985" y2="88"/><path class="street__centre" d="M40 75H980" data-anim="draw"/><circle class="street__start" cx="40" cy="75" r="15"/><circle class="street__pin street__pin--kids" cx="585" cy="75" r="8"/><circle class="street__pin street__pin--mint" cx="670" cy="75" r="8"/><circle class="street__pin street__pin--capitol" cx="895" cy="75" r="8"/><text class="street__label street__label--door" x="20" y="130">Our door</text><text class="street__label" x="670" y="40" text-anchor="middle">Old Mint</text><text class="street__label" x="585" y="130" text-anchor="middle">Children's Museum</text><text class="street__label" x="895" y="130" text-anchor="middle">Capitol</text></svg>
+     <svg class="street__road street__road--v" viewBox="0 0 300 350" aria-hidden="true" focusable="false"><line class="street__edge" x1="28" y1="30" x2="28" y2="340"/><line class="street__edge" x1="52" y1="30" x2="52" y2="340"/><path class="street__centre" d="M40 30V330" data-anim="draw"/><circle class="street__start" cx="40" cy="30" r="15"/><circle class="street__pin street__pin--kids" cx="40" cy="204" r="8"/><circle class="street__pin street__pin--mint" cx="40" cy="231" r="8"/><circle class="street__pin street__pin--capitol" cx="40" cy="303" r="8"/><text class="street__label street__label--door" x="72" y="36">Our door</text><text class="street__label" x="72" y="210">Children's Museum</text><text class="street__label" x="72" y="237">Old Mint</text><text class="street__label" x="72" y="309">Capitol</text></svg>
      <p class="street__note">North Carson Street from our door south to the State Capitol, about 0.9 mi. Drawn as a straight line — not to scale beyond the street.</p>
      <h3>Walk it — down North Carson Street</h3>
      <ol class="street__stops">

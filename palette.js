@@ -77,4 +77,9 @@
 
   // Initial state: the <head> snippet already set data-palette before first paint; sync the UI to it.
   apply(current().id, { animate: false, announce: false });
+
+  // v2 (spec §8.3 / V-13): after the first scroll the pill collapses to its 48 px disc at every width, and stays a disc.
+  function compact() { if (window.scrollY > 0) { tool.classList.add('is-compact'); window.removeEventListener('scroll', compact); } }
+  window.addEventListener('scroll', compact, { passive: true });
+  compact();
 })();
