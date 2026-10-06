@@ -112,6 +112,11 @@
       host.classList.toggle('can-right', can && scroller.scrollLeft + scroller.clientWidth < scroller.scrollWidth - 2);
     };
     later.push(edges); scroller.addEventListener('scroll', edges, { passive: true }); addEventListener('resize', edges);
+    /* A-01: focus doesn't scroll a half-visible item in; bring it fully in, clear of the fade (2.4.7) */
+    scroller.addEventListener('focusin', e => {
+      const a = e.target.getBoundingClientRect(), s = scroller.getBoundingClientRect(), m = 46;
+      if (a.left - m < s.left) scroller.scrollLeft -= s.left - a.left + m; else if (a.right + m > s.right) scroller.scrollLeft += a.right + m - s.right;
+    });
   };
   shadowEdges($('.site-nav ul'), $('.site-nav'));
   shadowEdges($('#legend'), $('#legend-wrap'));
@@ -338,6 +343,12 @@
   let eggText = null;
   const CELL = 6, VBX = 300, VBY = 236, VBW = 1470, VBH = 664;
   const say = (el, t) => { if (!el) return; el.textContent = ''; setTimeout(() => { el.textContent = t; }, 50); };
+  /* A-05: the ring's tab stop carries the key instructions (§9 A10) */
+  const rove = g => {
+    if (active && active !== g) { active.tabIndex = -1; active.removeAttribute('aria-describedby'); }
+    g.tabIndex = 0; g.setAttribute('aria-describedby', 'map-keys'); active = g;
+  };
+  if (active) rove(active);
 
   const centre = g => { const r = $('rect', g); return { x: +r.getAttribute('x') + +r.getAttribute('width') / 2, y: +r.getAttribute('y') + +r.getAttribute('height') / 2 }; };
   const placeChip = g => {
@@ -376,8 +387,7 @@
   const scheduleHide = () => { clearTimeout(hideTimer); hideTimer = setTimeout(() => hideChip(false), 120); };
   const moveFocus = g => {
     if (!g) return;
-    if (active) active.tabIndex = -1;
-    g.tabIndex = 0; active = g;
+    rove(g);
     g.focus({ preventScroll: false });
     showChip(g, false);
   };
@@ -399,8 +409,7 @@
       fxPlay(L.dot, { ...A.svg.createMotionPath(L.path), duration: D, ease: 'inOutQuad' })];
   };
   const pin = (g, how) => {
-    if (active) active.tabIndex = -1;
-    g.tabIndex = 0; active = g;
+    rove(g);
     showChip(g, true); walk(g);
     if (how === 'hash' || how === 'pick') centreOn(centre(g).x, true);
     document.dispatchEvent(new CustomEvent('cacm:pin', { detail: g }));
@@ -624,7 +633,7 @@
     /* the 6 s whole-site beat: ribbon split-flap, both hung signs swing once, tags in view flip, rules march */
     const track = $('.ribbon__track'), ribs = $$('.ribbon__copy'), ribHTML = ribs.map(p => p.innerHTML);
     const ribbon = (n, on) => {
-      const swap = () => ribs.forEach((p, i) => { p.innerHTML = on ? `X marks the spot — Booth ${n}&nbsp;<i>●</i> No promises&nbsp;<i>●</i> Go look&nbsp;<i>●</i>` : ribHTML[i]; });
+      const swap = () => ribs.forEach((p, i) => { p.innerHTML = on ? `<span class="seg">X marks the spot — Booth ${n}</span>&nbsp;<i>●</i> <span class="seg">No promises</span>&nbsp;<i>●</i> <span class="seg">Go look</span>&nbsp;<i>●</i>` : ribHTML[i]; });
       if (still() || !track) { swap(); return; }
       fxPlay(track, { rotateX: [0, 90], duration: 280, ease: 'inQuad' }, () => { swap(); fxPlay(track, { rotateX: [-90, 0], duration: 320, ease: 'outQuad' }); });
     };
@@ -678,8 +687,9 @@
         trailLayer.appendChild(xOuter); trailLayer.appendChild(xCore);
         if (L.dot && still()) L.dot.remove();
         pick.classList.add('is-x'); lastBooth = pick; eggText = text;
-        if (active) active.tabIndex = -1; pick.tabIndex = 0; active = pick;
+        rove(pick);
         showChip(pick, true);
+        document.dispatchEvent(new CustomEvent('cacm:pin', { detail: pick }));
         say(live2, text);
         beat(pick.dataset.n);
         running = false;
@@ -728,14 +738,59 @@
   /* TODAY on the letter board (A8; pulled forward so M25 has its bar): today in Carson City, no open/closed claim.
      US Pacific time by arithmetic (DST: 2nd Sun of March 02:00 → 1st Sun of Nov 02:00) — identical to
      Intl America/Los_Angeles for every hour 2025–2030 (build-motion.md), without the 50 ms ICU time-zone load that
-     Intl.DateTimeFormat costs on a 4×-throttled phone. If US DST law changes, swap back to Intl. */
-  const laDay = (d = new Date()) => {
+     Intl.DateTimeFormat costs on a 4×-throttled phone. If US DST law changes, swap back to Intl.
+     "Open now" (§9 A9, D-20): built, shipped OFF (runs only if the head script sets data-open-status="on"); unit-tested. */
+  /* open-now:begin */
+  const laTime = (d = new Date()) => {
     const y = d.getUTCFullYear(), sun = (m, n) => 1 + (7 - new Date(Date.UTC(y, m, 1)).getUTCDay()) % 7 + 7 * (n - 1);
     const dst = d >= Date.UTC(y, 2, sun(2, 2), 10) && d < Date.UTC(y, 10, sun(10, 1), 9);
-    return new Date(d.getTime() - (dst ? 7 : 8) * 36e5).getUTCDay();
+    const t = new Date(d.getTime() - (dst ? 7 : 8) * 36e5);
+    return { y: t.getUTCFullYear(), mo: t.getUTCMonth(), day: t.getUTCDate(), wd: t.getUTCDay(), min: t.getUTCHours() * 60 + t.getUTCMinutes() };
   };
+  /* TODO (pre-publish): holiday list unconfirmed (Thanksgiving, Dec 24/25/31, Jan 1) — keep open-status off until the client confirms */
+  const holiday = t => (t.mo === 10 && t.wd === 4 && t.day >= 22 && t.day <= 28) || (t.mo === 11 && (t.day === 24 || t.day === 25 || t.day === 31)) || (t.mo === 0 && t.day === 1);
+  const openState = (d = new Date()) => {
+    const t = laTime(d);
+    if (holiday(t)) return "Holiday — call to check today's hours";
+    if (t.min < 600) return 'Opens today at 10 AM';
+    if (t.min < 1080) return 'Open now · until 6 PM';
+    const n = new Date(Date.UTC(t.y, t.mo, t.day + 1));
+    /* evening before a holiday: no promise about tomorrow */
+    return holiday({ mo: n.getUTCMonth(), day: n.getUTCDate(), wd: n.getUTCDay() }) ? null : 'Closed now · opens 10 AM';
+  };
+  /* open-now:end */
+  const laDay = d => laTime(d).wd;
   const today = $(`.board__days li[data-day="${laDay()}"]`);
   if (today) { today.setAttribute('aria-current', 'date'); const t = $('.board__today', today); if (t) t.hidden = false; }
+  const openEl = $('#open-status');
+  if (openEl && H.dataset.openStatus === 'on') {   // once a minute, no live region (§9 A9)
+    const tick = () => { const s = openState(); openEl.textContent = s || ''; openEl.hidden = !s; };
+    tick(); setInterval(tick, 6e4);
+  }
+
+  /* A-05/A-06 · copy a booth link / the address (one helper); hidden without the clipboard API; address fallback = select it */
+  const clip = navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext ? t => navigator.clipboard.writeText(t) : null;
+  const copyBooth = $('#copy-booth'), copyAddr = $('#copy-addr');
+  if (clip && copyBooth) {
+    const num = $('.copy-booth__n', copyBooth);
+    document.addEventListener('cacm:pin', e => {
+      const n = e.detail && e.detail.dataset.n;
+      if (n) { copyBooth.dataset.n = n; num.textContent = n; }
+      copyBooth.hidden = !n;
+    });
+    copyBooth.addEventListener('click', () => {
+      const n = copyBooth.dataset.n; if (!n) return;
+      clip(location.origin + location.pathname + '#booth-' + n).then(() => say(mapStatus, `Link to booth ${n} copied.`), () => {});
+    });
+  }
+  if (clip && copyAddr) {
+    const status = $('#copy-status'), nap = $('.nap');
+    copyAddr.hidden = false;
+    copyAddr.addEventListener('click', () => clip(copyAddr.dataset.copy).then(() => say(status, 'Address copied.'), () => {
+      const r = document.createRange(), s = getSelection();
+      r.setStartBefore($('strong', nap)); r.setEndAfter($('span', nap)); s.removeAllRanges(); s.addRange(r);
+    }));
+  }
   const board = $('#hours');
   when(board, () => {
     const tl = tline([board]);
@@ -784,9 +839,16 @@
   const fwm = $('.footer__wordmark');
   when(fwm, () => play($$('.fw > span', fwm), { translateY: ['100%', '0%'], duration: 800, ease: 'outExpo', delay: A.stagger(90) }, [fwm]), 95);
 
-  /* M33 — the phone action bar tucks while the hero CTAs are on screen (CSS transition; instant under reduced / Calm) */
-  const ctas = $('#hero-ctas');
-  if (ctas && 'IntersectionObserver' in window) new IntersectionObserver(([e]) => H.classList.toggle('bar-tucked', e.isIntersecting)).observe(ctas);
+  /* M33 — the phone bar tucks while the hero CTAs are on screen; A-02: and the hours chip too, so Hours stays one tap (AC-32) */
+  const ctas = $('#hero-ctas'), hoursChip = $('#open-chip');
+  if (ctas && 'IntersectionObserver' in window) {
+    const onScreen = new Map();
+    const io = new IntersectionObserver(es => {
+      es.forEach(e => onScreen.set(e.target, e.isIntersecting));
+      H.classList.toggle('bar-tucked', onScreen.get(ctas) === true && (!hoursChip || onScreen.get(hoursChip) === true));
+    });
+    io.observe(ctas); if (hoursChip) io.observe(hoursChip);
+  }
 
   /* safety net: any start-state element nothing above claimed still lands (rise / settle), so nothing stays hidden */
   $$('[data-anim]').forEach(el => {

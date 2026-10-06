@@ -13,6 +13,10 @@ Outputs (spec 6.6):
                                                                        master crop x 600-1620, y 0-1267 (D-24:
                                                                        both price stickers stay outside)
   visit-storefront-1536.avif (q62) + .webp (q80)                     <- visit-storefront-exterior-1536x1044.jpg
+
+  python tools/encode.py --phone-hero    # ONLY the v2 phone-hero re-encode below (access A-09, build-access.md)
+  m/hero-aisle-mobile-780-v2.avif (q44) <- hero-aisle-mobile-1560x3376.jpg: same 780 px as v1's m/hero-aisle-mobile-780.avif,
+                                           ~105 KB instead of 160 KB (the phone LCP image; Lighthouse mobile 88 -> 92)
 """
 import os
 import sys
@@ -43,7 +47,17 @@ def save(im, path, fmt, q):
         im.save(path, 'JPEG', quality=q, optimize=True, progressive=True)
 
 
+def phone_hero():
+    src = Image.open(os.path.join(SRC, 'hero-aisle-mobile-1560x3376.jpg')).convert('RGB')
+    im = src.resize((780, round(src.height * 780 / src.width)), Image.LANCZOS)
+    path = os.path.join(SRC, 'm', 'hero-aisle-mobile-780-v2.avif')
+    save(im, path, 'avif', 44)
+    print(f'm/hero-aisle-mobile-780-v2.avif {im.width}x{im.height} {os.path.getsize(path) / 1024:.1f} KB')
+
+
 def main():
+    if '--phone-hero' in sys.argv:
+        return phone_hero()
     crops = None
     if '--crops' in sys.argv:
         crops = sys.argv[sys.argv.index('--crops') + 1]

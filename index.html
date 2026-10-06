@@ -439,7 +439,7 @@
   <!-- ===== 1 · Hero (photo) — chip with the inked X, window-vinyl H1 lockup, dashed trail underline, noun roll, Get directions + Call, static drive line, Calm toggle; the fascia ribbon docks on its bottom edge ===== -->
   <section class="hero" id="hero">
     <picture>
-      <source media="(max-width: 767px)" type="image/avif" srcset="assets/m/hero-aisle-mobile-780.avif 780w, assets/m/hero-aisle-mobile-1170.avif 1170w, assets/m/hero-aisle-mobile-1560.avif 1560w" sizes="(min-resolution: 2.5dppx) 66vw, 100vw" width="1560" height="3376">
+      <source media="(max-width: 767px)" type="image/avif" srcset="assets/m/hero-aisle-mobile-780-v2.avif 780w, assets/m/hero-aisle-mobile-1170.avif 1170w, assets/m/hero-aisle-mobile-1560.avif 1560w" sizes="(min-resolution: 2.5dppx) 66vw, 100vw" width="1560" height="3376">
       <source media="(max-width: 767px)" type="image/webp" srcset="assets/m/hero-aisle-mobile-780.webp 780w, assets/m/hero-aisle-mobile-1170.webp 1170w, assets/m/hero-aisle-mobile-1560.webp 1560w" sizes="(min-resolution: 2.5dppx) 66vw, 100vw" width="1560" height="3376">
       <source media="(max-width: 767px)" srcset="assets/hero-aisle-mobile-1560x3376.jpg" width="1560" height="3376">
       <source media="(max-height: 500px) and (pointer: coarse) and (orientation: landscape)" type="image/avif" srcset="assets/m/hero-aisle-land-1280.avif 1280w, assets/m/hero-aisle-land-1920.avif 1920w" sizes="100vw">
@@ -449,6 +449,8 @@
       <img class="hero__photo" src="assets/hero-aisle-band-3840x2400.jpg" width="3840" height="2400" fetchpriority="high"
            alt="Inside Carson Antiques &amp; Collectibles Mall — a long aisle of vendor booths stacked with glassware, ceramics, hutches and framed prints under the shop's high ceiling">
     </picture>
+    <!-- D-25 / AC-23: a feathered blur patch over the stale "Independence Day — 10% off" booth sign in both hero photos (positioned in photo coordinates, styles.css "hero sign veil"). TODO (pre-publish): the phone shoot (HUMAN TODO #11) retires this. -->
+    <span class="hero__veil" aria-hidden="true"></span>
     <span class="hero__lights" aria-hidden="true"></span>
     <div class="wrap hero__top">
       <!-- TODO (pre-publish): confirm holiday hours with the client (Thanksgiving / Christmas). -->
@@ -471,8 +473,8 @@
     </div>
     <!-- Fascia ribbon (D-04): the storefront fascia words only, verified on visit-storefront-exterior-1536x1044.jpg — no facts ever ride it. aria-hidden: decorative, scroll-scrubbed. -->
     <div class="ribbon" aria-hidden="true"><div class="ribbon__track">
-      <p class="ribbon__copy">Carson Antiques &amp; Collectibles Mall&nbsp;<i>●</i> Gifts&nbsp;<i>●</i> Home Decor&nbsp;<i>●</i> Art&nbsp;<i>●</i> Toys&nbsp;<i>●</i> &amp; More!&nbsp;<i>●</i></p>
-      <p class="ribbon__copy ribbon__copy--b">Carson Antiques &amp; Collectibles Mall&nbsp;<i>●</i> Gifts&nbsp;<i>●</i> Home Decor&nbsp;<i>●</i> Art&nbsp;<i>●</i> Toys&nbsp;<i>●</i> &amp; More!&nbsp;<i>●</i></p>
+      <p class="ribbon__copy"><span class="seg">Carson Antiques &amp; Collectibles Mall</span>&nbsp;<i>●</i> Gifts&nbsp;<i>●</i> <span class="seg">Home Decor</span>&nbsp;<i>●</i> Art&nbsp;<i>●</i> Toys&nbsp;<i>●</i> <span class="seg">&amp; More!</span>&nbsp;<i>●</i></p>
+      <p class="ribbon__copy ribbon__copy--b"><span class="seg">Carson Antiques &amp; Collectibles Mall</span>&nbsp;<i>●</i> Gifts&nbsp;<i>●</i> <span class="seg">Home Decor</span>&nbsp;<i>●</i> Art&nbsp;<i>●</i> Toys&nbsp;<i>●</i> <span class="seg">&amp; More!</span>&nbsp;<i>●</i></p>
     </div></div>
   </section>
 
@@ -796,6 +798,8 @@
               <li data-day="6"><span class="board__abbr" aria-hidden="true">Sat</span><span class="sr-only">Saturday, 10 AM to 6 PM</span><span class="board__today" hidden>Today</span></li>
               <li data-day="0"><span class="board__abbr" aria-hidden="true">Sun</span><span class="sr-only">Sunday, 10 AM to 6 PM</span><span class="board__today" hidden>Today</span></li>
             </ul>
+            <!-- "Open now" (§9 A9 / D-20): built, shipped OFF. app.js fills this only while the head script sets data-open-status="on" — keep it off until the client confirms holiday hours. -->
+            <p class="board__status" id="open-status" hidden></p>
             <p class="board__note">Regular hours — Saturday and Sunday included.</p>
           </div>
           <!-- TODO (pre-publish): confirm holiday hours with the client (Thanksgiving / Christmas). -->
@@ -815,10 +819,10 @@
           </address>
           <div class="visit__actions">
             <a class="btn btn--ink" href="https://www.google.com/maps/dir/?api=1&amp;destination=Carson%20Antiques%20%26%20Collectibles%20Mall%2C%201831%20N%20Carson%20St%2C%20Carson%20City%2C%20NV%2089701&amp;destination_place_id=ChIJV4dzZtkKmYARQRRib-5tQW8" rel="noopener">Get directions</a>
-            <a class="visit__gmaps" href="https://www.google.com/maps?cid=8016809682534536257" rel="noopener">See us on Google Maps</a>
             <button type="button" class="btn btn--ink" id="copy-addr" hidden data-copy="Carson Antiques &amp; Collectibles Mall, 1831 N Carson St, Carson City, NV 89701">Copy address</button>
             <p id="copy-status" class="copy-status" role="status"></p>
           </div>
+          <p class="visit__gmaps-line"><a class="visit__gmaps" href="https://www.google.com/maps?cid=8016809682534536257" rel="noopener">See us on Google Maps</a></p>
           <p class="visit__note">Parking: there's a lot right in front.</p>
         </div>
         <div class="visit__map">
@@ -979,7 +983,7 @@
     <span class="palette-tool__kicker">Palette</span>
     <span class="palette-tool__label">Loading Dock</span>
   </button>
-  <div class="palette-tool__panel" id="palette-panel" role="dialog" aria-labelledby="palette-title" hidden>
+  <div class="palette-tool__panel" id="palette-panel" role="dialog" aria-labelledby="palette-title" tabindex="-1" hidden>
     <div class="palette-tool__head">
       <h2 id="palette-title">Try a color scheme</h2>
       <button class="palette-tool__close" type="button" aria-label="Close the palette picker">&times;</button>

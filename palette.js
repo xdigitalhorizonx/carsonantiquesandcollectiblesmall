@@ -66,6 +66,8 @@
   list.addEventListener('change', function (e) { if (e.target && e.target.name === 'cacm-palette') apply(e.target.value, { animate: true, announce: true }); });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !panel.hidden) close(true); });
   document.addEventListener('click', function (e) { if (!panel.hidden && !tool.contains(e.target)) close(false); });
+  // v2 A19: close when focus leaves (panel is tabindex=-1)
+  tool.addEventListener('focusout', function (e) { if (!panel.hidden && !tool.contains(e.relatedTarget)) close(false); });
 
   copyBtn.addEventListener('click', function () {
     var p = current();
@@ -75,11 +77,11 @@
     else done(false);
   });
 
-  // Initial state: the <head> snippet already set data-palette before first paint; sync the UI to it.
+  // Sync the UI to the palette the <head> snippet set.
   apply(current().id, { animate: false, announce: false });
 
-  // v2 (spec §8.3 / V-13): after the first scroll the pill collapses to its 48 px disc at every width, and stays a disc.
+  // v2 V-13: the pill becomes a 48 px disc after the first scroll; A-09: checked after the first frame (no boot layout)
   function compact() { if (window.scrollY > 0) { tool.classList.add('is-compact'); window.removeEventListener('scroll', compact); } }
   window.addEventListener('scroll', compact, { passive: true });
-  compact();
+  requestAnimationFrame(function () { setTimeout(compact, 0); });
 })();
