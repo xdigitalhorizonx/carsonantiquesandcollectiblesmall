@@ -771,6 +771,10 @@ svg.map.zone-service .booth:not([data-zone="service"]) { opacity: .28; }
 .footer__nav a, .footer__links a { color: var(--chalk); text-decoration: none; font-weight: 500; }
 .footer__nav a:hover, .footer__links a:hover, .footer__nav a:focus-visible, .footer__links a:focus-visible { color: var(--yellow-bright); text-decoration: underline; }
 .footer__more .calm-toggle { margin-top: 18px; background: transparent; }
+@media (max-width: 767px) {   /* phones: the two link lists side by side, not one long column (2026-10-19) */
+  .footer__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 20px; }
+  .footer__brand, .footer__nap { grid-column: 1 / -1; }
+}
 @media (min-width: 768px) { .footer__grid { grid-template-columns: 1fr 1fr; column-gap: 48px; } }
 @media (min-width: 1024px) { .footer__grid { grid-template-columns: 1.5fr 1.1fr .8fr .9fr; } }
 /* wordmark fitted (13.486 / 6.765 em) */
@@ -1017,6 +1021,8 @@ html.halloween .hw { display: block; }
 /* hero: moon + bats, desktop only (phones keep the top row clear) */
 html.halloween .hw-moon { display: none; position: absolute; z-index: 0; top: clamp(84px, 12vh, 150px); right: max(var(--gutter), calc((100% - var(--wrap)) / 2)); width: clamp(120px, 10vw, 180px); height: auto; overflow: visible; }
 @media (min-width: 1024px) { html.halloween .hw-moon { display: block; } }
+html.halloween .hw-moon-sm { position: absolute; z-index: 0; top: 0; right: 0; width: clamp(68px, 19vw, 110px); height: auto; overflow: visible; }   /* phones + tablets: beside the eyebrow */
+@media (min-width: 1024px) { html.halloween .hw-moon-sm { display: none; } }
 .hw-moon__glow { fill: rgb(var(--yellow-rgb) / .14); }
 .hw-moon__disc { fill: var(--yellow-bright); }
 .hw-moon__crater { fill: rgb(0 0 0 / .08); }
