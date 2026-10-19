@@ -448,10 +448,11 @@ ${footer(s.path)}
 
 // ---- write pages ----
 let drift = 0
+const onDisk = f => readFileSync(f, 'utf8').replace(/\r\n/g, '\n')   // a CRLF checkout (core.autocrlf) is not drift
 for (const s of specs) {
   const out = join(ROOT, s.path.replace(/^\//, ''), 'index.html')
   const html = render(s)
-  if (CHECK) { if (!existsSync(out) || readFileSync(out, 'utf8') !== html) { console.log(`DIFF ${s.path}`); drift++ } continue }
+  if (CHECK) { if (!existsSync(out) || onDisk(out) !== html) { console.log(`DIFF ${s.path}`); drift++ } continue }
   mkdirSync(dirname(out), { recursive: true }); writeFileSync(out, html); console.log(`wrote ${s.path}`)
 }
 
@@ -498,7 +499,7 @@ ${posts.map(p => `  <item>
 `
 for (const [file, body] of [['sitemap.xml', sitemap], ['blog/feed.xml', feed]]) {
   const out = join(ROOT, file)
-  if (CHECK) { if (!existsSync(out) || readFileSync(out, 'utf8') !== body) { console.log(`DIFF /${file}`); drift++ } continue }
+  if (CHECK) { if (!existsSync(out) || onDisk(out) !== body) { console.log(`DIFF /${file}`); drift++ } continue }
   mkdirSync(dirname(out), { recursive: true }); writeFileSync(out, body); console.log(`wrote /${file}`)
 }
 if (CHECK) { console.log(drift ? `${drift} file(s) differ` : 'all generated files match'); process.exit(drift ? 1 : 0) }
