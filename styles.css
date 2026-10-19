@@ -159,11 +159,11 @@ h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.75rem; lin
 }
 .chip__hours, .chip__addr { white-space: nowrap; }
 .chip__hours { display: inline-block; min-width: 10.05em; }
-.chip__x { width: 20px; height: 20px; flex: none; margin-right: 8px; overflow: visible; }
+.chip__pin { width: 20px; height: 20px; flex: none; margin-right: 8px; overflow: visible; color: var(--yellow-bright); }   /* a map pin, not the ink X: next to the hours an X read as "closed" (2026-10-19) */
 .chip__sep { margin-inline: 5px; }
 @media (max-width: 519px) {   /* phones: two lines (Calm sits beside), never a dangling "·" */
   .chip { display: inline-grid; grid-template-columns: auto auto; column-gap: 8px; }
-  .chip__x { grid-row: 1 / span 2; margin-right: 0; }
+  .chip__pin { grid-row: 1 / span 2; margin-right: 0; }
   .chip__sep { display: none; }
   .chip__addr { grid-column: 2; }
 }
@@ -262,7 +262,7 @@ h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.75rem; lin
   .hero__top { padding-top: 28px; }
   .chip { font-size: 1.0625rem; letter-spacing: .01em; padding: 12px 18px 12px 14px; }
   .chip__hours { min-width: 10.3em; }
-  .chip__x { width: 22px; height: 22px; margin-right: 10px; }
+  .chip__pin { width: 22px; height: 22px; margin-right: 10px; }
   .chip__sep { margin-inline: 8px; }
   .hero__body { padding-block: 44px 48px; }
   .hero__body::before {   /* desktop underlay */
@@ -936,7 +936,7 @@ html.calm *, html.calm *::before, html.calm *::after { transition: none !importa
   .wrap { width: auto; margin: 0; }
   a { color: CanvasText !important; }
   .skip, .sprite, .site-nav, .site-head__open, .site-head__cta, .site-head__road, .hero picture, .hero__lights, .hero::before, .hero::after, .hero__body::before,
-  .calm-toggle, .chip__x, .eyebrow, .hero__trail, .hero__noun, .hero__ctas, .hero__trip, .ribbon, .worth__photo, .worth__more, .marquee-band, #booths, #map, #rent,
+  .calm-toggle, .chip__pin, .eyebrow, .hero__trail, .hero__noun, .hero__ctas, .hero__trip, .ribbon, .worth__photo, .worth__more, .marquee-band, #booths, #map, #rent,
   .visit__photo, .visit__map, .visit__gmaps-line, #copy-addr, .copy-status, .board__today, .board__abbr, .board__status, .g-cta, .street__road, .street__note, #faq, .footer, .actionbar { display: none !important; }
   .site-head { position: static; }
   .site-head__row { display: block; padding: 0; min-height: 0; }

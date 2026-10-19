@@ -139,9 +139,9 @@ requestAnimationFrame(() => setTimeout(() => {   // AC-13: boot after the first 
   }, { passive: false });
   shadowEdges($('#legend'), $('#legend-wrap'));
 
-  /* ===== X-04 · HERO — M01 lights · M02 trail underline · M03 "in" stamp · M04 chip X · M05 noun roll ===== */
+  /* ===== X-04 · HERO — M01 lights · M02 trail underline · M03 "in" stamp · M04 chip pin · M05 noun roll ===== */
   const hero = $('#hero'), h1 = $('#hero-h1'), body = $('.hero__body'), hl = h1 && $('.hl', h1);
-  const trailSvg = $('.hero__trail'), lights = $('.hero__lights'), chipX = $('.chip__x');
+  const trailSvg = $('.hero__trail'), lights = $('.hero__lights'), chipPin = $('.chip__pin');
   const mk = (n, at) => { const e = document.createElementNS(NS, n); for (const k in at) e.setAttribute(k, at[k]); return e; };
   let trailMasks = [], heroTl = null;
 
@@ -193,8 +193,8 @@ requestAnimationFrame(() => setTimeout(() => {   // AC-13: boot after the first 
   const heroIntro = () => {
     if (!live()) return;
     /* §7.2.7: a slow boot skips the intro */
-    if (performance.now() + 1080 > 5000) { if (chipX) chipX.classList.add('is-in'); return; }
-    const tl = heroTl = tline([chipX], () => { heroTl = null; });
+    if (performance.now() + 1080 > 5000) { if (chipPin) chipPin.classList.add('is-in'); return; }
+    const tl = heroTl = tline([chipPin], () => { heroTl = null; });
     const per = 450 / Math.max(1, trailMasks.length);
     trailMasks.forEach((m, i) => tl.add(A.svg.createDrawable(m), { draw: ['0 0', '0 1'], duration: per, ease: 'inOutQuad' }, i * per));
     const sl = $('.sl-in', h1);
@@ -202,14 +202,14 @@ requestAnimationFrame(() => setTimeout(() => {   // AC-13: boot after the first 
       scale: [{ from: 1, to: 1.22, duration: 150, ease: 'outQuad' }, { to: 1, duration: 270, ease: 'outBack' }],
       rotate: [{ from: 0, to: -10, duration: 150, ease: 'outQuad' }, { to: 0, duration: 270, ease: 'outBack' }]
     }, 380);
-    if (chipX) tl.add(chipX, { opacity: [0, 1], scale: [1.6, 1], rotate: [-12, 0], duration: 380, ease: 'outBack' }, 700);
+    if (chipPin) tl.add(chipPin, { opacity: [0, 1], scale: [1.6, 1], rotate: [-12, 0], duration: 380, ease: 'outBack' }, 700);
   };
   if (live() && lights) {   // M01; fix-r1: skipped if it can't end by 5 s
     const fcp = performance.getEntriesByName('first-contentful-paint')[0];
     if (performance.now() + 900 > 5000 || (fcp && performance.now() - fcp.startTime > 300)) lights.classList.add('is-in');
     else { lights.style.opacity = '1'; play(lights, { opacity: [1, 0], duration: 900, ease: 'outQuad' }, [lights]); }
   }
-  claimed.add(lights); claimed.add(chipX);
+  claimed.add(lights); claimed.add(chipPin);
 
   /* M05: two auto steps (only if done by 5 s), then hero scroll 0 → .6 snaps the rest */
   const nouns = $$('.nouns .noun');
