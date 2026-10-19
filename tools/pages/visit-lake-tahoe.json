@@ -1,0 +1,179 @@
+{
+  "path": "/visit/lake-tahoe/",
+  "title": "Antique Stores Near Lake Tahoe | Carson City Antique Mall",
+  "description": "Antique stores near Lake Tahoe? Northern Nevada's largest antique mall is over Spooner Summit in Carson City, 45–55 minutes from the lake. Open daily 10–6.",
+  "og": {
+    "title": "From the lake to Northern Nevada's largest antique mall",
+    "image": "/assets/og/visit-lake-tahoe-1200x630.jpg",
+    "alt": "Carson Antiques & Collectibles Mall trip guide from Lake Tahoe: US-50 over Spooner Summit to 1831 N Carson St, Carson City, with a photo of a beaded lace lampshade",
+    "kicker": "<b>US-50</b> From Lake Tahoe · 26–30 mi",
+    "headline": "Antique stores near Lake Tahoe? <span class=\"hl\">Come over the summit.</span>"
+  },
+  "crumbs": [
+    [
+      "Home",
+      "/"
+    ],
+    [
+      "Plan a trip",
+      "/visit/"
+    ],
+    [
+      "From Lake Tahoe",
+      "/visit/lake-tahoe/"
+    ]
+  ],
+  "hero": {
+    "shield": {
+      "roads": [
+        "US-50",
+        "NV-28"
+      ],
+      "text": "26–30 mi · about 45–55 min from the lake"
+    },
+    "h1": "Antique stores near Lake Tahoe? <span class=\"hl\">Come over the summit.</span>",
+    "lede": "Northern Nevada's largest antique mall is just over Spooner Summit in Carson City: about 45 minutes from Stateline, 50 from Incline Village and 55 from South Lake Tahoe. Over 21,000 square feet of vendor booths on two floors, open every day from 10 to 6.",
+    "ctas": [
+      {
+        "label": "Directions from Stateline",
+        "href": "DIRECTIONS",
+        "origin": "Stateline, NV",
+        "icon": "navigation",
+        "kind": "yellow"
+      },
+      {
+        "label": "Call (775) 461-3142",
+        "href": "TEL",
+        "icon": "phone",
+        "kind": "ghost"
+      }
+    ],
+    "facts": [
+      "Open every day, 10–6",
+      "Over 21,000 sq ft, two floors",
+      "Parking lot out front"
+    ],
+    "photo": {
+      "img": "chandeliers",
+      "alt": "A white lace lampshade dripping with beaded crystal fringe on an ornate brass lamp, with pink fringed shades and lit crystal lamps behind it",
+      "caption": "Lighting for the cabin, on our last look: beaded lace, pink fringe, crystal drops."
+    }
+  },
+  "route": {
+    "stops": [
+      "Stateline",
+      "Cave Rock",
+      "Spooner Jct",
+      "Spooner Summit",
+      "Carson City",
+      "Our door"
+    ],
+    "roads": [
+      "US-50",
+      "US-50",
+      "US-50",
+      "US-50",
+      "Carson St"
+    ],
+    "note": "Not to scale. From Stateline 26 mi, about 45 min; from South Lake Tahoe 30 mi, about 55 min, via US-50. From Incline Village, NV-28 joins at Spooner Jct: 26 mi, about 50 min."
+  },
+  "mentions": [
+    {
+      "@type": "Place",
+      "name": "Lake Tahoe",
+      "sameAs": "https://en.wikipedia.org/wiki/Lake_Tahoe"
+    },
+    {
+      "@type": "City",
+      "name": "South Lake Tahoe",
+      "sameAs": "https://en.wikipedia.org/wiki/South_Lake_Tahoe,_California"
+    },
+    {
+      "@type": "City",
+      "name": "Stateline",
+      "sameAs": "https://en.wikipedia.org/wiki/Stateline,_Nevada"
+    },
+    {
+      "@type": "City",
+      "name": "Incline Village",
+      "sameAs": "https://en.wikipedia.org/wiki/Incline_Village,_Nevada"
+    },
+    {
+      "@type": "Place",
+      "name": "Zephyr Cove",
+      "sameAs": "https://en.wikipedia.org/wiki/Zephyr_Cove,_Nevada"
+    },
+    {
+      "@type": "Place",
+      "name": "Glenbrook",
+      "sameAs": "https://en.wikipedia.org/wiki/Glenbrook,_Nevada"
+    },
+    {
+      "@type": "Place",
+      "name": "Spooner Summit",
+      "sameAs": "https://en.wikipedia.org/wiki/Spooner_Summit"
+    },
+    {
+      "@type": "Place",
+      "name": "Daggett Pass",
+      "sameAs": "https://en.wikipedia.org/wiki/Daggett_Pass"
+    },
+    {
+      "@type": "City",
+      "name": "Genoa",
+      "sameAs": "https://en.wikipedia.org/wiki/Genoa,_Nevada"
+    },
+    {
+      "@type": "Park",
+      "name": "Lake Tahoe Nevada State Park",
+      "url": "https://parks.nv.gov/parks/sand-harbor",
+      "sameAs": "https://en.wikipedia.org/wiki/Lake_Tahoe%E2%80%93Nevada_State_Park"
+    },
+    {
+      "@type": "Museum",
+      "name": "Nevada State Railroad Museum",
+      "url": "https://www.carsonrailroadmuseum.org/",
+      "sameAs": "https://en.wikipedia.org/wiki/Nevada_State_Railroad_Museum"
+    },
+    {
+      "@type": "LandmarksOrHistoricalBuildings",
+      "name": "Carson City Mint",
+      "sameAs": "https://en.wikipedia.org/wiki/Carson_City_Mint"
+    }
+  ],
+  "sources": [
+    "Drive times and miles (Stateline 26 mi, about 45 min via US-50; Incline Village 26 mi, about 50 min via NV-28 and US-50; South Lake Tahoe 30 mi, about 55 min via US-50): the homepage's DIST table (index.html, #getting-here comment), Google Maps live + OSRM + Valhalla from the GBP pin, 2026-09-15 / 2026-10-05. Never recomputed here.",
+    "Store facts (open every day 10–6, 1831 N Carson St, about a mile north of the Capitol, lot in front, yellow sign, over 21,000 sq ft on two floors, upstairs, numbered booths stocked by different vendors, sign 'Gifts · Home Decor · Art · Toys & More', Railroad Museum 2.2 mi / about a 10-min drive, old Mint 0.7 mi / about a 15-min walk): BRIEF.md + index.html. 'a couple of hours': Suzy C.'s Google review, verbatim on the homepage.",
+    "Booth items named (crystal chandeliers, beaded lace lampshade, pink fringed shades, old photographs, framed pencil drawings, teapots, a blue tea set, cups and saucers on oak shelves, tall wooden hutch, Seattle World's Fair vase, The White House Cook Book, hats on a dress form): the client's own store photos per BRIEF.md, framed as 'on our last looks', never as in stock now. China photo: assets/tile-china-teapots-960x1280.jpg.",
+    "Route order (Stateline: US 50 > US 395 BUS; SR 529 > South Stewart Street > East William Street > US 395 BUS. Incline: SR 28 > US 50 > US 395 BUS): OSRM steps in runs/carson-antiques-home-v2/spec-evidence/towns-out.txt, 2026-10-05. Road names and order only.",
+    "https://en.wikipedia.org/wiki/U.S._Route_50_in_Nevada — US 50 enters Nevada at Stateline from California, lined with hotel-casinos; follows the east shore 'squeezing between the lake and the crest of the Carson Range'; Zephyr Cove; Cave Rock Tunnel; Glenbrook; junction with SR 28; 'crests the Carson Range at Spooner Summit and then descends into Nevada's capital, Carson City'; Spooner Summit 7,146 ft.",
+    "https://en.wikipedia.org/wiki/Interstate_580_(Nevada) — the freeway's southern terminus is 'US 50 west / US 395 south / US 395 Bus. north (S. Carson Street)': where US-50 meets Carson Street at the south end of Carson City.",
+    "https://en.wikipedia.org/wiki/Spooner_Summit — 7,146 ft; links the Lake Tahoe area to Carson City via US 50; 'The Tahoe Rim Trail is accessible from a small parking lot at the summit.'",
+    "https://en.wikipedia.org/wiki/Cave_Rock_Tunnel — dual-bore tunnel on US 50 on Lake Tahoe's east shore; 'The first bore was constructed in 1931'; Cave Rock is a sacred place to the Washoe Tribe, Washo name De ek Wadapush.",
+    "https://en.wikipedia.org/wiki/Nevada_State_Route_28 — south from Incline Village along the east shore; 'passes just east of the Sand Harbor area of the state park'; runs through the state park and Humboldt–Toiyabe National Forest; ends at a T intersection with US 50 'just south of Spooner Lake'; designated a National Scenic Byway in September 1996 with part of US 50 as Lake Tahoe–Eastshore Drive.",
+    "https://parks.nv.gov/parks/sand-harbor — Sand Harbor is part of Lake Tahoe Nevada State Park, on the east shore near Incline Village.",
+    "https://parks.nv.gov/parks/spooner-lake — Spooner Lake is 'surrounded by a flat 2-mile trail' and ringed by aspens; part of Lake Tahoe Nevada State Park; the Tahoe Rim Trail passes through.",
+    "https://en.wikipedia.org/wiki/Nevada_State_Route_207 — Kingsbury Grade begins at US 50 in Stateline; Daggett Pass 7,344 ft; ends at Foothill Road (SR 206) near Mottsville.",
+    "https://en.wikipedia.org/wiki/Nevada_State_Route_206 — Foothill Road runs north from the SR 207 junction to Genoa, then east on Genoa Lane to US 395.",
+    "https://en.wikipedia.org/wiki/Carson_and_Tahoe_Lumber_and_Fluming_Company — narrow-gauge railway 'up the hill from the sawmill at Glenbrook to Spooner Summit', completed 1875; the flume dropped 2,300 ft to the V&T at Carson City. (Flume length not printed: sources say 11 or 12 miles.)",
+    "https://www.carsonrailroadmuseum.org/exhibits/carson-tahoe-lumber-fluming-company-locomotive-no-1-glenbrook/ — Locomotive No. 1, the Glenbrook, built 1875 by Baldwin; hauled lumber and cord wood from the Glenbrook sawmills to Spooner Summit, where a V-flume 'carried the wood and lumber to a huge yard at the south end of Carson City'; restored 'to its 1875 appearance and operating condition in 2015'; in the museum's collection.",
+    "https://www.dot.nv.gov/safety/safe-winter-driving/traction-and-chain-requirement-descriptions — on SR 431 (Mt. Rose Highway), SR 207 (Kingsbury Grade) and 'U.S. 50 between Glenbrook and Carson City', 'only four-wheel or all-wheel vehicles with snow tires and all vehicles with approved tire chains are allowed when chain requirements are in place'.",
+    "https://www.nvroads.com/ — Nevada 511 traveler information from NDOT: road conditions including chain requirements, closures, cameras.",
+    "https://roads.dot.ca.gov/ — Caltrans highway conditions by route number; 'call 1-800-427-7623 for current highway conditions'.",
+    "https://en.wikipedia.org/wiki/Tahoe_Transportation_District + https://tahoetransportation.org/regional-connections/ — TTD routes 22 (Stateline Transit Center to Douglas County Community/Senior Center), 28 (Stateline to Minden, year-round) and 19X (Gardnerville to Carson City); no direct lake-to-Carson City route listed. Copy says only 'not a direct one we could confirm'."
+  ],
+  "card": {
+    "kicker": "From Lake Tahoe",
+    "title": "Antiques near Lake Tahoe",
+    "text": "US-50 over Spooner Summit, or NV-28 from Incline, then lamps, china and hutches for the cabin.",
+    "img": "chandeliers",
+    "more": "Plan the trip"
+  },
+  "close": {
+    "kicker": "Come find yours",
+    "h2": "Over the summit, under the yellow sign",
+    "body": "Come down US-50 into Carson City and follow Carson Street north to 1831 N Carson St, about a mile north of the Capitol. The parking lot is right out front, and the cashier is at the entrance.",
+    "origin": "Stateline, NV",
+    "dirLabel": "Directions from Stateline"
+  }
+}

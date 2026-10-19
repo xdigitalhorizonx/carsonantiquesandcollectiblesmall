@@ -1,0 +1,112 @@
+{
+  "path": "/visit/",
+  "title": "Plan a Trip to Carson City's Antique Mall | Routes & Hours",
+  "description": "Driving to Northern Nevada's largest antique mall? Routes and drive times from Reno, Lake Tahoe and Carson Valley, plus hours, parking and what to bring.",
+  "og": {
+    "title": "Plan a trip to Northern Nevada's largest antique mall",
+    "image": "/assets/og/visit-1200x630.jpg",
+    "alt": "Carson Antiques & Collectibles Mall — routes from Reno, Lake Tahoe and Carson Valley to 1831 N Carson St, Carson City",
+    "kicker": "<b>I-580</b><b>US-50</b><b>US-395</b> Plan a trip",
+    "headline": "Plan a trip to Northern Nevada's <span class=\"hl\">largest antique mall</span>"
+  },
+  "crumbs": [
+    [
+      "Home",
+      "/"
+    ],
+    [
+      "Plan a trip",
+      "/visit/"
+    ]
+  ],
+  "hero": {
+    "shield": {
+      "roads": [
+        "I-580",
+        "US-50",
+        "US-395"
+      ],
+      "text": "Three highways in. One yellow sign."
+    },
+    "h1": "Plan a trip to Northern Nevada's <span class=\"hl\">largest antique mall</span>",
+    "lede": "We're at 1831 N Carson St in Carson City, open every day from 10 to 6. Here's how to get here from Reno, the lake and the Valley — and what to know before you go.",
+    "ctas": [
+      {
+        "label": "Get directions",
+        "href": "DIRECTIONS",
+        "icon": "navigation",
+        "kind": "yellow"
+      },
+      {
+        "label": "Call (775) 461-3142",
+        "href": "TEL",
+        "icon": "phone",
+        "kind": "ghost"
+      }
+    ],
+    "facts": [
+      "Open every day, 10–6",
+      "1831 N Carson St",
+      "Parking lot out front"
+    ],
+    "photo": {
+      "img": "window-sign",
+      "alt": "The mall's front window vinyl reads: The Largest Antique Mall in Northern Nevada",
+      "caption": "The window says it. Over 21,000 square feet, on two floors."
+    }
+  },
+  "mentions": [
+    {
+      "@type": "City",
+      "name": "Reno",
+      "sameAs": "https://en.wikipedia.org/wiki/Reno,_Nevada"
+    },
+    {
+      "@type": "City",
+      "name": "Sparks",
+      "sameAs": "https://en.wikipedia.org/wiki/Sparks,_Nevada"
+    },
+    {
+      "@type": "City",
+      "name": "South Lake Tahoe",
+      "sameAs": "https://en.wikipedia.org/wiki/South_Lake_Tahoe,_California"
+    },
+    {
+      "@type": "City",
+      "name": "Stateline",
+      "sameAs": "https://en.wikipedia.org/wiki/Stateline,_Nevada"
+    },
+    {
+      "@type": "City",
+      "name": "Incline Village",
+      "sameAs": "https://en.wikipedia.org/wiki/Incline_Village,_Nevada"
+    },
+    {
+      "@type": "City",
+      "name": "Minden",
+      "sameAs": "https://en.wikipedia.org/wiki/Minden,_Nevada"
+    },
+    {
+      "@type": "City",
+      "name": "Gardnerville",
+      "sameAs": "https://en.wikipedia.org/wiki/Gardnerville,_Nevada"
+    }
+  ],
+  "sources": [
+    "Drive times and miles: the homepage's DIST table (index.html, #getting-here comment) — Google Maps live + OSRM + Valhalla from the GBP pin, 2026-09-15 / 2026-10-05. Never recomputed here.",
+    "Hours, address, parking, two floors, 21,000 sq ft: brand.md + GBP weekday_text (Places Details 2026-10-05), as on the homepage.",
+    "\"a couple of hours\": Suzy C.'s Google review, quoted verbatim on the homepage."
+  ],
+  "card": {
+    "kicker": "Plan a trip",
+    "title": "Routes, hours & parking",
+    "text": "Every way in, from Reno, the lake and the Valley.",
+    "img": "window-sign",
+    "more": "Plan it"
+  },
+  "close": {
+    "kicker": "Come find yours",
+    "h2": "See you on North Carson Street, under the yellow sign",
+    "body": "1831 N Carson St, Carson City, NV 89701 — about a mile north of the State Capitol, with a parking lot right out front. The cashier's at the entrance; the booths go on from there."
+  }
+}

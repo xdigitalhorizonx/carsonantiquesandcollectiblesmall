@@ -1,0 +1,188 @@
+{
+  "path": "/visit/minden-gardnerville/",
+  "title": "Antique Mall Near Minden & Gardnerville, NV | Up US-395",
+  "description": "Northern Nevada's largest antique mall is 16–18 miles up US-395 from Minden and Gardnerville. Open every day 10–6, with a scenic way home via Genoa.",
+  "og": {
+    "title": "Carson Valley to Carson City: the antique mall worth the drive up 395",
+    "image": "/assets/og/visit-minden-gardnerville-1200x630.jpg",
+    "alt": "Share card: Antiques worth the drive up 395, with a US-395 shield, a photo of a wooden hutch in a vendor booth, and the mall's address and hours",
+    "kicker": "<b>US-395</b> From Carson Valley · 16–18 mi",
+    "headline": "Antiques worth the drive <span class=\"hl\">up 395</span>"
+  },
+  "crumbs": [
+    [
+      "Home",
+      "/"
+    ],
+    [
+      "Plan a trip",
+      "/visit/"
+    ],
+    [
+      "Minden–Gardnerville",
+      "/visit/minden-gardnerville/"
+    ]
+  ],
+  "hero": {
+    "shield": {
+      "roads": [
+        "US-395"
+      ],
+      "text": "16–18 mi · about 30–35 min from the Valley"
+    },
+    "h1": "Antiques near Minden &amp; Gardnerville, <span class=\"hl\">worth the drive up US-395</span>",
+    "lede": "Northern Nevada's largest antique mall is 16 to 18 miles north of Minden and Gardnerville, about 30–35 minutes up US-395 to North Carson Street. Over 21,000 square feet of vendor booths on two floors, open every day from 10 to 6.",
+    "ctas": [
+      {
+        "label": "Directions from Gardnerville",
+        "href": "DIRECTIONS",
+        "origin": "Gardnerville, NV",
+        "icon": "navigation",
+        "kind": "yellow"
+      },
+      {
+        "label": "Call (775) 461-3142",
+        "href": "TEL",
+        "icon": "phone",
+        "kind": "ghost"
+      }
+    ],
+    "facts": [
+      "Open every day, 10–6",
+      "16–18 mi up US-395",
+      "Parking lot out front"
+    ],
+    "photo": {
+      "img": "hutch",
+      "alt": "A tall wooden hutch in a vendor booth, its glass doors open on shelves of dolls, plush bunnies and a birdhouse, with baskets, linens and jars on the shelves below",
+      "caption": "One Furniture booth, one tall hutch, on our last look."
+    }
+  },
+  "route": {
+    "stops": [
+      "Gardnerville",
+      "Minden",
+      "Genoa Lane",
+      "Jacks Valley Rd",
+      "South Carson",
+      "Our door"
+    ],
+    "roads": [
+      "US-395",
+      "US-395",
+      "US-395",
+      "US-395",
+      "Carson St"
+    ],
+    "note": "Not to scale. Drawn via Carson Street through downtown; your map may take the freeway instead. The Valley to our door: 16–18 mi, about 30–35 min."
+  },
+  "mentions": [
+    {
+      "@type": "City",
+      "name": "Minden",
+      "sameAs": "https://en.wikipedia.org/wiki/Minden,_Nevada"
+    },
+    {
+      "@type": "City",
+      "name": "Gardnerville",
+      "sameAs": "https://en.wikipedia.org/wiki/Gardnerville,_Nevada"
+    },
+    {
+      "@type": "Place",
+      "name": "Carson Valley",
+      "sameAs": "https://en.wikipedia.org/wiki/Carson_Valley"
+    },
+    {
+      "@type": "Place",
+      "name": "Genoa",
+      "sameAs": "https://en.wikipedia.org/wiki/Genoa,_Nevada"
+    },
+    {
+      "@type": "Park",
+      "name": "Mormon Station State Historic Park",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "2295 Main St",
+        "addressLocality": "Genoa",
+        "addressRegion": "NV",
+        "postalCode": "89411",
+        "addressCountry": "US"
+      },
+      "url": "https://parks.nv.gov/parks/mormon-station",
+      "sameAs": "https://en.wikipedia.org/wiki/Mormon_Station_State_Historic_Park"
+    },
+    {
+      "@type": "Museum",
+      "name": "Nevada State Railroad Museum",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "2180 S Carson St",
+        "addressLocality": "Carson City",
+        "addressRegion": "NV",
+        "postalCode": "89701",
+        "addressCountry": "US"
+      },
+      "url": "https://www.carsonrailroadmuseum.org/",
+      "sameAs": "https://en.wikipedia.org/wiki/Nevada_State_Railroad_Museum"
+    },
+    {
+      "@type": "LandmarksOrHistoricalBuildings",
+      "name": "Nevada State Capitol",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "101 N Carson St",
+        "addressLocality": "Carson City",
+        "addressRegion": "NV",
+        "postalCode": "89701",
+        "addressCountry": "US"
+      },
+      "sameAs": "https://en.wikipedia.org/wiki/Nevada_State_Capitol"
+    },
+    {
+      "@type": "LandmarksOrHistoricalBuildings",
+      "name": "Carson City Mint",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "600 N Carson St",
+        "addressLocality": "Carson City",
+        "addressRegion": "NV",
+        "postalCode": "89701",
+        "addressCountry": "US"
+      },
+      "sameAs": "https://en.wikipedia.org/wiki/Carson_City_Mint"
+    }
+  ],
+  "sources": [
+    "Drive miles and times (Minden 16 mi, Gardnerville 17–18 mi, 16–18 mi / about 30–35 min via US-395): the homepage's DIST table (index.html, #getting-here comment). Never recomputed here.",
+    "Hours, address, parking lot, 21,000 sq ft on two floors, upstairs, cashier at the entrance, numbered booths by different vendors, store items (hand planes, railroad lantern, oil lamps, carved wooden boots, oak wall telephone, baskets, linens, Wells Fargo & Co. Express sign, street signs, the hutch): brand.md + store photos, as on the homepage.",
+    "Brady T. quote: Google review, quoted verbatim on the homepage.",
+    "https://en.wikipedia.org/wiki/Gardnerville,_Nevada — US 395 runs through the center of Gardnerville; named after John Gardner, a local cattleman.",
+    "https://en.wikipedia.org/wiki/U.S._Route_395_in_Nevada — four lanes through Gardnerville and Minden; past Minden a four-lane divided highway turning due north toward Carson City; meets I-580 and US 50 at the south end of Carson City; freeway bypass on the east side; US 395 Bus. north = S. Carson Street.",
+    "https://router.project-osrm.org route steps (2026-10-19) — Gardnerville Main Street carries US 395; order Genoa Lane, Genoa Main Street, Jacks Valley Road, US 395 (road names and order only, no distances used).",
+    "https://en.wikipedia.org/wiki/Nevada_State_Route_206 — Genoa Lane is SR 206 and meets US 395 west of Minden–Tahoe Airport.",
+    "https://www.aaroads.com/guides/nv-206 — Jacks Valley Road removed from SR 206 ca. 1996, now county-maintained; runs north through northwestern Carson Valley across the Jacks Valley Wildlife Management Area to US 395 south of Carson City.",
+    "https://parks.nv.gov/parks/mormon-station — site of Nevada's first permanent, non-native settlement; built 1851 as a trading post on the Carson Route of the California Trail; reconstruction of the original that burned in 1910; museum of original pioneer artifacts; 2295 Main Street, Genoa; museum seasonal.",
+    "https://ww2.aaa.com/roadtrips/pacific-southwest/carson-valley-scenic-drive-road-trip-AA463 — Carson Valley Scenic Drive follows SR 206 (Jacks Valley Road / Main Street / Foothill Road); Sierra Nevada dominates the horizon; fenced-in ranches and open land; Courthouse Museum and Mormon Station directly across the street.",
+    "https://dangberg.org/?p=18 — H.F. Dangberg came west in 1853, built a log cabin, cleared and irrigated his claim; the ranch grew to almost 50,000 acres of cattle and sheep.",
+    "https://en.wikipedia.org/wiki/Minden,_Nevada — Minden built on company land of the Dangberg Home Ranch.",
+    "https://www.nvroads.com/ — NDOT's Nevada 511 map: chain controls; wind alerts for vehicles over 9 feet.",
+    "https://en.wikipedia.org/wiki/Tahoe_Transportation_District — route list: 19X Gardnerville to Carson City.",
+    "https://www.tahoetransportation.org/route-19x/ — Route 19X page live (Valley Express Daily), checked 2026-10-19.",
+    "https://communityservices.douglascountynv.gov/senior_services/transportation/dart_express — DART Express serves Minden and Gardnerville and connects to the 19X for travel north to Carson City.",
+    "Street addresses (2180 S Carson St, 101 N Carson St, 600 N Carson St): the homepage's §5.3 day-trip source table."
+  ],
+  "card": {
+    "kicker": "From Carson Valley",
+    "title": "Worth the drive up 395",
+    "text": "16–18 miles from Minden and Gardnerville, with a scenic way home through Genoa.",
+    "img": "hutch",
+    "more": "Plan the trip"
+  },
+  "close": {
+    "kicker": "Come up the valley",
+    "h2": "Up 395 to the yellow sign on North Carson Street",
+    "body": "1831 N Carson St, Carson City: 16 to 18 miles from the Valley, with a parking lot right out front. The cashier's at the entrance, and the booths go on from there.",
+    "origin": "Gardnerville, NV",
+    "dirLabel": "Directions from Gardnerville"
+  }
+}

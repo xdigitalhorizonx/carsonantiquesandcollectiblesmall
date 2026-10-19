@@ -1,0 +1,78 @@
+{
+  "path": "/blog/how-to-start-a-coin-collection/",
+  "title": "How to Start a Coin Collection: 5 Steps for Beginners",
+  "description": "How to start a coin collection: the first five steps, silver dates, the 1–70 grading scale, why never to clean coins, and where to hunt in Carson City.",
+  "og": {
+    "title": "Your coin collection starts in your pocket change",
+    "image": "/assets/og/blog-coin-collection-1200x630.jpg",
+    "alt": "Carson Antiques & Collectibles Mall blog — how to start a coin collection, with a photo of rows of coins in labeled holders in a lit display case",
+    "kicker": "Currency · How to collect",
+    "headline": "How to start a <span class=\"hl\">coin collection</span>"
+  },
+  "crumbs": [["Home", "/"], ["Blog", "/blog/"], ["Coin collecting", "/blog/how-to-start-a-coin-collection/"]],
+  "post": {
+    "date": "2026-10-19",
+    "dateText": "October 19, 2026",
+    "section": "Currency",
+    "read": "7-min read",
+    "about": [
+      { "@type": "Thing", "name": "Coin collecting", "sameAs": "https://en.wikipedia.org/wiki/Coin_collecting" }
+    ]
+  },
+  "hero": {
+    "eyebrow": "Currency · How to collect",
+    "h1": "How to start a coin collection: <span class=\"hl\">a beginner's field guide</span>",
+    "lede": "Every coin collection starts with one coin you can't stop looking at. Here's how to turn it into a real collection: what to hunt first, what never to do, and where to look on North Carson Street.",
+    "photo": {
+      "img": "coins",
+      "alt": "Rows of coins in white labeled holders on tiered shelves in a lit display case, with a Coins sign on the front of the case",
+      "caption": "On our last look: rows of coins in labeled holders in a lit case. Bring your loupe."
+    }
+  },
+  "mentions": [
+    { "@type": "LandmarksOrHistoricalBuildings", "name": "Carson City Mint", "sameAs": "https://en.wikipedia.org/wiki/Carson_City_Mint" },
+    { "@type": "Museum", "name": "Nevada State Museum", "url": "https://www.carsonnvmuseum.org/", "sameAs": "https://en.wikipedia.org/wiki/Nevada_State_Museum,_Carson_City" }
+  ],
+  "sources": [
+    "Store facts (six categories incl. Currency, coin case seen in the client's own photo, 21,000 sq ft on two floors, Treasure Map marks booths and display cases, cashier at entrance, 0.7 mi / 15-min walk to the Nevada State Museum, Coin Press No. 1 'on set days'): BRIEF.md + index.html (Currency tile; #day-trip source table). Case wording follows assets/tile-currency-coins-960x1280.jpg (Coins sign on the case front).",
+    "https://www.usmint.gov/learn/collecting-basics/get-started-collecting-coins — start with coins on hand; collecting themes; no way to restore a coin's shine; wear is the biggest grade factor; 1–70 + adjective; grading is subjective, verify grades given by others; flea markets and antique shows: watch prices and 'problem coins' (paraphrased).",
+    "https://www.usmint.gov/learn/collecting-basics/caring-for-your-coin-collection — magnifier first among tools; reference book; hold by edges between thumb and forefinger over a soft towel; soft cotton gloves; PVC 'sticky green slime'; acid-free, PVC-free holders; slabs; cool and dry, temperature/moisture swings discolor coins; saliva spots; deep age coloration more desirable than stripped surfaces; cleaning can reduce value; rubbing can scratch.",
+    "https://www.usmint.gov/news/press-releases/united-states-mint-hosts-historic-ceremonial-strike-for-final-production-of-the-circulating-one-cent-coin — final circulating penny struck Nov 12, 2025.",
+    "https://www.usmint.gov/ (read 2026-10-19) — Semiquincentennial quarters, Emerging Liberty Dime and Enduring Liberty Half Dollar 'in your change'.",
+    "https://www.mint.ca/en/get-started/coin-care — cotton gloves; avoid latex or plastic gloves (powder/lubricants); edges; saliva; wiping with a soft cloth may damage finish and drastically reduce value.",
+    "https://www.pcgs.com/news/coin-preservation — PVC breaks down under heat and light, releasing hydrochloric acid; Mylar, polyethylene or polypropylene holders; mishandling (not by the edges) can ruin a coin.",
+    "https://www.ngccoin.com/news/article/1364/ — NGC/NCS recommend 'hard' flips not treated with PVC.",
+    "https://www.pcgs.com/grades — Sheldon 1–70; G-4, F-12, VF-20, XF-40, AU-50 definitions; MS-60 (covered with marks) to MS-70 (flawless); cleaned coins get holdered Details grades, value generally less than price guides; natural toning considered desirable; grading fees.",
+    "https://www.pcgs.com/news/part-three-william-sheldons-70-point-scale-1949-ms-65 — Sheldon's scale priced 1794 large cents; pricing system broke down; scale became the framework for modern U.S. grading. (PCGS dates it 1948 on /grades, 1949 here; NGC says late 1940s → 'late 1940s'.)",
+    "https://www.ngccoin.com/coin-grading/grading-scale/ — Sheldon scale first used in the U.S. in the late 1940s.",
+    "https://ngccoin.com/coin-grading/details-grading — Details grading for surface problems incl. cleaning; 'IMPROPERLY CLEANED' label term.",
+    "https://www.pcgs.com/photograde — match a coin to photos to approximate its grade.",
+    "https://en.wikipedia.org/wiki/Professional_Coin_Grading_Service — PCGS grades, authenticates and encapsulates coins in plastic holders (slabs).",
+    "https://en.wikipedia.org/wiki/A_Guide_Book_of_United_States_Coins — the Red Book, Whitman; first edition dated 1947, on sale Nov 1946; annual; retail prices, mint marks.",
+    "https://en.wikipedia.org/wiki/Coinage_Act_of_1965 — silver removed from dimes and quarters; half dollar cut from 90% to 40%; 90% before the act.",
+    "https://en.wikipedia.org/wiki/Kennedy_half_dollar — 1964 90%; 1965–1970 40%; silver eliminated from the half in 1971.",
+    "https://en.wikipedia.org/wiki/Barber_coinage · https://en.wikipedia.org/wiki/Mercury_dime · https://en.wikipedia.org/wiki/Roosevelt_dime · https://en.wikipedia.org/wiki/Standing_Liberty_quarter · https://en.wikipedia.org/wiki/Washington_quarter · https://en.wikipedia.org/wiki/Walking_Liberty_half_dollar · https://en.wikipedia.org/wiki/Franklin_half_dollar — every 1900–1964 dime, quarter and half design is 90% silver.",
+    "https://en.wikipedia.org/wiki/Jefferson_nickel — wartime alloy 35% silver, 1942–1945; large mint mark above Monticello; first P mint mark.",
+    "https://www.pcgs.com/coinfacts/coin/1942-p-5c-silver/4016 — 1942-P: 56% copper, 35% silver, 9% manganese; large P, D, S; issued through 1945.",
+    "https://www.pcgs.com/coinfacts/coin/4013 — 1942 (no mint mark) is 75% copper / 25% nickel; two compositions in 1942; large mint marks just above Monticello's dome; first P mint mark.",
+    "https://www.pcgs.com/coinfacts/coin/4014 — 1942-D is 75% copper / 25% nickel.",
+    "https://en.wikipedia.org/wiki/Lincoln_cent — wheat reverse 1909–1958; 1943 zinc-coated steel because copper was needed for the war.",
+    "https://en.wikipedia.org/wiki/Morgan_dollar — 1878–1904 and 1921; 90% silver; mint mark on the reverse above the D and O of DOLLAR; CC Morgans (about 2% of all Morgans) demand a premium.",
+    "https://en.wikipedia.org/wiki/Carson_City_Mint — built for Comstock Lode silver; CC mint mark 1870–1893; silver dimes, twenty-cent pieces, quarters, halves, dollars and gold half eagles, eagles, double eagles; Coin Press No. 1 strikes CC medallions; Nevada State Museum since 1941.",
+    "https://www.carsonnvmuseum.org/exhibits/historic-carson-city-mint/ — Coin Press No. 1 and a complete set of Carson City Morgan dollars on display.",
+    "https://www.carsonnvmuseum.org/event/coin-press-no-1-demonstrations-2-2-2/2026-10-24/ — Coin Press No. 1 demonstrations run as scheduled events ('on set days').",
+    "https://forums.collectors.com/discussion/comment/7529114/ — glove debate among collectors (cotton linty; nitrile preferred by some; washed bare hands by the edges). Opinion, reported as such."
+  ],
+  "card": {
+    "kicker": "Currency · How to collect",
+    "title": "Start a coin collection",
+    "text": "Silver dates, the 1–70 grading scale, and why you never clean a coin.",
+    "img": "coins",
+    "more": "Start collecting"
+  },
+  "close": {
+    "kicker": "Bring your loupe",
+    "h2": "Start your coin collection on North Carson Street",
+    "body": "The easiest way to start a coin collection is to look at a lot of coins. We're at 1831 N Carson St, under the yellow sign, with parking right in front, and the old Mint is a 15-minute walk south."
+  }
+}

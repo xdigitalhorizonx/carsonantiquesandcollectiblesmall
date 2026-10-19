@@ -1,0 +1,165 @@
+{
+  "path": "/visit/reno/",
+  "title": "Antique Mall Near Reno | Carson Antiques & Collectibles",
+  "description": "Northern Nevada's largest antique mall is 31 miles south of Reno, about 40 minutes down I-580 in Carson City. Open every day 10–6. Route, stops and tips.",
+  "og": {
+    "title": "From Reno: 40 minutes to Northern Nevada's largest antique mall",
+    "image": "/assets/og/visit-reno-1200x630.jpg",
+    "alt": "Carson Antiques & Collectibles Mall trip guide from Reno: I-580 south to 1831 N Carson St, Carson City, about 40 minutes, with a photo of an aisle of vendor booths",
+    "kicker": "<b>I-580</b> From Reno · 31 mi",
+    "headline": "An antique mall near Reno, <span class=\"hl\">40 minutes</span> down I-580"
+  },
+  "crumbs": [
+    [
+      "Home",
+      "/"
+    ],
+    [
+      "Plan a trip",
+      "/visit/"
+    ],
+    [
+      "From Reno",
+      "/visit/reno/"
+    ]
+  ],
+  "hero": {
+    "shield": {
+      "roads": [
+        "I-580"
+      ],
+      "text": "31 mi · about 40 min from Reno and Sparks"
+    },
+    "h1": "An antique mall near Reno, <span class=\"hl\">40 minutes down I-580</span>",
+    "lede": "Northern Nevada's largest antique mall is in Carson City, 31 miles south of Reno: about 40 minutes on I-580. Over 21,000 square feet of vendor booths on two floors, open every day from 10 to 6.",
+    "ctas": [
+      {
+        "label": "Directions from Reno",
+        "href": "DIRECTIONS",
+        "origin": "Reno, NV",
+        "icon": "navigation",
+        "kind": "yellow"
+      },
+      {
+        "label": "Call (775) 461-3142",
+        "href": "TEL",
+        "icon": "phone",
+        "kind": "ghost"
+      }
+    ],
+    "facts": [
+      "Open every day, 10–6",
+      "Over 21,000 sq ft, two floors",
+      "Parking lot out front"
+    ],
+    "photo": {
+      "img": "aisle",
+      "alt": "Looking out over rows of vendor booths under long fluorescent lights: shelves of glassware and china, wooden display cabinets, framed pictures and vintage signs on the far wall",
+      "caption": "Booth after booth, as far as the lights go. Plan on a couple of hours."
+    }
+  },
+  "route": {
+    "stops": [
+      "Reno",
+      "Mt Rose Hwy",
+      "Galena Creek",
+      "Washoe Valley",
+      "N Carson St exit",
+      "Our door"
+    ],
+    "roads": [
+      "I-580",
+      "I-580",
+      "I-580",
+      "I-580",
+      "N Carson St"
+    ],
+    "note": "Not to scale. 31 mi, about 40 min from Reno or Sparks via I-580. From Sparks, take I-80 west to I-580 first."
+  },
+  "mentions": [
+    {
+      "@type": "City",
+      "name": "Reno",
+      "sameAs": "https://en.wikipedia.org/wiki/Reno,_Nevada"
+    },
+    {
+      "@type": "City",
+      "name": "Sparks",
+      "sameAs": "https://en.wikipedia.org/wiki/Sparks,_Nevada"
+    },
+    {
+      "@type": "Place",
+      "name": "Galena Creek Bridge",
+      "sameAs": "https://en.wikipedia.org/wiki/Galena_Creek_Bridge"
+    },
+    {
+      "@type": "Place",
+      "name": "Washoe Valley",
+      "sameAs": "https://en.wikipedia.org/wiki/Washoe_Valley_(Nevada)"
+    },
+    {
+      "@type": "Place",
+      "name": "Slide Mountain",
+      "sameAs": "https://en.wikipedia.org/wiki/Slide_Mountain_(Nevada)"
+    },
+    {
+      "@type": "LandmarksOrHistoricalBuildings",
+      "name": "Bowers Mansion",
+      "sameAs": "https://en.wikipedia.org/wiki/Bowers_Mansion"
+    },
+    {
+      "@type": "Park",
+      "name": "Washoe Lake State Park",
+      "url": "https://parks.nv.gov/parks/washoe-lake",
+      "sameAs": "https://en.wikipedia.org/wiki/Washoe_Lake_State_Park"
+    },
+    {
+      "@type": "Museum",
+      "name": "Nevada State Museum",
+      "sameAs": "https://en.wikipedia.org/wiki/Nevada_State_Museum,_Carson_City"
+    },
+    {
+      "@type": "Museum",
+      "name": "Nevada State Railroad Museum",
+      "url": "https://www.carsonrailroadmuseum.org/",
+      "sameAs": "https://en.wikipedia.org/wiki/Nevada_State_Railroad_Museum"
+    }
+  ],
+  "sources": [
+    "Drive times and miles (Reno 31 mi, about 40 min via I-580; Sparks 31 mi, about 40 min via I-580): the homepage's DIST table (index.html, #getting-here comment), Google Maps live + OSRM + Valhalla from the GBP pin, 2026-09-15 / 2026-10-05. Never recomputed here.",
+    "Store facts (open every day 10–6, holiday hours not posted, 1831 N Carson St, lot in front, yellow sign, over 21,000 sq ft on two floors, upstairs, numbered booths stocked by different vendors, sign 'Gifts · Home Decor · Art · Toys & More', old Mint 0.7 mi / about a 15-min walk where 'CC' coins were struck 1870–1893, Railroad Museum at 2180 S Carson St about a 10-min drive with V&T locomotives and cars): BRIEF.md + index.html. 'a couple of hours just exploring': Suzy C.'s Google review, verbatim on the homepage.",
+    "Booth items named (railroad lantern; coins in labeled holders in a lit case marked 'Coins' (per the photo); Phillips 66 sign; California 32 marker; hubcaps; 1989 World Series pennant; M&M's dispenser; teacups): the client's own store photos per BRIEF.md, framed as 'on our last looks', never as in stock now. Coins photo: assets/tile-currency-coins-960x1280.jpg.",
+    "Route order (Reno: I 80 > I 580; US 395 > US 395 BUS. Sparks: West Victorian Avenue > SR 445 > I 80 > I 580): OSRM steps in runs/carson-antiques-home-v2/spec-evidence/towns-out.txt, 2026-10-05. Road names and order only.",
+    "https://en.wikipedia.org/wiki/Interstate_580_(Nevada) — I-580 begins at the Reno Spaghetti Bowl interchange with I-80; junction with the Mount Rose Highway (SR 431) at the southern edge of Reno, linking to North Lake Tahoe; Carson City exit 'US 395 Bus. south (N. Carson Street)' (southbound exit; exit numbers deliberately not printed, the route was renumbered); the Eastlake Boulevard exit serves Washoe Lake State Park; old US 395 is now US 395 Alt. Old US 395 'ran along the valley floor of Pleasant Valley', while I-580 is routed in the mountains overlooking the valley.",
+    "https://en.wikipedia.org/wiki/Galena_Creek_Bridge — concrete arch carrying I-580 and US 395 over Galena Creek between Reno and Carson City; opened to traffic in late August 2012; height 295 ft.",
+    "https://en.wikipedia.org/wiki/Washoe_Valley_(Nevada) — between Reno and Carson City; Washoe Lake is in the valley; Slide Mountain overlooks it from the west; the V&T 'used to pass through this transportation corridor from 1872 to 1950' and its grade is still visible; strong winds sometimes close US 395 to high-profile vehicles.",
+    "https://en.wikipedia.org/wiki/Slide_Mountain_(Nevada) — named after 'the repeated large landslides' on its southeast side; the slide zones are plainly visible from Washoe Valley.",
+    "https://en.wikipedia.org/wiki/U.S._Route_395_Alternate_(Nevada) — the whole route was once the main alignment of US 395; South Virginia Street becomes the Carson–Reno Highway past the Mount Rose junction; passes through the Steamboat Hills and Pleasant Valley, climbs Washoe Summit, passes Washoe City; Bowers Mansion Road on the west side of Washoe Valley.",
+    "https://router.project-osrm.org (route steps, run 2026-10-19, Bowers Mansion to the GBP pin) — Bowers Mansion Road (US 395 ALT) south, Bellevue Road, then I-580 and US 395 BUS: the old road rejoins I-580 in Washoe Valley. Road names and order only.",
+    "https://www.washoecounty.gov/parks/parks/park_directory_pages/south_region/bowers_mansion_regional_park.php — Bowers Mansion Regional Park; Sandy and Eilley Bowers 'earned a fortune in their silver mine near Gold Hill' and 'became Nevada's first Comstock Lode millionaires'; the mansion is open seasonally for guided tours (copy says only 'seasonal').",
+    "https://en.wikipedia.org/wiki/Bowers_Mansion — part of Bowers Mansion Regional Park, owned and operated by Washoe County. Build year deliberately not printed (county says 1862, Wikipedia 1863).",
+    "https://parks.nv.gov/parks/washoe-lake — Washoe Lake State Park, 4855 Eastlake Blvd, between Reno and Carson City; views of the Sierra Nevada, Carson and Virginia ranges; bald eagles and American white pelicans.",
+    "https://www.dot.nv.gov/safety/high-wind-driving-safety-tips — NDOT maintains a wind warning system on 'U.S. 395/Washoe Valley-Pleasant Valley'; drivers must obey all posted wind advisories, restrictions and closures; trucks, vans and vehicles towing trailers are more vulnerable; NVRoads.com listed as a resource.",
+    "https://www.nvroads.com/ — Nevada 511 traveler information from NDOT: road conditions including chain requirements, closures, cameras.",
+    "https://rtcwashoe.com/rider-info/maps-schedules/rtc-regional-connector-carson-express/ — 'CRSN: RTC REGIONAL CONNECTOR – Carson Express'; 'RTC REGIONAL CONNECTOR ONE YEAR PILOT PROGRAM STARTED JUNE 1, 2026'.",
+    "https://assets.rtcwashoe.com/wp-content/uploads/2023/10/07071114/RT_REG_CONNECT-2026.pdf — schedule effective July 2026: Monday–Friday, 'No weekend service'; serves RTC 4th Street Station, Meadowood Mall, Summit Mall Park & Ride, N Carson St & College Pkwy and NDOT; three early-morning and three late-afternoon/evening trips each way (commuter hours).",
+    "https://rtcwashoe.com/timetables/crsn_-_rtc_regional_connector_-_carson_express_-_inbound_-_weekday__weekday/ — stop names incl. 'N Carson Street and W College Parkway'; 'Mon-Fri'.",
+    "https://nominatim.openstreetmap.org (query 'W College Pkwy, Carson City', 2026-10-19) — College Parkway at lat 39.187 vs the GBP pin at 39.1767: the College Parkway stop is north of the mall on North Carson Street. Direction only, no distance printed.",
+    "https://en.wikipedia.org/wiki/Sparks,_Nevada — founded 1904, when 'the Southern Pacific Railroad built a switch yard and maintenance sheds there'.",
+    "https://en.wikipedia.org/wiki/Virginia_and_Truckee_Railroad — line extended to Reno to connect with the Central Pacific; final spike August 24, 1872; abandoned 1950."
+  ],
+  "card": {
+    "kicker": "From Reno & Sparks",
+    "title": "Antique mall near Reno",
+    "text": "I-580 south, over the Galena Creek Bridge and through Washoe Valley: about 40 minutes.",
+    "img": "aisle",
+    "more": "Plan the trip"
+  },
+  "close": {
+    "kicker": "Come find yours",
+    "h2": "40 minutes south, under the yellow sign",
+    "body": "Take I-580 south to the North Carson Street exit and look for the yellow sign at 1831 N Carson St, Carson City. The parking lot is right out front, and the cashier is at the entrance.",
+    "origin": "Reno, NV",
+    "dirLabel": "Directions from Reno"
+  }
+}

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Carson Antiques &amp; Collectibles Mall — Blog</title>
+  <link>https://carsonantiquesandcollectibles.com/blog/</link>
+  <atom:link href="https://carsonantiquesandcollectibles.com/blog/feed.xml" rel="self" type="application/rss+xml"/>
+  <description>Collecting tips from Northern Nevada's largest antique mall, 1831 N Carson St, Carson City.</description>
+  <language>en-us</language>
+  <item>
+    <title>How to start a coin collection: a beginner's field guide</title>
+    <link>https://carsonantiquesandcollectibles.com/blog/how-to-start-a-coin-collection/</link>
+    <guid isPermaLink="true">https://carsonantiquesandcollectibles.com/blog/how-to-start-a-coin-collection/</guid>
+    <pubDate>Mon, 19 Oct 2026 16:00:00 GMT</pubDate>
+    <category>Currency</category>
+    <description>How to start a coin collection: the first five steps, silver dates, the 1–70 grading scale, why never to clean coins, and where to hunt in Carson City.</description>
+  </item>
+  <item>
+    <title>Is my vintage china valuable? Flip it over first.</title>
+    <link>https://carsonantiquesandcollectibles.com/blog/is-my-vintage-china-valuable/</link>
+    <guid isPermaLink="true">https://carsonantiquesandcollectibles.com/blog/is-my-vintage-china-valuable/</guid>
+    <pubDate>Mon, 19 Oct 2026 16:00:00 GMT</pubDate>
+    <category>China</category>
+    <description>Most vintage china sells for less than you'd hope. Here's how to read the backstamp, check condition, name the pattern and find real sold prices.</description>
+  </item>
+  <item>
+    <title>How to spot a real vintage sign in five minutes, right in the booth</title>
+    <link>https://carsonantiquesandcollectibles.com/blog/how-to-spot-real-vintage-signs/</link>
+    <guid isPermaLink="true">https://carsonantiquesandcollectibles.com/blog/how-to-spot-real-vintage-signs/</guid>
+    <pubDate>Mon, 19 Oct 2026 16:00:00 GMT</pubDate>
+    <category>Collectibles</category>
+    <description>Real porcelain signs are glass fused to iron or steel, one color at a time. Here's a 5-minute in-booth check for chips, rust, grommets and modern fakes.</description>
+  </item>
+</channel>
+</rss>
