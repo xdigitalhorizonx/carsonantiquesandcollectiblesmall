@@ -32,8 +32,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/tanker-400.woff2">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/satoshi-700.woff2">
 <link rel="stylesheet" href="styles.css">
-<!-- The ONE inline script (spec §7.2.1): palette bootstrap + motion gate + 2.5 s boot watchdog (fix-r2: 2.5 s from navigation start, not from when the gate runs after styles.css). Its sha256 is pinned in vercel.json's CSP by tools/csp-hash.mjs — edit it, then re-run that tool. Keep it on ONE line (CRLF/LF checkouts must hash the same). -->
-<script>(function(h){var ok=/^(dock|oxblood|enamel|walnut|pewter)$/,c=false,r;try{var q=new URLSearchParams(location.search).get("palette"),p=ok.test(q)?q:localStorage.getItem("cacm-palette");if(ok.test(p)&&p!=="dock")h.dataset.palette=p}catch(e){}try{c=localStorage.getItem("cacm-motion")==="calm"}catch(e){}r=matchMedia("(prefers-reduced-motion: reduce)").matches;h.dataset.openStatus="off";if(c)h.classList.add("calm");if(!r&&!c){h.classList.add("motion","rib");setTimeout(function(){if(!h.classList.contains("motion-ok"))h.classList.remove("motion")},Math.max(0,2500-performance.now()))}})(document.documentElement)</script>
+<!-- The ONE inline script (spec §7.2.1): motion gate + 2.5 s boot watchdog (fix-r2: 2.5 s from navigation start, not from when the gate runs after styles.css). Its sha256 is pinned in vercel.json's CSP by tools/csp-hash.mjs — edit it, then re-run that tool. Keep it on ONE line (CRLF/LF checkouts must hash the same). -->
+<script>(function(h){var c=false,r;try{c=localStorage.getItem("cacm-motion")==="calm"}catch(e){}r=matchMedia("(prefers-reduced-motion: reduce)").matches;h.dataset.openStatus="off";if(c)h.classList.add("calm");if(!r&&!c){h.classList.add("motion","rib");setTimeout(function(){if(!h.classList.contains("motion-ok"))h.classList.remove("motion")},Math.max(0,2500-performance.now()))}})(document.documentElement)</script>
 <!-- SCHEMA NOTES (keep OUTSIDE the script — JSON must parse):
      · schema.org has NO AntiqueStore type. Store + additionalType (Wikipedia + Wikidata "antique shop") + disambiguatingDescription is deliberate — DO NOT REVERT to an invented @type.
      · BreadcrumbList intentionally omitted: SCHEMA-STANDARD §1 exempts the homepage.
@@ -487,13 +487,13 @@
         <figcaption class="attr">Brady T. · Google review</figcaption>
       </figure>
       <figure class="worth__photo">
-        <!-- Lamp panel = master crop x 600–1620, y 0–1267 (spec D-24 / §5.5): both handwritten price stickers ("#67 44-" at x ≈ 30–200 and the metal-base sticker at x ≈ 1690–1840) stay outside; checked at 100 % on 2026-10-05 (runs/carson-antiques-home-v2/build-structure/crops/). Phones (≤ 767 px) get m/lamp-portrait-760/1020: the same sticker-free x 600–1620 crop, phone-tuned (fix-r3; v1's 697 px portrait was soft at DPR 3, AC-23). -->
+        <!-- Worth photo (2026-10-19): the sales floor, not the lamp close-up — it sits by the "largest floor space" quote. Client-own aisle-overview photo (the hero's), np2 retouch carried over (no slogan wall, no sale sign); built by tools/encode.py --worth-master / --worth-floor. Phones get the same crop at the old phone sizes. -->
         <picture>
-          <source media="(max-width: 767px)" type="image/avif" srcset="assets/m/lamp-portrait-760.avif 760w, assets/m/lamp-portrait-1020.avif 1020w" sizes="min(494px, calc(100vw - 48px))" width="1020" height="1267">
-          <source media="(max-width: 767px)" type="image/webp" srcset="assets/m/lamp-portrait-760.webp 760w, assets/m/lamp-portrait-1020.webp 1020w" sizes="min(494px, calc(100vw - 48px))" width="1020" height="1267">
-          <source type="image/avif" srcset="assets/d/lamp-panel-640.avif 640w, assets/d/lamp-panel-760.avif 760w, assets/d/lamp-panel-1020.avif 1020w" sizes="(min-width: 900px) 494px, (min-width: 768px) calc(50vw - 64px), (min-width: 640px) calc(50vw - 48px), min(494px, calc(100vw - 48px))">
-          <source type="image/webp" srcset="assets/d/lamp-panel-640.webp 640w, assets/d/lamp-panel-760.webp 760w, assets/d/lamp-panel-1020.webp 1020w" sizes="(min-width: 900px) 494px, (min-width: 768px) calc(50vw - 64px), (min-width: 640px) calc(50vw - 48px), min(494px, calc(100vw - 48px))">
-          <img src="assets/d/lamp-panel-1020.jpg" srcset="assets/d/lamp-panel-640.jpg 640w, assets/d/lamp-panel-760.jpg 760w, assets/d/lamp-panel-1020.jpg 1020w" sizes="(min-width: 900px) 494px, (min-width: 768px) calc(50vw - 64px), (min-width: 640px) calc(50vw - 48px), min(494px, calc(100vw - 48px))" width="1020" height="1267" loading="lazy" decoding="async" alt="Glass oil lamps inside the mall — tall clear glass chimneys and a white base painted with red flowers.">
+          <source media="(max-width: 767px)" type="image/avif" srcset="assets/d/worth-floor-760.avif 760w, assets/d/worth-floor-1020.avif 1020w" sizes="min(494px, calc(100vw - 48px))" width="1020" height="1267">
+          <source media="(max-width: 767px)" type="image/webp" srcset="assets/d/worth-floor-760.webp 760w, assets/d/worth-floor-1020.webp 1020w" sizes="min(494px, calc(100vw - 48px))" width="1020" height="1267">
+          <source type="image/avif" srcset="assets/d/worth-floor-640.avif 640w, assets/d/worth-floor-760.avif 760w, assets/d/worth-floor-1020.avif 1020w" sizes="(min-width: 900px) 494px, (min-width: 768px) calc(50vw - 64px), (min-width: 640px) calc(50vw - 48px), min(494px, calc(100vw - 48px))">
+          <source type="image/webp" srcset="assets/d/worth-floor-640.webp 640w, assets/d/worth-floor-760.webp 760w, assets/d/worth-floor-1020.webp 1020w" sizes="(min-width: 900px) 494px, (min-width: 768px) calc(50vw - 64px), (min-width: 640px) calc(50vw - 48px), min(494px, calc(100vw - 48px))">
+          <img src="assets/d/worth-floor-1020.jpg" srcset="assets/d/worth-floor-640.jpg 640w, assets/d/worth-floor-760.jpg 760w, assets/d/worth-floor-1020.jpg 1020w" sizes="(min-width: 900px) 494px, (min-width: 768px) calc(50vw - 64px), (min-width: 640px) calc(50vw - 48px), min(494px, calc(100vw - 48px))" width="1020" height="1267" loading="lazy" decoding="async" alt="The sales floor seen from above — rows of vendor booths, glass china cabinets and shelves stretching to the back wall.">
         </picture>
       </figure>
       <!-- Worth facts sources (spec §5.1): "over 21,000 square feet" + two floors = the client's own sign, window vinyl and Wix copy (brand.md); the six categories = brand.md + the tiles below; "open every day, 10 to 6" = GBP weekday_text (Places Details 2026-10-05), Apple Maps, Yahoo Local. -->
@@ -584,6 +584,7 @@
           <div class="tile__text"><h3>Currency</h3><p>Rows of coins in flip holders in a lit case, under a Coins sign. Collectors, bring your loupe.</p></div>
         </article></li>
       </ul>
+      <p class="more-line">Six tiles barely scratch the surface. There's <mark>much, much more</mark> in the booths.</p>
       <p class="sign-line">Also on the sign out front: <span class="nw">Gifts ·</span> <span class="nw">Home Decor ·</span> <span class="nw">Art ·</span> <span class="nw">Toys &amp; More.</span></p>
     </div>
   </section>
@@ -979,29 +980,7 @@
   <a href="#hours"><svg aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span>Hours</span></a>
 </nav>
 
-<!-- Palette preview tool (Digital Horizon) — lets the client compare colour schemes. Remove this block + palette.js to retire it. -->
-<div class="palette-tool" id="palette-tool">
-  <button class="palette-tool__toggle" type="button" aria-expanded="false" aria-controls="palette-panel">
-    <span class="palette-tool__dots" aria-hidden="true"><i></i><i></i><i></i></span>
-    <span class="palette-tool__kicker">Palette</span>
-    <span class="palette-tool__label">Loading Dock</span>
-  </button>
-  <div class="palette-tool__panel" id="palette-panel" role="dialog" aria-labelledby="palette-title" tabindex="-1" hidden>
-    <div class="palette-tool__head">
-      <h2 id="palette-title">Try a color scheme</h2>
-      <button class="palette-tool__close" type="button" aria-label="Close the palette picker">&times;</button>
-    </div>
-    <fieldset class="palette-tool__list"><legend class="sr-only">Color scheme</legend></fieldset>
-    <div class="palette-tool__foot">
-      <button class="palette-tool__copy" type="button">Copy a link to this scheme</button>
-      <p class="palette-tool__note">A preview tool for choosing a direction — it won’t be on the finished site.</p>
-      <p class="palette-tool__status" role="status" aria-live="polite"></p>
-    </div>
-  </div>
-</div>
-
 <script src="assets/anime-4.5.0-cacm.min.js" defer></script>
 <script src="app.js" defer></script>
-<script src="palette.js" defer></script>
 </body>
 </html>
