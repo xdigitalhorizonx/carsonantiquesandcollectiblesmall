@@ -8,8 +8,8 @@
   "background_color": "#14201B",
   "theme_color": "#14201B",
   "icons": [
-    { "src": "/assets/icon-ca-192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/assets/icon-ca-512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "/assets/favicon-ca.svg", "sizes": "any", "type": "image/svg+xml" }
+    { "src": "/assets/icon-coin-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/assets/icon-coin-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/assets/favicon-coin.svg", "sizes": "any", "type": "image/svg+xml" }
   ]
 }

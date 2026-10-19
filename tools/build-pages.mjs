@@ -408,9 +408,9 @@ function head(s, ld) {
 <meta name="twitter:image" content="${og}">
 <meta name="twitter:image:alt" content="${attr(s.og.alt)}">
 <link rel="icon" href="/favicon.ico" sizes="48x48">
-<link rel="icon" href="/assets/favicon-ca.svg" type="image/svg+xml">
-<link rel="icon" href="/assets/favicon-ca-96.png" sizes="96x96" type="image/png">
-<link rel="apple-touch-icon" href="/assets/apple-touch-icon-ca-180.png">
+<link rel="icon" href="/assets/favicon-coin.svg" type="image/svg+xml">
+<link rel="icon" href="/assets/favicon-coin-96.png" sizes="96x96" type="image/png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon-coin-180.png">
 <link rel="manifest" href="/site.webmanifest">${feed}
 <link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/fonts/tanker-400.woff2">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="/assets/fonts/satoshi-400.woff2">
