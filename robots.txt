@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://carsoncityantiquemall.com/sitemap.xml
+Sitemap: https://carsonantiquesandcollectibles.com/sitemap.xml

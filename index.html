@@ -1,22 +1,22 @@
 <!doctype html>
 <html lang="en-US">
 <head>
-<!-- ===== SEO HEAD KIT · Carson Antiques & Collectibles Mall · home-v2 (spec runs/carson-antiques-home-v2/SPEC.md §6.1, §6.3 + SPEC-AMENDMENTS AM-1). Title, og/twitter titles and canonical are UNCHANGED from v1 by rule. og:image / twitter:image / schema images point at the -np share card + master (fix-r2: v1's card showed a legible "10% off" sale sign and grocery-wall slogans; same 1200x630 size; director to confirm against §6.1). ===== -->
+<!-- ===== SEO HEAD KIT · Carson Antiques & Collectibles Mall · home-v2 (spec runs/carson-antiques-home-v2/SPEC.md §6.1, §6.3 + SPEC-AMENDMENTS AM-1). Title and og/twitter titles are UNCHANGED from v1 by rule; canonical moved to the new domain at launch (2026-10-19). og:image / twitter:image / schema images point at the -np share card + master (fix-r2: v1's card showed a legible "10% off" sale sign and grocery-wall slogans; same 1200x630 size; director to confirm against §6.1). ===== -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Antique Mall, Carson City NV | Carson Antiques & Collectibles Mall</title>
 <meta name="description" content="Antique mall in Carson City, NV, open every day 10–6, Sundays too. Over 21,000 sq ft of vendor booths: antiques, collectibles, furniture & coins.">
-<!-- TODO (pre-publish): domain currently 301-chains to a spam destination that rotates (penandpaperman.com on 2026-09-15; apex → www → doctorborjagonzalez.com on 2026-10-06, curl -I) and carsoncityantiquemall.com expires 2026-10-11 — DO NOT deploy publicly until fixed — recover/renew before launch. Canonical assumes the apex https://carsoncityantiquemall.com/ is the live host; 301 www → apex at launch (visitcarsoncity.com links the www form; GBP still lists redeemedhomefurnishings.com, which is NXDOMAIN). -->
-<link rel="canonical" href="https://carsoncityantiquemall.com/">
+<!-- Domain (2026-10-19): canonical host is the apex https://carsonantiquesandcollectibles.com/ (bought on Vercel); www 301s to the apex. The old carsoncityantiquemall.com was dropped — it 301-chains to rotating spam destinations and is not ours. GBP still lists redeemedhomefurnishings.com (NXDOMAIN): update it to the new domain. -->
+<link rel="canonical" href="https://carsonantiquesandcollectibles.com/">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#14201B">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Carson Antiques & Collectibles Mall">
 <meta property="og:locale" content="en_US">
-<meta property="og:url" content="https://carsoncityantiquemall.com/">
+<meta property="og:url" content="https://carsonantiquesandcollectibles.com/">
 <meta property="og:title" content="Carson Antiques & Collectibles Mall — Northern Nevada's Largest Antique Mall, Carson City NV">
 <meta property="og:description" content="Antique mall in Carson City, NV, open every day 10–6, Sundays too. Over 21,000 sq ft of vendor booths: antiques, collectibles, furniture & coins.">
-<meta property="og:image" content="https://carsoncityantiquemall.com/assets/og-carson-antiques-mall-np-1200x630.jpg">
+<meta property="og:image" content="https://carsonantiquesandcollectibles.com/assets/og-carson-antiques-mall-np-1200x630.jpg">
 <meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -24,7 +24,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Carson Antiques & Collectibles Mall — Northern Nevada's Largest Antique Mall, Carson City NV">
 <meta name="twitter:description" content="Antique mall in Carson City, NV, open every day 10–6, Sundays too. Over 21,000 sq ft of vendor booths: antiques, collectibles, furniture & coins.">
-<meta name="twitter:image" content="https://carsoncityantiquemall.com/assets/og-carson-antiques-mall-np-1200x630.jpg">
+<meta name="twitter:image" content="https://carsonantiquesandcollectibles.com/assets/og-carson-antiques-mall-np-1200x630.jpg">
 <meta name="twitter:image:alt" content="Carson Antiques & Collectibles Mall, Carson City — vendor booths stacked with glassware, ceramics, hutches and framed prints">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
@@ -43,14 +43,14 @@
      · v2 (2026-10-05): telephone in the +1 form (D-30, Google LocalBusiness guideline; the visible NAP stays "(775) 461-3142"); opens/closes in hh:mm:ss; Apple Maps place added to sameAs (200 on 2026-10-05).
      · v2 restrooms (SPEC-AMENDMENTS AM-1, reverses D-17): the "Restrooms" amenity stays — it is printed on the client's own Treasure Map and visible on this page (map region + FAQ), so it is client-sourced, not invented.
      · v2 mentions (D-19): the five day-trip landmarks are WebPage.mentions only — never referenced from #business, never a LocalBusiness subtype. Carson Hot Springs (a private business) is visible in the day trip but deliberately NOT in schema. The Children's Museum has no url (cmnn.org fails TLS); Stewart has no sameAs (its Wikipedia page is about the school, not the cultural center).
-     · TODO (pre-publish): every URL below assumes https://carsoncityantiquemall.com/ is recovered and serving 200. -->
+     · Every URL below uses the canonical host https://carsonantiquesandcollectibles.com/ (2026-10-19). -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "Store",
-      "@id": "https://carsoncityantiquemall.com/#business",
+      "@id": "https://carsonantiquesandcollectibles.com/#business",
       "additionalType": [
         "https://en.wikipedia.org/wiki/Antique_shop",
         "https://www.wikidata.org/wiki/Q3267025"
@@ -60,16 +60,16 @@
       "disambiguatingDescription": "Multi-vendor antique mall in Carson City, Nevada: over 21,000 square feet of numbered vendor booths on two floors selling antiques, collectibles, furniture, china, artwork and coins.",
       "description": "Northern Nevada's largest antique mall. Over 21,000 square feet of vendor booths with antiques, collectibles, home goods, china, furniture, artwork and currency. Open every day 10 AM to 6 PM at 1831 N Carson St, Carson City, NV 89701.",
       "slogan": "We make antiquing accessible",
-      "url": "https://carsoncityantiquemall.com/",
+      "url": "https://carsonantiquesandcollectibles.com/",
       "telephone": "+1-775-461-3142",
       "image": [
-        "https://carsoncityantiquemall.com/assets/og-carson-antiques-mall-np-1200x630.jpg",
-        "https://carsoncityantiquemall.com/assets/hero-aisle-band-np2-3840x2400.jpg"
+        "https://carsonantiquesandcollectibles.com/assets/og-carson-antiques-mall-np-1200x630.jpg",
+        "https://carsonantiquesandcollectibles.com/assets/hero-aisle-band-np2-3840x2400.jpg"
       ],
       "logo": {
         "@type": "ImageObject",
-        "@id": "https://carsoncityantiquemall.com/#logo",
-        "url": "https://carsoncityantiquemall.com/assets/logo-wordmark-500.png",
+        "@id": "https://carsonantiquesandcollectibles.com/#logo",
+        "url": "https://carsonantiquesandcollectibles.com/assets/logo-wordmark-500.png",
         "width": 500,
         "height": 500
       },
@@ -165,7 +165,7 @@
           "@type": "Service",
           "name": "Antique mall vendor booth rental",
           "provider": {
-            "@id": "https://carsoncityantiquemall.com/#business"
+            "@id": "https://carsonantiquesandcollectibles.com/#business"
           },
           "areaServed": {
             "@type": "AdministrativeArea",
@@ -183,7 +183,7 @@
     },
     {
       "@type": "FAQPage",
-      "@id": "https://carsoncityantiquemall.com/#faq",
+      "@id": "https://carsonantiquesandcollectibles.com/#faq",
       "mainEntity": [
         {
           "@type": "Question",
@@ -301,32 +301,32 @@
     },
     {
       "@type": "WebSite",
-      "@id": "https://carsoncityantiquemall.com/#website",
-      "url": "https://carsoncityantiquemall.com/",
+      "@id": "https://carsonantiquesandcollectibles.com/#website",
+      "url": "https://carsonantiquesandcollectibles.com/",
       "name": "Carson Antiques & Collectibles Mall",
       "alternateName": "Carson Antique Mall",
       "inLanguage": "en-US",
       "publisher": {
-        "@id": "https://carsoncityantiquemall.com/#business"
+        "@id": "https://carsonantiquesandcollectibles.com/#business"
       }
     },
     {
       "@type": "WebPage",
-      "@id": "https://carsoncityantiquemall.com/#webpage",
-      "url": "https://carsoncityantiquemall.com/",
+      "@id": "https://carsonantiquesandcollectibles.com/#webpage",
+      "url": "https://carsonantiquesandcollectibles.com/",
       "name": "Antique Mall, Carson City NV | Carson Antiques & Collectibles Mall",
       "description": "Antique mall in Carson City, NV, open every day 10–6, Sundays too. Over 21,000 sq ft of vendor booths: antiques, collectibles, furniture & coins.",
       "inLanguage": "en-US",
       "isPartOf": {
-        "@id": "https://carsoncityantiquemall.com/#website"
+        "@id": "https://carsonantiquesandcollectibles.com/#website"
       },
       "about": {
-        "@id": "https://carsoncityantiquemall.com/#business"
+        "@id": "https://carsonantiquesandcollectibles.com/#business"
       },
       "primaryImageOfPage": {
         "@type": "ImageObject",
-        "@id": "https://carsoncityantiquemall.com/#primaryimage",
-        "url": "https://carsoncityantiquemall.com/assets/og-carson-antiques-mall-np-1200x630.jpg",
+        "@id": "https://carsonantiquesandcollectibles.com/#primaryimage",
+        "url": "https://carsonantiquesandcollectibles.com/assets/og-carson-antiques-mall-np-1200x630.jpg",
         "width": 1200,
         "height": 630
       },
@@ -968,6 +968,7 @@
     <p class="footer__fascia-tag">Gifts <i aria-hidden="true">●</i> Home Decor <i aria-hidden="true">●</i> Art <i aria-hidden="true">●</i> Toys <i aria-hidden="true">●</i> &amp; More!</p>
     <div class="footer__rule"><span class="xmark-wink" id="xmark-wink" aria-hidden="true"></span></div>
     <p class="legal">© 2026 Carson Antiques &amp; Collectibles Mall</p>
+    <p class="credit">Powered by <a href="https://digitalhorizon.dev/" rel="noopener">Digital Horizon</a></p>
   </div></div>
 </footer>
 

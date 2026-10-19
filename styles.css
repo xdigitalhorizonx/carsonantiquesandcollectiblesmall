@@ -779,6 +779,10 @@ svg.map.zone-service .booth:not([data-zone="service"]) { opacity: .28; }
 .xmark-wink::before, .xmark-wink::after { content: ""; position: absolute; left: 10px; top: 20px; width: 24px; height: 4px; background: var(--barn); }
 .xmark-wink::before { transform: rotate(45deg); } .xmark-wink::after { transform: rotate(-45deg); }
 .legal { margin-top: 16px; padding-right: 56px; font-weight: 500; font-size: 1rem; text-wrap: balance; }
+.credit { margin-top: 6px; font-weight: 500; font-size: .875rem; }
+.credit a { color: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.credit a:hover { text-decoration-thickness: 2px; }
+.credit a:focus-visible { outline-color: var(--ground); }   /* the default yellow ring vanishes on the yellow fascia */
 @media (min-width: 768px) {
   .footer__wordmark { font-size: calc(min(var(--wrap), 100cqi - 2 * var(--gutter)) / 13.69); }
   .footer__wordmark span { display: inline; }

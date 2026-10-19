@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- TODO (pre-publish): only takes effect once the canonical host serves this build. -->
-<!-- No <lastmod> on purpose: it is added at deploy time with the real publish date, never guessed (spec §6.5). Images: client-own photos only (no Yelp, no tourism-board shot). -->
+<!-- <lastmod> is the real publish date, set at deploy, never guessed (spec §6.5). Images: client-own photos only (no Yelp, no tourism-board shot). -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://carsoncityantiquemall.com/</loc>
-    <image:image><image:loc>https://carsoncityantiquemall.com/assets/hero-aisle-band-np2-3840x2400.jpg</image:loc></image:image>
-    <image:image><image:loc>https://carsoncityantiquemall.com/assets/tile-collectibles-americana-1116x1488.jpg</image:loc></image:image>
-    <image:image><image:loc>https://carsoncityantiquemall.com/assets/m/tile-home-goods-chandeliers-np3-1116x1488.jpg</image:loc></image:image>
-    <image:image><image:loc>https://carsoncityantiquemall.com/assets/tile-furniture-hutch-1116x1488.jpg</image:loc></image:image>
+    <loc>https://carsonantiquesandcollectibles.com/</loc>
+    <lastmod>2026-10-19</lastmod>
+    <image:image><image:loc>https://carsonantiquesandcollectibles.com/assets/hero-aisle-band-np2-3840x2400.jpg</image:loc></image:image>
+    <image:image><image:loc>https://carsonantiquesandcollectibles.com/assets/tile-collectibles-americana-1116x1488.jpg</image:loc></image:image>
+    <image:image><image:loc>https://carsonantiquesandcollectibles.com/assets/m/tile-home-goods-chandeliers-np3-1116x1488.jpg</image:loc></image:image>
+    <image:image><image:loc>https://carsonantiquesandcollectibles.com/assets/tile-furniture-hutch-1116x1488.jpg</image:loc></image:image>
   </url>
 </urlset>
