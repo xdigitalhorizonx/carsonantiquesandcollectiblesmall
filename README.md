@@ -14,7 +14,7 @@ Root files: `robots.txt`, `sitemap.xml` (`<lastmod>` = the real publish date —
 - Each page is assembled by `tools/build-pages.mjs` from `tools/pages/<id>.json` (head, hero, schema data) + `tools/pages/<id>.main.html` (body). The generator writes the identical head kit, header, footer, NAP and JSON-LD stubs on every page, builds `FAQPage` from the visible `<dl data-faq>` rows, and rewrites `sitemap.xml` + `blog/feed.xml`. The committed HTML is what deploys; edit the spec and re-run `node tools/build-pages.mjs` (`--check` reports drift).
 - Share cards: `node tools/og-cards.mjs [id]` renders `assets/og/<id>-1200x630.jpg` from the page's own store photo (headless Chrome + Pillow). `/assets` is immutable-cached, so a changed card needs a new filename.
 - A new blog post = a new spec pair in `tools/pages/` (copy a `blog-*.json`), then build, card, and add it to `llms.txt`.
-- Icons: `favicon.ico` (16/32/48), `assets/favicon.svg`, `assets/favicon-96.png`, `assets/icon-192.png`, `assets/icon-512.png`, `site.webmanifest`. `vercel.json` sets `trailingSlash: true`, so `/visit/reno` 308s to `/visit/reno/`.
+- Icons ("CA" enamel tile, 2026-10-19): `favicon.ico` (16/32/48), `assets/favicon-ca.svg`, `assets/favicon-ca-96.png`, `assets/apple-touch-icon-ca-180.png`, `assets/icon-ca-192.png`, `assets/icon-ca-512.png`, `site.webmanifest`. `vercel.json` sets `trailingSlash: true`, so `/visit/reno` 308s to `/visit/reno/`.
 
 Notes for reviewers (fix-r2):
 - The CSP is Report-Only on purpose and omits `upgrade-insecure-requests`: browsers ignore that directive in a Report-Only header. Add it back when the policy becomes an enforcing `Content-Security-Policy`.
