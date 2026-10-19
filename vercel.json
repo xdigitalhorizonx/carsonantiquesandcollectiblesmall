@@ -1,5 +1,18 @@
 {
+  "trailingSlash": true,
   "headers": [
+    {
+      "source": "/site.webmanifest",
+      "headers": [
+        { "key": "Content-Type", "value": "application/manifest+json" }
+      ]
+    },
+    {
+      "source": "/blog/feed.xml",
+      "headers": [
+        { "key": "Content-Type", "value": "application/rss+xml; charset=utf-8" }
+      ]
+    },
     {
       "source": "/assets/(.*)",
       "headers": [

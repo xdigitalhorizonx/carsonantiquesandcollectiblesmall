@@ -703,6 +703,14 @@ svg.map.zone-service .booth:not([data-zone="service"]) { opacity: .28; }
 }
 @media (min-width: 900px) { .guide { padding: 34px 40px 24px; } .guide__list { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, auto); grid-auto-flow: column; } .guide__line { height: 100%; align-content: flex-start; } }   /* lane rules share a row baseline */
 
+/* sub-page links on the guide sign + day trip (2026-10-19) */
+.guide__more { position: relative; margin-top: 14px; padding-top: 12px; font-size: 1rem; line-height: 1.6; color: var(--chalk); }
+.guide__more a { color: var(--yellow-bright); font-weight: 700; text-decoration-thickness: 1px; text-underline-offset: .2em; }
+.guide__more a:hover, .guide__more a:focus-visible { text-decoration-thickness: 2px; }
+.trip__more { margin-top: 14px; font-weight: 700; font-size: 1.125rem; }
+.trip__more a { color: var(--yellow-bright); text-decoration-thickness: 2px; text-underline-offset: .2em; }
+.trip__more a::after { content: " →"; }
+
 /* V-11 day trip */
 .trip-band { background-image: var(--grain-light), radial-gradient(rgb(var(--chalk-rgb) / .09) 1.2px, transparent 1.6px); background-size: auto, 24px 24px; }
 .street { margin-top: 8px; }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- <lastmod> is the real publish date, set at deploy, never guessed (spec §6.5). Images: client-own photos only (no Yelp, no tourism-board shot). -->
+<!-- <lastmod> is the real publish date, set at deploy, never guessed (spec §6.5). Images: client-own photos only (no Yelp, no tourism-board shot).
+     Sub-page entries are written by tools/build-pages.mjs. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://carsonantiquesandcollectibles.com/</loc>
@@ -8,5 +9,50 @@
     <image:image><image:loc>https://carsonantiquesandcollectibles.com/assets/tile-collectibles-americana-1116x1488.jpg</image:loc></image:image>
     <image:image><image:loc>https://carsonantiquesandcollectibles.com/assets/m/tile-home-goods-chandeliers-np3-1116x1488.jpg</image:loc></image:image>
     <image:image><image:loc>https://carsonantiquesandcollectibles.com/assets/tile-furniture-hutch-1116x1488.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://carsonantiquesandcollectibles.com/blog/</loc>
+    <lastmod>2026-10-19</lastmod>
+    <image:image><image:loc>https://carsonantiquesandcollectibles.com/assets/d/lamp-panel-1020.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://carsonantiquesandcollectibles.com/blog/how-to-spot-real-vintage-signs/</loc>
+    <lastmod>2026-10-19</lastmod>
+    <image:image><image:loc>https://carsonantiquesandcollectibles.com/assets/tile-collectibles-americana-1116x1488.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://carsonantiquesandcollectibles.com/blog/how-to-start-a-coin-collection/</loc>
+    <lastmod>2026-10-19</lastmod>
+    <image:image><image:loc>https://carsonantiquesandcollectibles.com/assets/tile-currency-coins-960x1280.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://carsonantiquesandcollectibles.com/blog/is-my-vintage-china-valuable/</loc>
+    <lastmod>2026-10-19</lastmod>
+    <image:image><image:loc>https://carsonantiquesandcollectibles.com/assets/tile-china-teapots-960x1280.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://carsonantiquesandcollectibles.com/visit/</loc>
+    <lastmod>2026-10-19</lastmod>
+    <image:image><image:loc>https://carsonantiquesandcollectibles.com/assets/marquee-09-window-sign-860x1147.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://carsonantiquesandcollectibles.com/visit/carson-city/</loc>
+    <lastmod>2026-10-19</lastmod>
+    <image:image><image:loc>https://carsonantiquesandcollectibles.com/assets/visit-storefront-exterior-1536x1044.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://carsonantiquesandcollectibles.com/visit/lake-tahoe/</loc>
+    <lastmod>2026-10-19</lastmod>
+    <image:image><image:loc>https://carsonantiquesandcollectibles.com/assets/m/tile-home-goods-chandeliers-np3-1116x1488.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://carsonantiquesandcollectibles.com/visit/minden-gardnerville/</loc>
+    <lastmod>2026-10-19</lastmod>
+    <image:image><image:loc>https://carsonantiquesandcollectibles.com/assets/tile-furniture-hutch-1116x1488.jpg</image:loc></image:image>
+  </url>
+  <url>
+    <loc>https://carsonantiquesandcollectibles.com/visit/reno/</loc>
+    <lastmod>2026-10-19</lastmod>
+    <image:image><image:loc>https://carsonantiquesandcollectibles.com/assets/hero-aisle-mobile-np2-1560x3376.jpg</image:loc></image:image>
   </url>
 </urlset>

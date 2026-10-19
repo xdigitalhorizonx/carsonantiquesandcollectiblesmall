@@ -1,0 +1,27 @@
+{
+  "path": "/blog/",
+  "pageType": "CollectionPage",
+  "title": "Antique Collecting Tips & Guides | Carson Antiques Blog",
+  "description": "Collecting tips from Northern Nevada's largest antique mall in Carson City: start a coin collection, value vintage china, spot a real vintage sign.",
+  "og": {
+    "title": "Collecting tips from Northern Nevada's largest antique mall",
+    "image": "/assets/og/blog-1200x630.jpg",
+    "alt": "Carson Antiques & Collectibles Mall blog — collecting tips from the booths, with a photo of glass oil lamps",
+    "kicker": "The blog · Carson City, NV",
+    "headline": "Collecting tips <span class=\"hl\">from the booths</span>"
+  },
+  "crumbs": [["Home", "/"], ["Blog", "/blog/"]],
+  "blogIndex": { "name": "Carson Antiques & Collectibles Mall Blog" },
+  "hero": {
+    "eyebrow": "The blog · Carson City, NV",
+    "h1": "Collecting tips <span class=\"hl\">from the booths</span>",
+    "lede": "How to collect it, how to value it, and how to tell the real thing from a copy — written from the aisles of Northern Nevada's largest antique mall.",
+    "photo": { "img": "lamps", "alt": "Glass oil lamps inside the mall — tall clear glass chimneys and a white base painted with red flowers", "caption": "Glass oil lamps, two aisles in." }
+  },
+  "card": { "kicker": "The blog", "title": "Collecting tips", "text": "How to collect, value and find the good stuff.", "img": "lamps", "more": "Read the blog" },
+  "close": {
+    "kicker": "Go hunting",
+    "h2": "The best way to learn this stuff is with it in your hands",
+    "body": "Over 21,000 square feet of vendor booths at 1831 N Carson St, Carson City — coins, china, signs, furniture and a lot more. Bring a loupe and a good flashlight."
+  }
+}

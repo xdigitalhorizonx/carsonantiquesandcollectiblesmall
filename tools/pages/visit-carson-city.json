@@ -1,0 +1,99 @@
+{
+  "path": "/visit/carson-city/",
+  "title": "Things to Do in Carson City: An Antiques & History Day",
+  "description": "Things to do in Carson City in one day, 10 to 6: antique booths, a walk down Carson Street to the old Mint and the Capitol, a second look before close.",
+  "og": {
+    "title": "One day in Carson City: antique booths, the old Mint and the Capitol",
+    "image": "/assets/og/visit-carson-city-1200x630.jpg",
+    "alt": "Share card: An antiques-and-history day in Carson City, with the mall's storefront under a blue sky and its address and hours",
+    "kicker": "<b>N Carson St</b> A day in Carson City · 10 to 6",
+    "headline": "An antiques-and-history day <span class=\"hl\">in Carson City</span>"
+  },
+  "crumbs": [["Home", "/"], ["Plan a trip", "/visit/"], ["Carson City", "/visit/carson-city/"]],
+  "hero": {
+    "shield": { "roads": ["N Carson St"], "text": "Old Mint 0.7 mi · Capitol 0.9 mi from our door" },
+    "h1": "Things to do in Carson City: <span class=\"hl\">an antiques-and-history day</span>, 10 to 6",
+    "lede": "Start in the booths when our doors open at 10, walk south on Carson Street to the old Mint and the State Capitol, then come back for a second look before 6. The walking loop stays within a mile of our door.",
+    "ctas": [
+      { "label": "Get directions", "href": "DIRECTIONS", "icon": "navigation", "kind": "yellow" },
+      { "label": "Call (775) 461-3142", "href": "TEL", "icon": "phone", "kind": "ghost" }
+    ],
+    "facts": ["Open every day, 10–6", "Old Mint: 0.7 mi walk", "Capitol: 0.9 mi walk"],
+    "photo": {
+      "img": "storefront",
+      "wide": true,
+      "alt": "The mall's storefront under a blue sky: a brown wood fascia with the Carson Antiques & Collectibles Mall sign, window lettering reading The Largest Antique Mall in Northern Nevada, and the parking lot in front",
+      "caption": "Where the day starts: under the yellow sign on North Carson Street."
+    }
+  },
+  "mentions": [
+    { "@type": "City", "name": "Carson City", "sameAs": "https://en.wikipedia.org/wiki/Carson_City,_Nevada" },
+    { "@type": "Museum", "name": "Children's Museum of Northern Nevada",
+      "address": { "@type": "PostalAddress", "streetAddress": "813 N Carson St", "addressLocality": "Carson City", "addressRegion": "NV", "postalCode": "89701", "addressCountry": "US" } },
+    { "@type": "Museum", "name": "Nevada State Museum",
+      "address": { "@type": "PostalAddress", "streetAddress": "600 N Carson St", "addressLocality": "Carson City", "addressRegion": "NV", "postalCode": "89701", "addressCountry": "US" },
+      "url": "https://www.carsonnvmuseum.org/", "sameAs": "https://en.wikipedia.org/wiki/Nevada_State_Museum,_Carson_City" },
+    { "@type": "LandmarksOrHistoricalBuildings", "name": "Carson City Mint", "sameAs": "https://en.wikipedia.org/wiki/Carson_City_Mint" },
+    { "@type": "LandmarksOrHistoricalBuildings", "name": "Nevada State Capitol",
+      "address": { "@type": "PostalAddress", "streetAddress": "101 N Carson St", "addressLocality": "Carson City", "addressRegion": "NV", "postalCode": "89701", "addressCountry": "US" },
+      "sameAs": "https://en.wikipedia.org/wiki/Nevada_State_Capitol" },
+    { "@type": "TouristAttraction", "name": "Kit Carson Trail", "url": "https://visitcarsoncity.com/attractions/kit-carson-trail/" },
+    { "@type": "LandmarksOrHistoricalBuildings", "name": "Orion Clemens House", "sameAs": "https://en.wikipedia.org/wiki/Orion_Clemens_House" },
+    { "@type": "Museum", "name": "Nevada State Railroad Museum",
+      "address": { "@type": "PostalAddress", "streetAddress": "2180 S Carson St", "addressLocality": "Carson City", "addressRegion": "NV", "postalCode": "89701", "addressCountry": "US" },
+      "url": "https://www.carsonrailroadmuseum.org/", "sameAs": "https://en.wikipedia.org/wiki/Nevada_State_Railroad_Museum" },
+    { "@type": "Museum", "name": "Stewart Indian School Cultural Center & Museum",
+      "address": { "@type": "PostalAddress", "streetAddress": "1 Jacobsen Way", "addressLocality": "Carson City", "addressRegion": "NV", "postalCode": "89701", "addressCountry": "US" },
+      "url": "https://stewartindianschool.com/" },
+    { "@type": "City", "name": "Virginia City", "sameAs": "https://en.wikipedia.org/wiki/Virginia_City,_Nevada" }
+  ],
+  "trip": {
+    "name": "An antiques-and-history day in Carson City",
+    "description": "A one-day itinerary on North Carson Street, mostly on foot: Carson Antiques & Collectibles Mall when it opens at 10 AM, the Nevada State Museum in the old Carson City Mint, the Nevada State Capitol and the Kit Carson Trail, then back to the mall for a second look before it closes at 6 PM.",
+    "touristType": ["Antique shoppers", "History lovers", "Families"],
+    "itinerary": {
+      "@type": "ItemList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "item": { "@id": "https://carsonantiquesandcollectibles.com/#business" } },
+        { "@type": "ListItem", "position": 2, "item": { "@type": "Museum", "name": "Children's Museum of Northern Nevada",
+          "address": { "@type": "PostalAddress", "streetAddress": "813 N Carson St", "addressLocality": "Carson City", "addressRegion": "NV", "postalCode": "89701", "addressCountry": "US" } } },
+        { "@type": "ListItem", "position": 3, "item": { "@type": "Museum", "name": "Nevada State Museum",
+          "address": { "@type": "PostalAddress", "streetAddress": "600 N Carson St", "addressLocality": "Carson City", "addressRegion": "NV", "postalCode": "89701", "addressCountry": "US" } } },
+        { "@type": "ListItem", "position": 4, "item": { "@type": "LandmarksOrHistoricalBuildings", "name": "Nevada State Capitol",
+          "address": { "@type": "PostalAddress", "streetAddress": "101 N Carson St", "addressLocality": "Carson City", "addressRegion": "NV", "postalCode": "89701", "addressCountry": "US" } } },
+        { "@type": "ListItem", "position": 5, "item": { "@type": "TouristAttraction", "name": "Kit Carson Trail", "url": "https://visitcarsoncity.com/attractions/kit-carson-trail/" } }
+      ]
+    }
+  },
+  "sources": [
+    "Stop addresses and distances from the mall's door (Children's Museum 813 N Carson St, 0.6 mi / about a 15-min walk; Nevada State Museum 600 N Carson St, 0.7 mi / 15-min walk; Capitol 101 N Carson St, 0.9 mi / 20-min walk; Carson Hot Springs 1500 Old Hot Springs Rd, 2 mi / 10-min drive; Railroad Museum 2180 S Carson St, 2.2 mi / 10-min drive; Stewart 1 Jacobsen Way, 5 mi / 15-min drive) and the Children's Museum's hands-on exhibits: the homepage's §5.3 source table (index.html, #day-trip comment). Never recomputed; the walk back reuses the Capitol figure.",
+    "Hours, 21,000 sq ft on two floors, upstairs, numbered booths by different vendors, cashier at the entrance, Treasure Map, Currency booths (coins in labeled holders in a lit case marked Coins, per the photo), railroad lantern: brand.md + store photos, as on the homepage.",
+    "Suzy C. quote: Google review, quoted verbatim on the homepage.",
+    "https://en.wikipedia.org/wiki/Carson_City_Mint — coins struck 1870–1893 from Comstock Lode silver; CC mint mark on 50 silver and 57 gold issues; Morgan dollars rare and carry a premium; Abraham Curry construction supervisor, Father of Carson City, first superintendent; Coin Press No. 1 strikes commemorative CC medallions; museum in the building since 1941.",
+    "https://www.carsonnvmuseum.org/permanent-exhibits/ — Coin Press No. 1 and a complete set of Carson City Morgan dollars on display; a Columbian mammoth found in Nevada's Black Rock Desert; a tour of the underground mine.",
+    "https://www.carsonnvmuseum.org/location-hours-admission — the coin press operates on set days (the page names the day; we print set days, never other places' hours).",
+    "https://en.wikipedia.org/wiki/Nevada_State_Capitol — built 1869–1871; sandstone from the Nevada State Prison quarry, free of charge; octagonal dome topped with a cupola; historical exhibits on the second floor; every governor except the first has had his office there.",
+    "https://en.wikipedia.org/wiki/Carson_City,_Nevada — capital since 1861 (territory); Frémont named the Carson River for Kit Carson; Curry bought Eagle Station in 1858 and renamed it Carson City; for much of its history a hub of the Virginia and Truckee Railroad.",
+    "https://visitcarsoncity.com/attractions/kit-carson-trail/ — 2.5-mile path through the historic district; 48 stops incl. the Orion Clemens House and the Governor's Mansion; downloadable map; self-guided audio tour on any smartphone; begin wherever you like.",
+    "https://en.wikipedia.org/wiki/Orion_Clemens — Mark Twain's older brother; first and only Secretary of the Nevada Territory.",
+    "https://visitcarsoncity.com/things-to-do/things-to-do-railroads/ — the railroad carried ore from the mines to the mills along the Carson River.",
+    "https://www.carsonrailroadmuseum.org/ — train rides on select weekends, holidays and special events; 2180 South Carson Street.",
+    "https://en.wikipedia.org/wiki/Nevada_State_Railroad_Museum — V&T locomotives and cars; Dayton (V&T #18), built 1873, on display; Wabuska station on the grounds sells the ride tickets.",
+    "https://en.wikipedia.org/wiki/Stewart_Indian_School — American Indian boarding school 1890–1980; buildings of colored local stone by student apprentices; cultural center opened 2020; walking tour of the former campus.",
+    "https://vtrailway.com/ — Carson City–Virginia City excursions from the Eastgate Depot, May through October, with a stop to explore Virginia City; holiday train November–December. Year not stated on the page.",
+    "https://vtrailway.com/know-before-you-go/ — Eastgate Depot, 4650 Eastgate Siding Road, Carson City."
+  ],
+  "card": {
+    "kicker": "In Carson City",
+    "title": "A day in Carson City",
+    "text": "The booths at 10, the old Mint and the Capitol on foot, then a second look before 6.",
+    "img": "storefront",
+    "more": "Plan the day"
+  },
+  "close": {
+    "kicker": "Start at 10",
+    "h2": "The day starts under the yellow sign",
+    "body": "1831 N Carson St, Carson City, about a mile north of the State Capitol, with a parking lot right out front. The old Mint and the Capitol are a walk south.",
+    "dirLabel": "Get directions"
+  }
+}
