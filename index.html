@@ -34,8 +34,8 @@
 <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/tanker-400.woff2">
 <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/satoshi-700.woff2">
 <link rel="stylesheet" href="styles.css">
-<!-- The ONE inline script (spec §7.2.1): palette bootstrap + motion gate + 2.5 s boot watchdog (fix-r2: 2.5 s from navigation start, not from when the gate runs after styles.css). Its sha256 is pinned in vercel.json's CSP by tools/csp-hash.mjs — edit it, then re-run that tool. Keep it on ONE line (CRLF/LF checkouts must hash the same). -->
-<script>(function(h){var ok=/^(dock|oxblood|enamel|walnut|pewter)$/,c=false,r;try{var q=new URLSearchParams(location.search).get("palette"),p=ok.test(q)?q:localStorage.getItem("cacm-palette");if(ok.test(p)&&p!=="dock")h.dataset.palette=p}catch(e){}try{c=localStorage.getItem("cacm-motion")==="calm"}catch(e){}r=matchMedia("(prefers-reduced-motion: reduce)").matches;h.dataset.openStatus="off";if(c)h.classList.add("calm");if(!r&&!c){h.classList.add("motion","rib");setTimeout(function(){if(!h.classList.contains("motion-ok"))h.classList.remove("motion")},Math.max(0,2500-performance.now()))}})(document.documentElement)</script>
+<!-- The ONE inline script (spec §7.2.1): Halloween season class (html.halloween: October, or ?halloween to preview) + motion gate + 2.5 s boot watchdog (fix-r2: 2.5 s from navigation start, not from when the gate runs after styles.css). Its sha256 is pinned in vercel.json's CSP by tools/csp-hash.mjs — edit it, then re-run that tool. Keep it on ONE line (CRLF/LF checkouts must hash the same). -->
+<script>(function(h){var c=false,r;if(new Date().getMonth()===9||/[?&]halloween(?:[=&]|$)/.test(location.search))h.classList.add("halloween");try{c=localStorage.getItem("cacm-motion")==="calm"}catch(e){}r=matchMedia("(prefers-reduced-motion: reduce)").matches;h.dataset.openStatus="off";if(c)h.classList.add("calm");if(!r&&!c){h.classList.add("motion","rib");setTimeout(function(){if(!h.classList.contains("motion-ok"))h.classList.remove("motion")},Math.max(0,2500-performance.now()))}})(document.documentElement)</script>
 <!-- SCHEMA NOTES (keep OUTSIDE the script — JSON must parse):
      · schema.org has NO AntiqueStore type. Store + additionalType (Wikipedia + Wikidata "antique shop") + disambiguatingDescription is deliberate — DO NOT REVERT to an invented @type.
      · BreadcrumbList intentionally omitted: SCHEMA-STANDARD §1 exempts the homepage.
@@ -411,6 +411,7 @@
 
 <!-- Inline icon sprite (spec §4.0): the inked X (same family as the egg X) + 9 Lucide 1.34 icons (ISC, copied verbatim from the icons skill, lucide-static v1.34.0). Hidden by CSS (.sprite), never an inline style attribute (CSP). -->
 <svg class="sprite" aria-hidden="true" focusable="false">
+  <symbol id="hw-bat" viewBox="-18 -7 36 13"><path d="M2 -2C5 -5 11 -6.5 17 -5C15 -2.5 14 -.5 13.5 1.8C11.8 .6 10 .4 8.5 1.6C7.2 .6 5.5 .6 4 1.6C3.4 3.6 1.8 5 0 5C-1.8 5 -3.4 3.6 -4 1.6C-5.5 .6 -7.2 .6 -8.5 1.6C-10 .4 -11.8 .6 -13.5 1.8C-14 -.5 -15 -2.5 -17 -5C-11 -6.5 -5 -5 -2 -2L-2.6 -5.4L-.9 -3.4L.9 -3.4L2.6 -5.4Z"/><circle cx="-.9" cy="-1.3" r=".55" style="fill:#F5D31C;stroke:none"/><circle cx=".9" cy="-1.3" r=".55" style="fill:#F5D31C;stroke:none"/></symbol>
   <symbol id="ink-x" viewBox="0 0 48 48"><path class="ink-x__under" d="M10 10 L38 38 M38 10 L10 38" fill="none" stroke-width="11" stroke-linecap="square"/><path class="ink-x__core" d="M10 10 L38 38 M38 10 L10 38" fill="none" stroke-width="6" stroke-linecap="square"/></symbol>
   <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" /></symbol>
   <symbol id="i-navigation" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11" /></symbol>
@@ -453,9 +454,11 @@
     </picture>
     <!-- D-25 / D-26 / AC-23 (fix-r2): the stale "Independence Day — 10% off" booth sign and the old grocery-wall lettering are retouched out of every hero encode (-np2 files since fix-r3, tools/encode.py --hero-np) — no CSS veil. TODO (pre-publish): the phone shoot (HUMAN TODO #11) retires the retouch. -->
     <span class="hero__lights" aria-hidden="true"></span>
+    <!-- Halloween (html.halloween only): a moon with two bats, top right of the hero, desktop. -->
+    <svg class="hw hw-moon" viewBox="0 0 200 150" aria-hidden="true" focusable="false"><circle class="hw-moon__glow" cx="118" cy="70" r="64"/><circle class="hw-moon__disc" cx="118" cy="70" r="48"/><circle class="hw-moon__crater" cx="100" cy="54" r="8"/><circle class="hw-moon__crater" cx="136" cy="90" r="11"/><circle class="hw-moon__crater" cx="140" cy="50" r="5"/><g transform="translate(116 80) scale(2.4)"><g class="hw-bat hw-bat--a"><use href="#hw-bat" x="-18" y="-7" width="36" height="13"/></g></g><g transform="translate(42 36) scale(1.7)"><g class="hw-bat hw-bat--b"><use href="#hw-bat" x="-18" y="-7" width="36" height="13"/></g></g></svg>
     <div class="wrap hero__top">
       <!-- TODO (pre-publish): confirm holiday hours with the client (Thanksgiving / Christmas). -->
-      <p class="chip" id="open-chip"><svg class="chip__x" viewBox="0 0 48 48" aria-hidden="true" focusable="false" data-anim="stamp"><use href="#ink-x"/></svg><span class="chip__hours">Open every day 10–6</span> <span class="chip__sep" aria-hidden="true">·</span> <span class="chip__addr">1831 N Carson St</span></p>
+      <p class="chip" id="open-chip"><svg class="chip__pin" viewBox="0 0 24 24" aria-hidden="true" focusable="false" data-anim="stamp"><use href="#i-map-pin"/></svg><span class="chip__hours">Open every day 10–6</span> <span class="chip__sep" aria-hidden="true">·</span> <span class="chip__addr">1831 N Carson St</span></p>
       <button type="button" class="calm-toggle calm-toggle--hero" aria-pressed="false"><span class="calm-toggle__box" aria-hidden="true"></span>Calm motion</button>
       <!-- fix-r2 (D-22 amended): the phone Calm toggle sits in the hero top row beside the chip, so the fascia ribbon makes screen 1 on 360-375 px phones -->
       <button type="button" class="calm-toggle calm-toggle--phone" aria-pressed="false"><span class="calm-toggle__box" aria-hidden="true"></span>Calm motion</button>
@@ -489,14 +492,16 @@
         <figcaption class="attr">Brady T. · Google review</figcaption>
       </figure>
       <figure class="worth__photo">
-        <!-- Lamp panel = master crop x 600–1620, y 0–1267 (spec D-24 / §5.5): both handwritten price stickers ("#67 44-" at x ≈ 30–200 and the metal-base sticker at x ≈ 1690–1840) stay outside; checked at 100 % on 2026-10-05 (runs/carson-antiques-home-v2/build-structure/crops/). Phones (≤ 767 px) get m/lamp-portrait-760/1020: the same sticker-free x 600–1620 crop, phone-tuned (fix-r3; v1's 697 px portrait was soft at DPR 3, AC-23). -->
+        <!-- Worth photo (2026-10-19): the sales floor, not the lamp close-up — it sits by the "largest floor space" quote. Client-own aisle-overview photo (the hero's), np2 retouch carried over (no slogan wall, no sale sign); built by tools/encode.py --worth-master / --worth-floor. Phones get the same crop at the old phone sizes. -->
         <picture>
-          <source media="(max-width: 767px)" type="image/avif" srcset="assets/m/lamp-portrait-760.avif 760w, assets/m/lamp-portrait-1020.avif 1020w" sizes="min(494px, calc(100vw - 48px))" width="1020" height="1267">
-          <source media="(max-width: 767px)" type="image/webp" srcset="assets/m/lamp-portrait-760.webp 760w, assets/m/lamp-portrait-1020.webp 1020w" sizes="min(494px, calc(100vw - 48px))" width="1020" height="1267">
-          <source type="image/avif" srcset="assets/d/lamp-panel-640.avif 640w, assets/d/lamp-panel-760.avif 760w, assets/d/lamp-panel-1020.avif 1020w" sizes="(min-width: 900px) 494px, (min-width: 768px) calc(50vw - 64px), (min-width: 640px) calc(50vw - 48px), min(494px, calc(100vw - 48px))">
-          <source type="image/webp" srcset="assets/d/lamp-panel-640.webp 640w, assets/d/lamp-panel-760.webp 760w, assets/d/lamp-panel-1020.webp 1020w" sizes="(min-width: 900px) 494px, (min-width: 768px) calc(50vw - 64px), (min-width: 640px) calc(50vw - 48px), min(494px, calc(100vw - 48px))">
-          <img src="assets/d/lamp-panel-1020.jpg" srcset="assets/d/lamp-panel-640.jpg 640w, assets/d/lamp-panel-760.jpg 760w, assets/d/lamp-panel-1020.jpg 1020w" sizes="(min-width: 900px) 494px, (min-width: 768px) calc(50vw - 64px), (min-width: 640px) calc(50vw - 48px), min(494px, calc(100vw - 48px))" width="1020" height="1267" loading="lazy" decoding="async" alt="Glass oil lamps inside the mall — tall clear glass chimneys and a white base painted with red flowers.">
+          <source media="(max-width: 767px)" type="image/avif" srcset="assets/d/worth-floor-760.avif 760w, assets/d/worth-floor-1020.avif 1020w" sizes="min(494px, calc(100vw - 48px))" width="1020" height="1267">
+          <source media="(max-width: 767px)" type="image/webp" srcset="assets/d/worth-floor-760.webp 760w, assets/d/worth-floor-1020.webp 1020w" sizes="min(494px, calc(100vw - 48px))" width="1020" height="1267">
+          <source type="image/avif" srcset="assets/d/worth-floor-640.avif 640w, assets/d/worth-floor-760.avif 760w, assets/d/worth-floor-1020.avif 1020w" sizes="(min-width: 900px) 494px, (min-width: 768px) calc(50vw - 64px), (min-width: 640px) calc(50vw - 48px), min(494px, calc(100vw - 48px))">
+          <source type="image/webp" srcset="assets/d/worth-floor-640.webp 640w, assets/d/worth-floor-760.webp 760w, assets/d/worth-floor-1020.webp 1020w" sizes="(min-width: 900px) 494px, (min-width: 768px) calc(50vw - 64px), (min-width: 640px) calc(50vw - 48px), min(494px, calc(100vw - 48px))">
+          <img src="assets/d/worth-floor-1020.jpg" srcset="assets/d/worth-floor-640.jpg 640w, assets/d/worth-floor-760.jpg 760w, assets/d/worth-floor-1020.jpg 1020w" sizes="(min-width: 900px) 494px, (min-width: 768px) calc(50vw - 64px), (min-width: 640px) calc(50vw - 48px), min(494px, calc(100vw - 48px))" width="1020" height="1267" loading="lazy" decoding="async" alt="The sales floor seen from above — rows of vendor booths, glass china cabinets and shelves stretching to the back wall.">
         </picture>
+        <svg class="hw hw-web" viewBox="0 0 80 80" aria-hidden="true" focusable="false"><path d="M0 0L80 6M0 0L70 40M0 0L40 70M0 0L6 80M17.95 1.35Q12.39 3.79 15.64 8.92Q9.16 9.16 8.92 15.64Q3.79 12.39 1.35 17.95M33.9 2.55Q23.41 7.16 29.53 16.85Q17.31 17.31 16.85 29.53Q7.16 23.41 2.55 33.9M51.85 3.9Q35.8 10.95 45.16 25.76Q26.47 26.47 25.76 45.16Q10.95 35.8 3.9 51.85M69.8 5.25Q48.2 14.74 60.79 34.68Q35.64 35.64 34.68 60.79Q14.74 48.2 5.25 69.8"/></svg>
+        <span class="hw hw-spider" aria-hidden="true"><svg viewBox="0 0 40 130" focusable="false"><path class="hw-spider__thread" d="M20 -40V97"/><path class="hw-spider__legs" d="M16 102Q9 96 6 100M15.5 105Q8 103 5 107M15.5 108Q8 110 6 115M16 111Q11 116 9 121M24 102Q31 96 34 100M24.5 105Q32 103 35 107M24.5 108Q32 110 34 115M24 111Q29 116 31 121"/><circle cx="20" cy="109" r="7.5"/><circle cx="20" cy="100" r="4.8"/><circle cx="18.2" cy="99.4" r="1.7" fill="#fff"/><circle cx="21.8" cy="99.4" r="1.7" fill="#fff"/><circle cx="18.4" cy="99.7" r=".8"/><circle cx="22" cy="99.7" r=".8"/></svg></span>
       </figure>
       <!-- Worth facts sources (spec §5.1): "over 21,000 square feet" + two floors = the client's own sign, window vinyl and Wix copy (brand.md); the six categories = brand.md + the tiles below; "open every day, 10 to 6" = GBP weekday_text (Places Details 2026-10-05), Apple Maps, Yahoo Local. -->
       <ul class="worth__facts">
@@ -552,7 +557,7 @@
   <section id="booths" class="band band--chalk tiles-band" aria-labelledby="booths-h2">
     <div class="wrap">
       <header class="sec-head booths-head">
-        <h2 id="booths-h2" class="plate plate--enamel" data-anim="swing">What's in the booths</h2>
+        <h2 id="booths-h2" class="plate plate--enamel" data-anim="swing"><svg class="hw hw-hat" viewBox="0 0 64 60" aria-hidden="true" focusable="false"><ellipse cx="32" cy="50" rx="30" ry="7.5" fill="#3B2550"/><path d="M14 49C20 34 26 20 34 10C38 5 45 3 52 6C45 8 41 13 40 20C42 30 46 40 50 49Z" fill="#4A2E66"/><path d="M15.6 44C27 46.6 38 46.6 48.6 44L47.2 39.2C37 41.2 27 41.2 17.3 39.2Z" fill="#E8752A"/><rect x="28" y="38.8" width="8" height="6.8" rx="1" fill="none" stroke="#F5D31C" stroke-width="1.8"/></svg>What's in the booths</h2>
         <p class="lede">We make antiquing accessible. This is a multi-vendor mall — numbered booths stocked by different vendors — so every aisle is a different hunt. Six places to start:</p>
       </header>
       <!-- TODO (pre-publish): written OK from the client for its Wix photos used in these tiles (china, artwork, coins are upscales of Wix uploads). -->
@@ -586,6 +591,7 @@
           <div class="tile__text"><h3>Currency</h3><p>Rows of coins in labeled holders in a lit case marked Coins. Collectors, bring your loupe.</p></div>
         </article></li>
       </ul>
+      <p class="more-line">Six tiles barely scratch the surface. There's <mark>much, much more</mark> in the booths.</p>
       <p class="sign-line">Also on the sign out front: <span class="nw">Gifts ·</span> <span class="nw">Home Decor ·</span> <span class="nw">Art ·</span> <span class="nw">Toys &amp; More.</span></p>
     </div>
   </section>
@@ -972,7 +978,7 @@
   <div class="footer__fascia"><div class="wrap">
     <p class="footer__wordmark"><span class="fw"><span>Carson Antiques &amp;</span></span> <span class="fw"><span>Collectibles Mall</span></span></p>
     <p class="footer__fascia-tag">Gifts <i aria-hidden="true">●</i> Home Decor <i aria-hidden="true">●</i> Art <i aria-hidden="true">●</i> Toys <i aria-hidden="true">●</i> &amp; More!</p>
-    <div class="footer__rule"><span class="xmark-wink" id="xmark-wink" aria-hidden="true"></span></div>
+    <div class="footer__rule"><svg class="hw hw-ghost" viewBox="0 0 48 56" aria-hidden="true" focusable="false"><path d="M6 54V24C6 12 14 4 24 4S42 12 42 24V54L36 49L30 54L24 49L18 54L12 49Z" fill="#F7F5EF" stroke="#14201B" stroke-width="2.4" stroke-linejoin="round"/><ellipse cx="18" cy="24" rx="2.8" ry="3.8" fill="#14201B"/><ellipse cx="30" cy="24" rx="2.8" ry="3.8" fill="#14201B"/><ellipse cx="24" cy="34" rx="3" ry="3.6" fill="#14201B"/><circle cx="12.5" cy="30" r="2.6" fill="#E8752A" opacity=".5"/><circle cx="35.5" cy="30" r="2.6" fill="#E8752A" opacity=".5"/></svg><span class="xmark-wink" id="xmark-wink" aria-hidden="true"></span></div>
     <p class="legal">© 2026 Carson Antiques &amp; Collectibles Mall</p>
     <p class="credit">Powered by <a href="https://digitalhorizon.dev/" rel="noopener">Digital Horizon</a></p>
   </div></div>
@@ -985,29 +991,7 @@
   <a href="#hours"><svg aria-hidden="true" focusable="false"><use href="#i-clock"/></svg><span>Hours</span></a>
 </nav>
 
-<!-- Palette preview tool (Digital Horizon) — lets the client compare colour schemes. Remove this block + palette.js to retire it. -->
-<div class="palette-tool" id="palette-tool">
-  <button class="palette-tool__toggle" type="button" aria-expanded="false" aria-controls="palette-panel">
-    <span class="palette-tool__dots" aria-hidden="true"><i></i><i></i><i></i></span>
-    <span class="palette-tool__kicker">Palette</span>
-    <span class="palette-tool__label">Loading Dock</span>
-  </button>
-  <div class="palette-tool__panel" id="palette-panel" role="dialog" aria-labelledby="palette-title" tabindex="-1" hidden>
-    <div class="palette-tool__head">
-      <h2 id="palette-title">Try a color scheme</h2>
-      <button class="palette-tool__close" type="button" aria-label="Close the palette picker">&times;</button>
-    </div>
-    <fieldset class="palette-tool__list"><legend class="sr-only">Color scheme</legend></fieldset>
-    <div class="palette-tool__foot">
-      <button class="palette-tool__copy" type="button">Copy a link to this scheme</button>
-      <p class="palette-tool__note">A preview tool for choosing a direction — it won’t be on the finished site.</p>
-      <p class="palette-tool__status" role="status" aria-live="polite"></p>
-    </div>
-  </div>
-</div>
-
 <script src="assets/anime-4.5.0-cacm.min.js" defer></script>
 <script src="app.js" defer></script>
-<script src="palette.js" defer></script>
 </body>
 </html>

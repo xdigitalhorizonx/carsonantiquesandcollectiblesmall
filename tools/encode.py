@@ -523,7 +523,46 @@ def lamp_760():
         print(f'd/lamp-panel-760.{fmt} {im.width}x{im.height} {os.path.getsize(path) / 1024:.1f} KB')
 
 
+WORTH_MASTER = 'worth-floor-np2-3072x3816.jpg'
+WORTH_BAND_Y = 1127                     # the hero band's row in the original, resized to 3840 wide (template match, refined)
+WORTH_BOX = (384, 1126, 3456, 4942)     # x0, y0, x1, y1 at that 3840-wide scale: 1020:1267 like the old lamp panel
+
+
+def worth_master(original):
+    """2026-10-19: the 'Worth the stop' photo moved from the lamp close-up to the sales floor (it sits by the "largest floor
+    space" quote). Source: Brand Assets photos/aisle-overview-interior-portrait-4284x5712.jpg (client-own; the hero's photo).
+    The retouched np2 hero band is pasted back over its own rows (24 px feather), so the slogan wall and sale sign stay gone;
+    the rows outside the band hold no lettering or legible prices (checked at 100 % of the 1020 output)."""
+    import cv2
+    import numpy as np
+    o = cv2.resize(cv2.imread(original), (3840, 5120), interpolation=cv2.INTER_AREA).astype(np.float32)
+    band = cv2.imread(os.path.join(SRC, f'hero-aisle-band-{HERO_NP}-3840x2400.jpg')).astype(np.float32)
+    a = np.ones((2400, 1, 1), np.float32)
+    a[:24, 0, 0], a[-24:, 0, 0] = np.linspace(0, 1, 24), np.linspace(1, 0, 24)
+    y = WORTH_BAND_Y
+    o[y:y + 2400] = band * a + o[y:y + 2400] * (1 - a)
+    x0, y0, x1, y1 = WORTH_BOX
+    Image.fromarray(cv2.cvtColor(np.clip(o, 0, 255).astype(np.uint8)[y0:y1, x0:x1], cv2.COLOR_BGR2RGB)).save(
+        os.path.join(SRC, WORTH_MASTER), 'JPEG', quality=86, optimize=True, progressive=True)
+    print(WORTH_MASTER)
+
+
+def worth_floor():
+    """d/worth-floor-{640,760,1020}: the same rungs and qualities as the lamp panel it replaces (AVIF q60 / WebP q80 / JPEG q82)."""
+    src = Image.open(os.path.join(SRC, WORTH_MASTER)).convert('RGB')
+    for w in (640, 760, 1020):
+        im = src.resize((w, round(src.height * w / src.width)), Image.LANCZOS)
+        for fmt, q in (('avif', 60), ('webp', 80), ('jpg', 82)):
+            path = os.path.join(OUT, f'worth-floor-{w}.{fmt}')
+            save(im, path, fmt, q)
+            print(f'd/worth-floor-{w}.{fmt} {im.width}x{im.height} {os.path.getsize(path) / 1024:.1f} KB')
+
+
 def main():
+    if '--worth-master' in sys.argv:   # python tools/encode.py --worth-master <path to aisle-overview-interior-portrait-4284x5712.jpg>
+        return worth_master(sys.argv[sys.argv.index('--worth-master') + 1])
+    if '--worth-floor' in sys.argv:
+        return worth_floor()
     if '--phone-hero' in sys.argv:
         return phone_hero()
     if '--phone-hero-v2' in sys.argv:
