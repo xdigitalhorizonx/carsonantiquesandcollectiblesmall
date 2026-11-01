@@ -1009,51 +1009,52 @@ html.calm *, html.calm *::before, html.calm *::after { transition: none !importa
   .lede, .trip__close { font-size: 10.5pt; margin-top: 4pt; }
 }
 
-/* Seasonal · Halloween — html.halloween is set by the inline head script in October (or with ?halloween to preview), so it
-   switches itself off on Nov 1. Decorative only: aria-hidden, no layout shift (absolutely placed), no motion under Calm /
-   reduced motion, never printed, gone in forced colours. Remove this block + the .hw elements to retire it for good. */
-.hw { display: none; pointer-events: none; }
-html.halloween .hw { display: block; }
+/* Seasonal · Thanksgiving — html.thanksgiving is set by the inline head script in November (or with ?thanksgiving to preview),
+   so it switches itself off on Dec 1. Decorative only: aria-hidden, no layout shift (absolutely placed), no motion under
+   Calm / reduced motion, never printed, gone in forced colours. Remove this block + the .tg elements to retire it for good. */
+.tg { display: none; pointer-events: none; }
+html.thanksgiving .tg { display: block; }
 @media (forced-colors: none) {
-  html.halloween .ribbon i::before { padding-inline: .34em; margin-inline: .12em; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M9.2 5.2c0-1.8.6-3.3 2.4-4l.7 1.1c-1.2.6-1.6 1.6-1.5 2.9z' fill='%233D6B2F'/%3E%3Cellipse cx='10' cy='12.2' rx='8.8' ry='7.2' fill='%23E8752A'/%3E%3Cellipse cx='10' cy='12.2' rx='3.2' ry='7.2' fill='%23D9661F'/%3E%3Cpath d='M4.8 11l1.9-2.6 1.9 2.6zM11.4 11l1.9-2.6 1.9 2.6zM4.6 13.4c1.6 1 3.4 1.5 5.4 1.5s3.8-.5 5.4-1.5c-.8 2.4-2.9 3.6-5.4 3.6s-4.6-1.2-5.4-3.6z' fill='%2314201B'/%3E%3C/svg%3E") center / .62em no-repeat; }
-  html.halloween .footer__fascia-tag i::before { width: 16px; height: 16px; margin: 0 4px; vertical-align: -2px; border-radius: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M9.2 5.2c0-1.8.6-3.3 2.4-4l.7 1.1c-1.2.6-1.6 1.6-1.5 2.9z' fill='%233D6B2F'/%3E%3Cellipse cx='10' cy='12.2' rx='8.8' ry='7.2' fill='%23E8752A'/%3E%3Cellipse cx='10' cy='12.2' rx='3.2' ry='7.2' fill='%23D9661F'/%3E%3Cpath d='M4.8 11l1.9-2.6 1.9 2.6zM11.4 11l1.9-2.6 1.9 2.6zM4.6 13.4c1.6 1 3.4 1.5 5.4 1.5s3.8-.5 5.4-1.5c-.8 2.4-2.9 3.6-5.4 3.6s-4.6-1.2-5.4-3.6z' fill='%2314201B'/%3E%3C/svg%3E") center / contain no-repeat; }
+  html.thanksgiving .ribbon i::before { padding-inline: .34em; margin-inline: .12em; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-11 -11 22 22'%3E%3Cpath transform='rotate(24)' d='M0 -10.5Q2.6 -10.4 2.2 -7.6Q4.8 -7.8 4 -4.6Q6.4 -4.2 5 -1Q6.8 .2 4.4 2.6Q5 5.2 1.6 5Q1.4 6.2 .6 6.4L.5 10.5H-.5L-.6 6.4Q-1.4 6.2 -1.6 5Q-5 5.2 -4.4 2.6Q-6.8 .2 -5 -1Q-6.4 -4.2 -4 -4.6Q-4.8 -7.8 -2.2 -7.6Q-2.6 -10.4 0 -10.5Z' fill='%237A2E1F'/%3E%3Cpath transform='rotate(24)' d='M0 5.6V-8M0 -3.6L2.6 -5M0 -3.6L-2.6 -5M0 .4L3.2 -.8M0 .4L-3.2 -.8' fill='none' stroke='%23D9A400' stroke-width='.8' stroke-linecap='round'/%3E%3C/svg%3E") center / .66em no-repeat; }
+  html.thanksgiving .footer__fascia-tag i::before { width: 15px; height: 15px; margin: 0 4px; vertical-align: -2px; border-radius: 0; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-11 -11 22 22'%3E%3Cpath transform='rotate(24)' d='M0 -10.5Q2.6 -10.4 2.2 -7.6Q4.8 -7.8 4 -4.6Q6.4 -4.2 5 -1Q6.8 .2 4.4 2.6Q5 5.2 1.6 5Q1.4 6.2 .6 6.4L.5 10.5H-.5L-.6 6.4Q-1.4 6.2 -1.6 5Q-5 5.2 -4.4 2.6Q-6.8 .2 -5 -1Q-6.4 -4.2 -4 -4.6Q-4.8 -7.8 -2.2 -7.6Q-2.6 -10.4 0 -10.5Z' fill='%237A2E1F'/%3E%3Cpath transform='rotate(24)' d='M0 5.6V-8M0 -3.6L2.6 -5M0 -3.6L-2.6 -5M0 .4L3.2 -.8M0 .4L-3.2 -.8' fill='none' stroke='%23D9A400' stroke-width='.8' stroke-linecap='round'/%3E%3C/svg%3E") center / contain no-repeat; }
 }
-/* hero: moon + bats, desktop only (phones keep the top row clear) */
-html.halloween .hw-moon { display: none; position: absolute; z-index: 0; top: clamp(84px, 12vh, 150px); right: max(var(--gutter), calc((100% - var(--wrap)) / 2)); width: clamp(120px, 10vw, 180px); height: auto; overflow: visible; }
-@media (min-width: 1024px) { html.halloween .hw-moon { display: block; } }
-html.halloween .hw-moon-sm { position: absolute; z-index: 0; top: 0; right: 0; width: clamp(68px, 19vw, 110px); height: auto; overflow: visible; }   /* phones + tablets: beside the eyebrow */
-@media (min-width: 1024px) { html.halloween .hw-moon-sm { display: none; } }
-.hw-moon__glow { fill: rgb(var(--yellow-rgb) / .14); }
-.hw-moon__disc { fill: var(--yellow-bright); }
-.hw-moon__crater { fill: rgb(0 0 0 / .08); }
-.hw-bat { fill: var(--ground); }
-.hw-bat--b { stroke: rgb(var(--chalk-rgb) / .7); stroke-width: .6px; }
-.hw-bat, .hw-bat use { transform-box: fill-box; transform-origin: center; }
-/* booths plate: a witch hat on its corner (it swings with the plate) */
-html.halloween .hw-hat { position: absolute; left: -.42em; top: -.66em; width: 1.05em; height: auto; transform: rotate(-16deg); }
-/* worth photo: a cobweb on the top-left corner and a spider on a thread */
-html.halloween .worth__photo { position: relative; }
-html.halloween .hw-web { position: absolute; z-index: 1; left: -4px; top: -4px; width: clamp(64px, 16%, 92px); height: auto; fill: none; stroke: rgb(var(--ground-rgb) / .55); stroke-width: 1.1px; stroke-linecap: round; }
-html.halloween .hw-spider { position: absolute; z-index: 1; top: 8px; right: 18%; width: 40px; height: 80px; overflow: hidden; }   /* hangs in the light ceiling band */
-.hw-spider svg { display: block; width: 100%; height: auto; margin-top: -52px; overflow: visible; transform: translateY(-10px); fill: var(--ground); }
-@media (min-width: 900px) {   /* the square desktop crop has no ceiling band: hang it beside the frame, in the column gap */
-  html.halloween .hw-spider { top: 0; right: auto; left: -38px; width: 32px; height: 96px; }
-  .hw-spider svg { margin-top: -24px; }
+/* hero: wheat sheaf, pumpkin, oak leaf and two drifting maple leaves — desktop top right; phones + tablets get a smaller copy beside the eyebrow */
+html.thanksgiving .tg-harvest { display: none; position: absolute; z-index: 0; top: clamp(84px, 12vh, 150px); right: max(var(--gutter), calc((100% - var(--wrap)) / 2)); width: clamp(130px, 11vw, 190px); height: auto; overflow: visible; }
+@media (min-width: 1024px) { html.thanksgiving .tg-harvest { display: block; } }
+html.thanksgiving .tg-harvest-sm { position: absolute; z-index: 0; top: -6px; right: 0; width: clamp(70px, 19vw, 112px); height: auto; overflow: visible; }
+@media (min-width: 1024px) { html.thanksgiving .tg-harvest-sm { display: none; } }
+.tg-leaf, .tg-leaf use { transform-box: fill-box; transform-origin: center; }
+/* booths plate: an oak leaf and an acorn on its corner (they swing with the plate) */
+html.thanksgiving .tg-acorn { position: absolute; left: -.42em; top: -.66em; width: 1.05em; height: auto; transform: rotate(-12deg); }
+/* worth photo: a sprig of leaves on the top-left corner and one leaf falling */
+html.thanksgiving .worth__photo { position: relative; }
+html.thanksgiving .tg-sprig { position: absolute; z-index: 1; left: -10px; top: -10px; width: clamp(66px, 16%, 94px); height: auto; overflow: visible; }
+html.thanksgiving .tg-fall { position: absolute; z-index: 1; top: 8px; right: 18%; width: 40px; height: 80px; overflow: hidden; }   /* drifts in the light ceiling band */
+.tg-fall svg { display: block; width: 24px; height: 24px; margin: 0 auto; transform: translateY(30px) rotate(-14deg); }
+@media (min-width: 900px) {   /* the square desktop crop has no ceiling band: it falls beside the frame, in the column gap */
+  html.thanksgiving .tg-fall { top: 0; right: auto; left: -38px; width: 32px; height: 96px; }
+  .tg-fall svg { width: 22px; height: 22px; transform: translateY(40px) rotate(-14deg); }
 }
-.hw-spider__thread { fill: none; stroke: rgb(var(--ground-rgb) / .7); stroke-width: 1px; }
-.hw-spider__legs { fill: none; stroke: var(--ground); stroke-width: 1.7px; stroke-linecap: round; }
-/* footer: a ghost peeking from behind the X wink */
-html.halloween .hw-ghost { position: absolute; z-index: 0; right: 28px; bottom: 0; width: 34px; height: auto; transform-origin: 50% 100%; }
+/* footer: a lattice pie cooling on the rule, beside the X */
+html.thanksgiving .tg-pie { position: absolute; z-index: 0; right: 54px; bottom: 0; width: 42px; height: auto; overflow: visible; }
+.tg-steam { fill: none; stroke: rgb(var(--ground-rgb) / .4); stroke-width: 1.4px; stroke-linecap: round; }
 @media (prefers-reduced-motion: no-preference) {
-  html.halloween:not(.calm) .hw-bat--a { animation: hw-bob 3.2s ease-in-out infinite; }
-  html.halloween:not(.calm) .hw-bat--b { animation: hw-bob 2.6s ease-in-out -1s infinite; }
-  html.halloween:not(.calm) .hw-bat use { animation: hw-flap .42s ease-in-out infinite alternate; }
-  html.halloween:not(.calm) .hw-spider svg { animation: hw-dangle 4.4s ease-in-out infinite; }
-  html.halloween:not(.calm) .hw-ghost { animation: hw-sway 3.8s ease-in-out infinite; }
+  html.thanksgiving:not(.calm) .tg-leaf--a { animation: tg-drift 4.6s ease-in-out infinite; }
+  html.thanksgiving:not(.calm) .tg-leaf--b { animation: tg-drift 3.8s ease-in-out -1.4s infinite reverse; }
+  html.thanksgiving:not(.calm) .tg-fall svg { animation: tg-fall 7s linear infinite; }
+  html.thanksgiving:not(.calm) .tg-steam { animation: tg-steam 3.6s ease-in-out infinite; }
+  html.thanksgiving:not(.calm) .tg-steam--b { animation-delay: -1.2s; }
+  html.thanksgiving:not(.calm) .tg-steam--c { animation-delay: -2.4s; }
 }
-@keyframes hw-bob { 50% { transform: translate(2px, -5px); } }
-@keyframes hw-flap { to { transform: scaleY(.62); } }
-@keyframes hw-dangle { 0%, 100% { transform: translateY(-10px); } 50% { transform: translateY(4px); } }
-@keyframes hw-sway { 0%, 100% { transform: rotate(-5deg); } 50% { transform: translateY(-3px) rotate(5deg); } }
-@media print { .hw { display: none !important; } }
-@media (forced-colors: active) { .hw { display: none !important; } }
+@keyframes tg-drift { 50% { transform: translate(3px, 4px) rotate(12deg); } }
+@keyframes tg-fall {
+  0% { transform: translate(0, -28px) rotate(-30deg); opacity: 0; }
+  12% { opacity: 1; }
+  35% { transform: translate(7px, 22px) rotate(20deg); }
+  65% { transform: translate(-6px, 60px) rotate(-18deg); }
+  88% { opacity: 1; }
+  100% { transform: translate(2px, 100px) rotate(26deg); opacity: 0; }
+}
+@keyframes tg-steam { 0% { opacity: 0; transform: translateY(3px); } 45% { opacity: 1; } 100% { opacity: 0; transform: translateY(-4px); } }
+@media print { .tg { display: none !important; } }
+@media (forced-colors: active) { .tg { display: none !important; } }
