@@ -13,3 +13,5 @@ evidence/
 /assets/marquee-06-oak-wall-telephone-yelp14-750x1000.jpg
 /assets/tile-home-goods-chandeliers-1116x1488.jpg
 /assets/og-carson-antiques-mall-1200x630.jpg
+# GitHub Actions config (IndexNow workflow + script) never ships.
+.github/
